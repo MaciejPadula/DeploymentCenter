@@ -6,21 +6,21 @@ using MediatR;
 
 namespace DeploymentCenter.Deployments.Features;
 
-internal class GetDeploymentPodsHandler : IRequestHandler<GetDeploymentPodsQuery, List<Pod>>
+internal class GetDeploymentContainersHandler : IRequestHandler<GetDeploymentContainersQuery, List<Container>>
 {
     private readonly IKubernetesClientWrapper _kubernetesClientWrapper;
 
-    public GetDeploymentPodsHandler(IKubernetesClientWrapper kubernetesClientWrapper)
+    public GetDeploymentContainersHandler(IKubernetesClientWrapper kubernetesClientWrapper)
     {
         _kubernetesClientWrapper = kubernetesClientWrapper;
     }
 
-    public async Task<List<Pod>> Handle(GetDeploymentPodsQuery request, CancellationToken cancellationToken)
+    public async Task<List<Container>> Handle(GetDeploymentContainersQuery request, CancellationToken cancellationToken)
     {
-        var pods = await _kubernetesClientWrapper.GetDeploymentPods(
+        var containers = await _kubernetesClientWrapper.GetDeploymentContainers(
             request.Namespace,
             request.DeploymentName);
 
-        return pods.ToDtos();
+        return containers.ToDtos();
     }
 }

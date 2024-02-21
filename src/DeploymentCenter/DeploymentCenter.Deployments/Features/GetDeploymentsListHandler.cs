@@ -1,10 +1,12 @@
 ﻿using DeploymentCenter.Deployments.Contract.Features;
+using DeploymentCenter.Deployments.Contract.Models;
 using DeploymentCenter.Deployments.Infrastructure;
+using DeploymentCenter.Deployments.Mappers;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features;
 
-internal class GetDeploymentsListHandler : IRequestHandler<GetDeploymentsListQuery, object>
+internal class GetDeploymentsListHandler : IRequestHandler<GetDeploymentsListQuery, List<DeploymentBasicInfo>>
 {
     private readonly IKubernetesClientWrapper _kubernetesClientWrapper;
 
@@ -13,8 +15,13 @@ internal class GetDeploymentsListHandler : IRequestHandler<GetDeploymentsListQue
         _kubernetesClientWrapper = kubernetesClientWrapper;
     }
 
-    public Task<object> Handle(GetDeploymentsListQuery request, CancellationToken cancellationToken)
+    public async Task<List<DeploymentBasicInfo>> Handle(GetDeploymentsListQuery request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var deployments = await _kubernetesClientWrapper.GetDeployments(request.Namespace);
+
+        return deployments
+            .Items
+            .Select(x => x.ToBasicInfo())
+            .ToList();
     }
 }

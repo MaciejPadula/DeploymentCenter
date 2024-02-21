@@ -1,16 +1,23 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
-export function ResourcesList() {
-  const [resources, setResources] = useState<string[]>([]);
+export function ResourcesList(props: { resourceText: string, resourcesFactory: () => Promise<string[]> }) {
+  const { isPending, error, data, isFetching } = useQuery({
+    queryKey: ['resourceLoader'],
+    queryFn: props.resourcesFactory
+  });
 
-  useEffect(() => {
-    setResources(["resource 1", "resource 2", "resource 3"]);
-  }, []);
+  if (isPending || isFetching || data == undefined) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    <div>Error</div>
+  }
 
   return (
     <div>
-      <h1>ResourcesList</h1>
-      {resources.map(resource => <div key={resource}>{resource}</div>)}
+      <h1>{props.resourceText}</h1>
+      {data.map(resource => <div key={resource}>{resource}</div>)}
     </div>
   );
 }

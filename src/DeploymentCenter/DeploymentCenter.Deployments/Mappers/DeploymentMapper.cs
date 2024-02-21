@@ -5,6 +5,9 @@ namespace DeploymentCenter.Deployments.Mappers;
 
 internal static class DeploymentMapper
 {
+    public static DeploymentBasicInfo ToBasicInfo(this V1Deployment deployment) =>
+        new(deployment.Metadata.Name);
+
     public static DeploymentDetails ToDetails(this V1Deployment deployment) =>
         new(deployment.Metadata.NamespaceProperty,
             deployment.Metadata.Name,

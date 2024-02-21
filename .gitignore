@@ -396,3 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+src/DeploymentCenter.Frontend/deploymentcenter.frontend.client/package-lock.json

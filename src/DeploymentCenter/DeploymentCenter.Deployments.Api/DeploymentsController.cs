@@ -17,10 +17,13 @@ public class DeploymentsController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetDeploymentsList([FromQuery] string @namespace)
+    public async Task<IActionResult> GetDeploymentsList(
+        [FromQuery] string @namespace)
     {
         var deployments = await _mediator.Send(new GetDeploymentsListQuery(@namespace));
-        return Ok();
+        return Ok(new GetDeploymentsListResponse(deployments
+            .Select(x => new Deployment(x.Name))
+            .ToList()));
     }
 
     [HttpGet]
@@ -51,5 +54,19 @@ public class DeploymentsController : ApiControllerBase
             details.Value.Name,
             details.Value.AliveReplicas,
             details.Value.AllReplicas));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetDeploymentContainers(
+        [FromQuery] string @namespace,
+        [FromQuery] string deploymentName)
+    {
+        var containers = await _mediator.Send(new GetDeploymentContainersQuery(
+            @namespace,
+            deploymentName));
+
+        return Ok(new GetDeploymentContainersResponse(containers
+            .Select(x => new Container(x.Name, x.Image, x.EnvironmentVariables))
+            .ToList()));
     }
 }
