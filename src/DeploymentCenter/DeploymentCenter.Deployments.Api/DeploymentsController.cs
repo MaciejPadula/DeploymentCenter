@@ -33,7 +33,10 @@ public class DeploymentsController : ApiControllerBase
     {
         var pods = await _mediator.Send(new GetDeploymentPodsQuery(@namespace, deploymentName));
         return Ok(new GetDeploymentPodsResponse(pods
-                .Select(x => new Pod(x.Name, x.Status))
+                .Select(x => new Pod(
+                    x.Name,
+                    x.Status,
+                    x.Ip))
                 .ToList()));
     }
 
@@ -52,6 +55,7 @@ public class DeploymentsController : ApiControllerBase
         return Ok(new GetDeploymentDetailsResponse(
             details.Value.Namespace,
             details.Value.Name,
+            details.Value.ApplicationName,
             details.Value.AliveReplicas,
             details.Value.AllReplicas));
     }

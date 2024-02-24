@@ -1,7 +1,7 @@
 ﻿using DeploymentCenter.Deployments.Contract.Features;
 using DeploymentCenter.Deployments.Contract.Models;
+using DeploymentCenter.Deployments.Extensions;
 using DeploymentCenter.Deployments.Infrastructure;
-using DeploymentCenter.Deployments.Mappers;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features;

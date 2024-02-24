@@ -1,23 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
+import { ResourcesFactory } from "./resource-row-model";
+import { ResourceRow } from "./ResourceRow";
+import { LinearProgress, List, Typography } from "@mui/material";
 
-export function ResourcesList(props: { resourceText: string, resourcesFactory: () => Promise<string[]> }) {
+export function ResourcesList(props: { resourceText: string, resourcesFactory: ResourcesFactory }) {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['resourceLoader'],
     queryFn: props.resourcesFactory
   });
-
-  if (isPending || isFetching || data == undefined) {
-    return <div>Loading...</div>;
-  }
+ 
+  const isLoading = isPending || isFetching || data == undefined;
 
   if (error) {
     <div>Error</div>
   }
 
   return (
-    <div>
-      <h1>{props.resourceText}</h1>
-      {data.map(resource => <div key={resource}>{resource}</div>)}
+    <div className="w-full">
+      <Typography variant="h5">
+        {props.resourceText}
+      </Typography>
+      {isLoading && <LinearProgress />}
+      
+      <List>
+        {!isLoading && data.map(resource => <ResourceRow key={resource.name} row={resource} />)}
+      </List>
     </div>
   );
 }

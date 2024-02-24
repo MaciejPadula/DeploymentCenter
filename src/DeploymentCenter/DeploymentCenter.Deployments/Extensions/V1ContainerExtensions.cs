@@ -1,9 +1,9 @@
 ﻿using DeploymentCenter.Deployments.Contract.Models;
 using k8s.Models;
 
-namespace DeploymentCenter.Deployments.Mappers;
+namespace DeploymentCenter.Deployments.Extensions;
 
-internal static class ContainerMapper
+internal static class V1ContainerExtensions
 {
     public static List<Container> ToDtos(this IEnumerable<V1Container> containers) =>
         containers

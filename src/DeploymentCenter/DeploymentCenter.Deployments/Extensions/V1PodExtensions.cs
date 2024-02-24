@@ -1,9 +1,9 @@
 ﻿using DeploymentCenter.Deployments.Contract.Models;
 using k8s.Models;
 
-namespace DeploymentCenter.Deployments.Mappers;
+namespace DeploymentCenter.Deployments.Extensions;
 
-internal static class PodMapper
+internal static class V1PodExtensions
 {
     public static List<Pod> ToDtos(this V1PodList podList) =>
         podList.Items
@@ -11,5 +11,7 @@ internal static class PodMapper
             .ToList();
 
     public static Pod ToDto(this V1Pod pod) =>
-        new(pod.Metadata.Name, pod.Status.Phase);
+        new(pod.Metadata.Name,
+            pod.Status.Phase,
+            pod.Status.PodIP);
 }
