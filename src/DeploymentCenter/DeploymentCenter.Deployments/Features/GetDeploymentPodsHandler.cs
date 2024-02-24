@@ -21,6 +21,9 @@ internal class GetDeploymentPodsHandler : IRequestHandler<GetDeploymentPodsQuery
             request.Namespace,
             request.DeploymentName);
 
-        return pods.ToDtos();
+        return pods
+            .Items
+            .ToDtos()
+            .ToList();
     }
 }

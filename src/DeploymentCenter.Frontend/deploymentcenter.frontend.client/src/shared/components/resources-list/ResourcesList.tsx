@@ -17,9 +17,11 @@ export function ResourcesList(props: { resourceText: string, resourcesFactory: R
 
   return (
     <div className="w-full">
-      <Typography variant="h5">
-        {props.resourceText}
-      </Typography>
+      <div className="flex flex-row p-4">
+        <Typography variant="h5">
+          {props.resourceText}
+        </Typography>
+      </div>
       {isLoading && <LinearProgress />}
       
       <List>

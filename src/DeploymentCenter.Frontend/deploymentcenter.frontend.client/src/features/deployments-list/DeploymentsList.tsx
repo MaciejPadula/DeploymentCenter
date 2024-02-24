@@ -4,9 +4,9 @@ import {
   ResourceRowModel,
   ResourcesFactory,
 } from "../../shared/components/resources-list/resource-row-model";
-import DeployIcon from "../../assets/deploy.svg";
-import { Icon } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { getDeploymentUrl } from "../../shared/services/routing-service";
+import { DeployIcon } from "../../assets/icons";
 
 export function DeploymentsList() {
   const navigate = useNavigate();
@@ -16,12 +16,8 @@ export function DeploymentsList() {
     return response.map((x) => {
       return {
         name: x.name,
-        icon: (
-          <Icon>
-            <img className="w-full" src={DeployIcon} />
-          </Icon>
-        ),
-        clickHandler: () => navigate(`/deployments/${x.name}`),
+        icon: DeployIcon,
+        clickHandler: () => navigate(getDeploymentUrl(x.name)),
       } as ResourceRowModel;
     });
   };

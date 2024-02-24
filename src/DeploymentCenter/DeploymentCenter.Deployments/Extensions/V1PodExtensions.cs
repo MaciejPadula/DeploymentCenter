@@ -5,13 +5,12 @@ namespace DeploymentCenter.Deployments.Extensions;
 
 internal static class V1PodExtensions
 {
-    public static List<Pod> ToDtos(this V1PodList podList) =>
-        podList.Items
-            .Select(pod => pod.ToDto())
-            .ToList();
+    public static IEnumerable<Pod> ToDtos(this IEnumerable<V1Pod> podList) =>
+        podList.Select(pod => pod.ToDto());
 
     public static Pod ToDto(this V1Pod pod) =>
         new(pod.Metadata.Name,
             pod.Status.Phase,
-            pod.Status.PodIP);
+            pod.Status.PodIP,
+            !pod.Status.ContainerStatuses.Any(c => !c.Ready));
 }

@@ -1,4 +1,5 @@
 import {
+  Icon,
   ListItem,
   ListItemButton,
   ListItemIcon,
@@ -8,10 +9,12 @@ import { ResourceRowModel } from "./resource-row-model";
 
 export function ResourceRow(props: { row: ResourceRowModel }) {
   return (
-    <ListItem>
+    <ListItem divider={true}>
       <ListItemButton onClick={() => props.row.clickHandler()}>
         <ListItemIcon>
-          {props.row.icon}
+          <Icon className="!w-10 !h-10">
+            <img className="w-full h-full" src={props.row.icon} />
+          </Icon>
         </ListItemIcon>
         <ListItemText primary={props.row.name} />
       </ListItemButton>

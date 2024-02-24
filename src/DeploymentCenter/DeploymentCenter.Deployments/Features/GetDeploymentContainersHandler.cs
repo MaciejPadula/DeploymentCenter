@@ -21,6 +21,8 @@ internal class GetDeploymentContainersHandler : IRequestHandler<GetDeploymentCon
             request.Namespace,
             request.DeploymentName);
 
-        return containers.ToDtos();
+        return containers
+            .ToDtos()
+            .ToList();
     }
 }

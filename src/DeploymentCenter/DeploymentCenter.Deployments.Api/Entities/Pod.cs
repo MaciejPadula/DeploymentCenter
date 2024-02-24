@@ -5,4 +5,5 @@ namespace DeploymentCenter.Deployments.Api.Entities;
 public record Pod(
     string Name,
     string Status,
-    string Ip) : IApiEntity;
+    string Ip,
+    bool IsRunning) : IApiEntity;
