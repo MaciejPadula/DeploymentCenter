@@ -17,10 +17,13 @@ public class DeploymentsController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetDeploymentsList([FromQuery] string @namespace)
+    public async Task<IActionResult> GetDeploymentsList(
+        [FromQuery] string @namespace)
     {
         var deployments = await _mediator.Send(new GetDeploymentsListQuery(@namespace));
-        return Ok();
+        return Ok(new GetDeploymentsListResponse(deployments
+            .Select(x => new Deployment(x.Name))
+            .ToList()));
     }
 
     [HttpGet]
@@ -30,7 +33,10 @@ public class DeploymentsController : ApiControllerBase
     {
         var pods = await _mediator.Send(new GetDeploymentPodsQuery(@namespace, deploymentName));
         return Ok(new GetDeploymentPodsResponse(pods
-                .Select(x => new Pod(x.Name, x.Status))
+                .Select(x => new Pod(
+                    x.Name,
+                    x.Status,
+                    x.Ip))
                 .ToList()));
     }
 
@@ -49,7 +55,22 @@ public class DeploymentsController : ApiControllerBase
         return Ok(new GetDeploymentDetailsResponse(
             details.Value.Namespace,
             details.Value.Name,
+            details.Value.ApplicationName,
             details.Value.AliveReplicas,
             details.Value.AllReplicas));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetDeploymentContainers(
+        [FromQuery] string @namespace,
+        [FromQuery] string deploymentName)
+    {
+        var containers = await _mediator.Send(new GetDeploymentContainersQuery(
+            @namespace,
+            deploymentName));
+
+        return Ok(new GetDeploymentContainersResponse(containers
+            .Select(x => new Container(x.Name, x.Image, x.EnvironmentVariables))
+            .ToList()));
     }
 }

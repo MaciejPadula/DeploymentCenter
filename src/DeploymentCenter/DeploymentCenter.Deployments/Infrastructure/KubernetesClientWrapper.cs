@@ -10,6 +10,7 @@ internal interface IKubernetesClientWrapper
     Task<V1DeploymentList> GetDeployments(string @namespace);
     Task<V1PodList> GetPods(string @namespace);
     Task<V1PodList> GetDeploymentPods(string @namespace, string deploymentName);
+    Task<List<V1Container>> GetDeploymentContainers(string @namespace, string deploymentName);
 }
 
 internal class KubernetesClientWrapper : IKubernetesClientWrapper
@@ -27,6 +28,17 @@ internal class KubernetesClientWrapper : IKubernetesClientWrapper
         return deploys
             .Items
             .FirstOrDefault(d => d.Metadata.Name == deploymentName);
+    }
+
+    public async Task<List<V1Container>> GetDeploymentContainers(string @namespace, string deploymentName)
+    {
+        var deploy = await GetDeployment(@namespace, deploymentName);
+        return deploy?
+            .Spec?
+            .Template?
+            .Spec?
+            .Containers?
+            .ToList() ?? [];
     }
 
     public async Task<V1PodList> GetDeploymentPods(string @namespace, string deploymentName)

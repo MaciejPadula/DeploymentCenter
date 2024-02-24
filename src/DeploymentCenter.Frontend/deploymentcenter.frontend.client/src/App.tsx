@@ -1,16 +1,23 @@
-import { Navbar } from "./layout/Navbar";
 import "./App.scss";
-import { Sidebar } from "./shared/components/sidebar/Sidebar";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { DeploymentsList } from "./features/deployments-list/DeploymentsList";
+import { DeploymentPage } from "./features/deployment-page/DeploymentPage";
+import { Layout } from "./layout/Layout";
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <div className="flex flex-row">
-        <Sidebar />
-        <div>XD</div>
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="/" element={<div>main</div>} />
+          <Route path="/deployments" element={<DeploymentsList />} />
+          <Route
+            path="/deployments/:deploymentName"
+            element={<DeploymentPage />}
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

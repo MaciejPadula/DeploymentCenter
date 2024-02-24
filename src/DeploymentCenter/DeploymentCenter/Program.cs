@@ -3,9 +3,12 @@ using DeploymentCenter.Images;
 using DeploymentCenter.SharedKernel;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add ASP.NET
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
 
 // Register modules
 builder.Services.AddImagesModule();
@@ -20,6 +23,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Global CORS policy
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // Allow any origin
+    .AllowCredentials()); // Allow credentials
 
 app.UseHttpsRedirection();
 app.MapControllers();

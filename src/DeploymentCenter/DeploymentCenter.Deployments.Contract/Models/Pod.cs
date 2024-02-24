@@ -2,4 +2,5 @@
 
 public readonly record struct Pod(
     string Name,
-    string Status);
+    string Status,
+    string Ip);
