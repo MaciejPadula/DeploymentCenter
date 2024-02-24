@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getDeploymentPods } from "../deployment-page-data-service";
-import { LinearProgress, List } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 import { Replica } from "./Replica";
 
 export function ReplicasList(props: { deploymentName: string, namespace: string }) {

@@ -36,7 +36,8 @@ public class DeploymentsController : ApiControllerBase
                 .Select(x => new Pod(
                     x.Name,
                     x.Status,
-                    x.Ip))
+                    x.Ip,
+                    x.IsRunning))
                 .ToList()));
     }
 

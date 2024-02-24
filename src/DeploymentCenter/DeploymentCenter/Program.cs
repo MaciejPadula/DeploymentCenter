@@ -1,5 +1,6 @@
 using DeploymentCenter.Deployments;
 using DeploymentCenter.Images;
+using DeploymentCenter.Services;
 using DeploymentCenter.SharedKernel;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddCors();
 // Register modules
 builder.Services.AddImagesModule();
 builder.Services.AddDeploymentsModule();
+builder.Services.AddServicesModule();
 builder.Services.AddSharedKernelModule();
 
 var app = builder.Build();

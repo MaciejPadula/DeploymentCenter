@@ -3,4 +3,5 @@
 public readonly record struct Pod(
     string Name,
     string Status,
-    string Ip);
+    string Ip,
+    bool IsRunning);
