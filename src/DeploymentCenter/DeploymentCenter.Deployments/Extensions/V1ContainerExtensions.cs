@@ -11,5 +11,5 @@ internal static class V1ContainerExtensions
     public static Container ToDto(this V1Container container) =>
         new(container.Name,
             container.Image,
-            container.Env.ToDictionary(x => x.Name, x => x.Value));
+            container.Env?.ToDictionary(x => x.Name, x => x.Value) ?? []);
 }

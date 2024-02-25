@@ -5,10 +5,10 @@ import {
   AccordionSummary,
   Typography,
 } from "@mui/material";
-import { Pod } from "../pod";
+import { Pod } from "../models/pod";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-export function Replica(props: { pod: Pod }) {
+export function ReplicaRow(props: { pod: Pod }) {
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ArrowDropDownIcon />}>

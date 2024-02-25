@@ -1,7 +1,7 @@
-export function getDeploymentUrl(name: string) {
-  return `/deployments/${name}`;
+export function getDeploymentUrl(namespace: string, name: string) {
+  return `/${namespace}/deployments/${name}`;
 }
 
-export function getLoadBalancerUrl(name: string) {
-  return `/load-balancers/${name}`;
+export function getLoadBalancerUrl(namespace: string, name: string) {
+  return `/${namespace}/load-balancers/${name}`;
 }

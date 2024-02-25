@@ -15,7 +15,7 @@ export function ResourceSummary(props: {
   if (error) {
     <div>Error</div>;
   }
-
+  
   return (
     <Paper className="flex flex-wrap w-full" elevation={2}>
       {isLoading && <LinearProgress />}
