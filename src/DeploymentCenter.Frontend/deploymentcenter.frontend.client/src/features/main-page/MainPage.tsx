@@ -16,6 +16,7 @@ export function MainPage() {
     return response.map((x) => {
       return {
         name: x.title,
+        namespace: x.namespace,
         icon: x.icon,
         clickHandler: () => navigate(x.url),
       } as ResourceRowModel;

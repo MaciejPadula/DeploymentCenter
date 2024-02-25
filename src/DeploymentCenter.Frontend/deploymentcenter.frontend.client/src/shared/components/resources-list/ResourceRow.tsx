@@ -16,7 +16,7 @@ export function ResourceRow(props: { row: ResourceRowModel }) {
             <img className="w-full h-full" src={props.row.icon} />
           </Icon>
         </ListItemIcon>
-        <ListItemText primary={props.row.name} />
+        <ListItemText primary={props.row.name} secondary={props.row.namespace} />
       </ListItemButton>
     </ListItem>
   );

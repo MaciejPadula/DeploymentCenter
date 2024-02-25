@@ -1,6 +1,7 @@
-import { Chip, LinearProgress, Paper } from "@mui/material";
+import { LinearProgress, Paper } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getLoadBalancerIpAddresses } from "../load-balancer-page-data-service";
+import { IpAddressRow } from "./IpAddressRow";
 
 export function IpAddresses(props: {
   namespace: string;
@@ -24,7 +25,7 @@ export function IpAddresses(props: {
       {!isLoading && (
         <Paper elevation={2} className="p-4">
           {data.map((x) => (
-            <Chip key={x} label={x} />
+            <IpAddressRow key={x} ipAddress={x} />
           ))}
         </Paper>
       )}

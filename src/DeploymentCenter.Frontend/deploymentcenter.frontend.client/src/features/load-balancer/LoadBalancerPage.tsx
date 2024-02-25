@@ -9,31 +9,32 @@ import { getLoadBalancerUrl } from "../../shared/services/routing-service";
 import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-service";
 import { useEffect } from "react";
 import { SvcIcon } from "../../assets/icons";
-import { IpAddresses } from "./IpAddresses/IpAddresses";
-import { LoadBalancerPorts } from "./Ports/LoadBalancerPorts";
+import { IpAddresses } from "./ip-addresses/IpAddresses";
+import { LoadBalancerPorts } from "./ports/LoadBalancerPorts";
 
 export function LoadBalancerPage() {
-  const { loadBalancerName } = useParams();
+  const { loadBalancerName, namespace } = useParams();
 
   useEffect(() => {
-    if (loadBalancerName === undefined) {
+    if (loadBalancerName === undefined || namespace === undefined) {
       return;
     }
 
     addRecentlyVisitedPage(
       loadBalancerName,
+      namespace,
       SvcIcon,
-      getLoadBalancerUrl(loadBalancerName)
+      getLoadBalancerUrl(namespace, loadBalancerName)
     );
   });
 
-  if (loadBalancerName === undefined) {
+  if (loadBalancerName === undefined || namespace === undefined) {
     return <div>Loading...</div>;
   }
 
   const factory: ResourceSummaryFactory = async () => {
     const summary = await getLoadBalancerDetails(
-      "default",
+      namespace,
       loadBalancerName ?? ""
     );
     const properties = new Map<string, string>();
@@ -52,8 +53,8 @@ export function LoadBalancerPage() {
   return (
     <div className="flex flex-col w-full p-2 gap-2">
       <ResourceSummary resourceSummaryFactory={factory} />
-      <IpAddresses namespace="default" loadBalancerName={loadBalancerName} />
-      <LoadBalancerPorts namespace="default" loadBalancerName={loadBalancerName} />
+      <IpAddresses namespace={namespace} loadBalancerName={loadBalancerName} />
+      <LoadBalancerPorts namespace={namespace} loadBalancerName={loadBalancerName} />
     </div>
   );
 }

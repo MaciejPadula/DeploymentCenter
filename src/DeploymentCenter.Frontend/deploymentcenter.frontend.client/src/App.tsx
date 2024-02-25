@@ -17,15 +17,15 @@ function App() {
           <Route path='cron-jobs' element={<div>Cron Jobs</div>} />
           <Route path='cron-jobs/:cronJobName' element={<div>Cron Jobs Details</div>} />
 
-          <Route path="/deployments" element={<DeploymentsList />} />
+          <Route path="/:namespace/deployments" element={<DeploymentsList />} />
           <Route
-            path="/deployments/:deploymentName"
+            path="/:namespace/deployments/:deploymentName"
             element={<DeploymentPage />}
           />
 
-          <Route path="/load-balancers" element={<LoadBalancersList />} />
+          <Route path="/:namespace/load-balancers" element={<LoadBalancersList />} />
           <Route
-            path="/load-balancers/:loadBalancerName"
+            path="/:namespace/load-balancers/:loadBalancerName"
             element={<LoadBalancerPage />}
           />
         </Route>

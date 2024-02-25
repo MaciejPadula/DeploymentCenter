@@ -17,6 +17,7 @@ internal static class V1ServiceExtensions
     public static LoadBalancerDetails ToLBDetails(this V1Service service) =>
         new(service.Metadata.NamespaceProperty,
             service.Metadata.Name,
-            service.Spec.Selector[Consts.ApplicationNameDictionaryKey]);
+            service.Spec.Selector.TryGetValue(
+                Consts.ApplicationNameDictionaryKey, out var applicationName) ? applicationName : string.Empty);
 
 }

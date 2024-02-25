@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getLoadBalancerPorts } from "../load-balancer-page-data-service";
-import { Chip, LinearProgress, Paper, Tooltip } from "@mui/material";
-import { LoadBalancerPort } from "../load-balancer-port";
+import { LinearProgress, Paper } from "@mui/material";
+import { LoadBalancerPortRow } from "./LoadBalancerPortRow";
 
 export function LoadBalancerPorts(props: {
   loadBalancerName: string;
@@ -19,19 +19,16 @@ export function LoadBalancerPorts(props: {
     <div>Error</div>;
   }
 
-  function getPortText(port: LoadBalancerPort) {
-    return `${port.hostPort}:${port.targetPort}/${port.protocol}`;
-  }
-
   return (
     <div>
       {isLoading && <LinearProgress />}
       {!isLoading && (
         <Paper elevation={2} className="p-4">
           {data.map((port) => (
-            <Tooltip key={getPortText(port)} title={port.protocol}>
-              <Chip label={getPortText(port)} />
-            </Tooltip>
+            <LoadBalancerPortRow
+              key={`${port.hostPort}_${port.protocol}_${port.targetPort}`}
+              port={port}
+            />
           ))}
         </Paper>
       )}
