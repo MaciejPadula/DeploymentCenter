@@ -1,27 +1,32 @@
 import { ReactNode, createContext, useReducer } from "react";
 
+type NamespaceContextType = {
+  namespace: string;
+  setNamespace: (newNamespace: string) => void;
+};
+
 const namespaceKey = "namespace";
 const defaultNamespace = "default";
 
-const NamespaceContext = createContext<string>("");
+const NamespaceContext = createContext<NamespaceContextType>(undefined!);
 
-function namespaceReducer(state: string, newNamespace: string) {
+function namespaceReducer(_: string, newNamespace: string) {
   localStorage.setItem(namespaceKey, newNamespace);
   return newNamespace;
 }
 
 function NamespaceProvider(props: { children: ReactNode }) {
-  const [state] = useReducer(
+  const [state, dispatch] = useReducer(
     namespaceReducer,
     localStorage.getItem(namespaceKey) ?? defaultNamespace
   );
 
-  // const value = { state, dispatch };
+  const value: NamespaceContextType = { namespace: state, setNamespace: dispatch };
   return (
-    <NamespaceContext.Provider value={state}>
+    <NamespaceContext.Provider value={value}>
       {props.children}
     </NamespaceContext.Provider>
   );
 }
 
-export { NamespaceContext, NamespaceProvider };
+export { NamespaceProvider, NamespaceContext };

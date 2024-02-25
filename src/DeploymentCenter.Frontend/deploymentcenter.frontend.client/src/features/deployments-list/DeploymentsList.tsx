@@ -7,13 +7,27 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { getDeploymentUrl } from "../../shared/services/routing-service";
 import { DeployIcon } from "../../assets/icons";
+import { useNamespaceContext } from "../../shared/contexts/namespace-context-helpers";
+import { useEffect } from "react";
 
 export function DeploymentsList() {
+  const { namespace: currentNamespace, setNamespace: setCurrentNamespace } =
+    useNamespaceContext();
   const navigate = useNavigate();
   const { namespace } = useParams();
 
+  useEffect(() => {
+    if (namespace !== undefined && namespace !== currentNamespace) {
+      setCurrentNamespace(namespace);
+    }
+  }, [namespace, currentNamespace, setCurrentNamespace]);
+
   if (namespace === undefined) {
     return <div>Error</div>;
+  }
+
+  if (namespace !== currentNamespace) {
+    setCurrentNamespace(namespace);
   }
 
   const factory: ResourcesFactory = async () => {

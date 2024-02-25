@@ -11,8 +11,11 @@ import { useEffect } from "react";
 import { SvcIcon } from "../../assets/icons";
 import { IpAddresses } from "./ip-addresses/IpAddresses";
 import { LoadBalancerPorts } from "./ports/LoadBalancerPorts";
+import { useNamespaceContext } from "../../shared/contexts/namespace-context-helpers";
 
 export function LoadBalancerPage() {
+  const { namespace: currentNamespace, setNamespace: setCurrentNamespace } =
+    useNamespaceContext();
   const { loadBalancerName, namespace } = useParams();
 
   useEffect(() => {
@@ -28,8 +31,14 @@ export function LoadBalancerPage() {
     );
   });
 
+  useEffect(() => {
+    if (namespace !== undefined && namespace !== currentNamespace) {
+      setCurrentNamespace(namespace);
+    }
+  }, [namespace, currentNamespace, setCurrentNamespace]);
+
   if (loadBalancerName === undefined || namespace === undefined) {
-    return <div>Loading...</div>;
+    return <div>Error</div>;
   }
 
   const factory: ResourceSummaryFactory = async () => {
@@ -54,7 +63,10 @@ export function LoadBalancerPage() {
     <div className="flex flex-col w-full p-2 gap-2">
       <ResourceSummary resourceSummaryFactory={factory} />
       <IpAddresses namespace={namespace} loadBalancerName={loadBalancerName} />
-      <LoadBalancerPorts namespace={namespace} loadBalancerName={loadBalancerName} />
+      <LoadBalancerPorts
+        namespace={namespace}
+        loadBalancerName={loadBalancerName}
+      />
     </div>
   );
 }

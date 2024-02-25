@@ -11,8 +11,11 @@ import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-s
 import { getDeploymentUrl } from "../../shared/services/routing-service";
 import { DeployIcon } from "../../assets/icons";
 import { ContainersList } from "./containers/ContainersList";
+import { useNamespaceContext } from "../../shared/contexts/namespace-context-helpers";
 
 export function DeploymentPage() {
+  const { namespace: currentNamespace, setNamespace: setCurrentNamespace } =
+    useNamespaceContext();
   const { deploymentName, namespace } = useParams();
 
   useEffect(() => {
@@ -28,12 +31,18 @@ export function DeploymentPage() {
     );
   });
 
+  useEffect(() => {
+    if (namespace !== undefined && namespace !== currentNamespace) {
+      setCurrentNamespace(namespace);
+    }
+  }, [namespace, currentNamespace, setCurrentNamespace]);
+
   if (deploymentName === undefined || namespace === undefined) {
-    return <div>Loading...</div>;
+    return <div>Error</div>;
   }
 
   const factory: ResourceSummaryFactory = async () => {
-    const summary = await getDeploymentDetails(namespace, deploymentName ?? "");
+    const summary = await getDeploymentDetails(namespace, deploymentName);
     const properties = new Map<string, string>();
 
     properties.set("Name", summary.deploymentName);
