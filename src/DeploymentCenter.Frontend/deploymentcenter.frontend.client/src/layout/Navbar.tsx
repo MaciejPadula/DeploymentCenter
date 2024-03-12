@@ -2,14 +2,17 @@ import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { SidebarToggler } from "./sidebar/SidebarToggler";
 import { SelectNamespace } from "../shared/components/select-namespaces/SelectNamespace";
-import { useNamespaceContext } from "../shared/contexts/namespace-context-helpers";
+import { useConfigurationContext } from "../shared/contexts/context-helpers";
 
 export function Navbar() {
-  const { namespace, setNamespace } = useNamespaceContext();
+  const { configuration, setConfiguration } = useConfigurationContext();
   const navigate = useNavigate();
 
   function handleNamespaceChange(ns: string) {
-    setNamespace(ns);
+    setConfiguration({
+      ...configuration,
+      namespace: ns,
+    });
     navigate('/');
   }
 
@@ -31,7 +34,7 @@ export function Navbar() {
             </div>
             <div className="flex flex-row justify-center items-center">
               <SelectNamespace
-                namespace={namespace}
+                namespace={configuration.namespace}
                 onNamespaceChanged={(ns) => handleNamespaceChange(ns)}
               />
               {/* <Button color="inherit">Login</Button> */}

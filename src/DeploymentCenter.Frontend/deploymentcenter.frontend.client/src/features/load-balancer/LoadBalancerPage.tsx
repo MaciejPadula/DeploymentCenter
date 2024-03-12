@@ -3,7 +3,7 @@ import {
   ResourceSummaryFactory,
   ResourceSummaryModel,
 } from "../../shared/components/resource-page/resource-summary-model";
-import { getLoadBalancerDetails } from "./load-balancer-page-data-service";
+import useLoadBalancerPageDataService from "./load-balancer-page-data-service";
 import { ResourceSummary } from "../../shared/components/resource-page/ResourceSummary";
 import { getLoadBalancerUrl } from "../../shared/services/routing-service";
 import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-service";
@@ -11,12 +11,12 @@ import { useEffect } from "react";
 import { SvcIcon } from "../../assets/icons";
 import { IpAddresses } from "./ip-addresses/IpAddresses";
 import { LoadBalancerPorts } from "./ports/LoadBalancerPorts";
-import { useNamespaceContext } from "../../shared/contexts/namespace-context-helpers";
+import { useConfigurationContext } from "../../shared/contexts/context-helpers";
 
 export function LoadBalancerPage() {
-  const { namespace: currentNamespace, setNamespace: setCurrentNamespace } =
-    useNamespaceContext();
+  const { configuration, setConfiguration } = useConfigurationContext();
   const { loadBalancerName, namespace } = useParams();
+  const dataService = useLoadBalancerPageDataService();
 
   useEffect(() => {
     if (loadBalancerName === undefined || namespace === undefined) {
@@ -32,22 +32,24 @@ export function LoadBalancerPage() {
   });
 
   useEffect(() => {
-    if (namespace !== undefined && namespace !== currentNamespace) {
-      setCurrentNamespace(namespace);
+    if (namespace !== undefined && namespace !== configuration.namespace) {
+      setConfiguration({
+        ...configuration,
+        namespace: namespace,
+      });
     }
-  }, [namespace, currentNamespace, setCurrentNamespace]);
+  }, [namespace, configuration, setConfiguration]);
 
   if (loadBalancerName === undefined || namespace === undefined) {
     return <div>Error</div>;
   }
 
   const factory: ResourceSummaryFactory = async () => {
-    const summary = await getLoadBalancerDetails(
+    const summary = await dataService.getLoadBalancerDetails(
       namespace,
       loadBalancerName ?? ""
     );
     const properties = new Map<string, string>();
-
     properties.set("Name", summary.loadBalancerName);
     properties.set("Namespace", summary.namespace);
     properties.set("Application", summary.applicationName);

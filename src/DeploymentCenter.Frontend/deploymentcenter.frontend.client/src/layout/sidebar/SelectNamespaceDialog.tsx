@@ -8,12 +8,12 @@ import {
 import { Fragment, useState } from "react";
 import { SelectNamespace } from "../../shared/components/select-namespaces/SelectNamespace";
 import { useNavigate } from "react-router-dom";
-import { useNamespaceContext } from "../../shared/contexts/namespace-context-helpers";
+import { useConfigurationContext } from "../../shared/contexts/context-helpers";
 
 export function SelectNamespaceDialog(props: {onClose?: () => void}) {
   const navigate = useNavigate();
-  const { namespace, setNamespace } = useNamespaceContext();
-  const [selectedNamespace, setSelectedNamespace] = useState(namespace);
+  const { configuration, setConfiguration } = useConfigurationContext();
+  const [selectedNamespace, setSelectedNamespace] = useState(configuration.namespace);
   const [open, setOpen] = useState(false);
 
   function handleClickOpen() {
@@ -25,7 +25,10 @@ export function SelectNamespaceDialog(props: {onClose?: () => void}) {
   }
 
   function handleSave() {
-    setNamespace(selectedNamespace);
+    setConfiguration({
+      ...configuration,
+      namespace: selectedNamespace,
+    });
     navigate('/');
     setOpen(false);
     if (props.onClose) {

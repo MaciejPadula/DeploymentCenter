@@ -13,14 +13,15 @@ export function MainPage() {
 
   const factory: ResourcesFactory = async () => {
     const response = getRecentlyVisitedPages();
-    return response.map((x) => {
-      return {
-        name: x.title,
-        namespace: x.namespace,
-        icon: x.icon,
-        clickHandler: () => navigate(x.url),
-      } as ResourceRowModel;
-    });
+    return response.map(
+      (x) =>
+        ({
+          name: x.title,
+          namespace: x.namespace,
+          icon: x.icon,
+          clickHandler: () => navigate(x.url),
+        } as ResourceRowModel)
+    );
   };
 
   return (

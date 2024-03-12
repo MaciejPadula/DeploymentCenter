@@ -4,38 +4,42 @@ import {
   ResourceRowModel,
   ResourcesFactory,
 } from "../../shared/components/resources-list/resource-row-model";
-import { getLoadBalancers } from "./load-balancers-data-service";
+import useLoadBalancersDataService from "./load-balancers-data-service";
 import { getLoadBalancerUrl } from "../../shared/services/routing-service";
 import { SvcIcon } from "../../assets/icons";
-import { useNamespaceContext } from "../../shared/contexts/namespace-context-helpers";
+import { useConfigurationContext } from "../../shared/contexts/context-helpers";
 import { useEffect } from "react";
 
 export function LoadBalancersList() {
-  const { namespace: currentNamespace, setNamespace: setCurrentNamespace } =
-    useNamespaceContext();
+  const { configuration, setConfiguration } = useConfigurationContext();
   const navigate = useNavigate();
   const { namespace } = useParams();
+  const dataService = useLoadBalancersDataService();
 
   useEffect(() => {
-    if (namespace !== undefined && namespace !== currentNamespace) {
-      setCurrentNamespace(namespace);
+    if (namespace !== undefined && namespace !== configuration.namespace) {
+      setConfiguration({
+        ...configuration,
+        namespace: namespace,
+      });
     }
-  }, [namespace, currentNamespace, setCurrentNamespace]);
+  }, [namespace, configuration, setConfiguration]);
 
   if (namespace === undefined) {
     return <div>Error</div>;
   }
 
   const factory: ResourcesFactory = async () => {
-    const response = await getLoadBalancers(namespace);
-    return response.map((x) => {
-      return {
-        name: x.name,
-        namespace: namespace,
-        icon: SvcIcon,
-        clickHandler: () => navigate(getLoadBalancerUrl(namespace, x.name)),
-      } as ResourceRowModel;
-    });
+    const response = await dataService.getLoadBalancers(namespace);
+    return response.map(
+      (x) =>
+        ({
+          name: x.name,
+          namespace,
+          icon: SvcIcon,
+          clickHandler: () => navigate(getLoadBalancerUrl(namespace, x.name)),
+        } as ResourceRowModel)
+    );
   };
 
   return (
