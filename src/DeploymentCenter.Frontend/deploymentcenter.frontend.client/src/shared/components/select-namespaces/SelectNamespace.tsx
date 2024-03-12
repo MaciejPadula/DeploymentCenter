@@ -1,14 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { getNamespaces } from "./select-namespace-data-service";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { useSelectNamespaceDataService } from "./select-namespace-data-service";
 
 export function SelectNamespace(props: {
   namespace: string;
   onNamespaceChanged: (namespace: string) => void;
 }) {
+  const dataService = useSelectNamespaceDataService();
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["namespaceLoader"],
-    queryFn: async () => await getNamespaces(),
+    queryFn: async () => await dataService.getNamespaces(),
   });
 
   const isLoading = isPending || isFetching || data == undefined;

@@ -1,16 +1,27 @@
 import axios from "axios";
 import { Namespace } from "./namespace";
+import { useConfigurationContext } from "../../contexts/context-helpers";
 
-const apiUrl = "http://172.28.0.4:5500";
-const controller = "api/Namespaces";
+function SelectNamespaceDataService(apiUrl: string) {
+  const controller = "api/Namespaces";
 
-interface GetNamespacesResponse {
-  namespaces: Namespace[];
+  interface GetNamespacesResponse {
+    namespaces: Namespace[];
+  }
+
+  async function getNamespaces(): Promise<Namespace[]> {
+    const response = await axios.get<GetNamespacesResponse>(
+      `${apiUrl}/${controller}/GetNamespaces`
+    );
+    return response.data.namespaces;
+  }
+
+  return {
+    getNamespaces,
+  };
 }
 
-export async function getNamespaces(): Promise<Namespace[]> {
-  const response = await axios.get<GetNamespacesResponse>(
-    `${apiUrl}/${controller}/GetNamespaces`
-  );
-  return response.data.namespaces;
+export function useSelectNamespaceDataService() {
+  const { configuration } = useConfigurationContext();
+  return SelectNamespaceDataService(configuration.agent.apiUrl);
 }
