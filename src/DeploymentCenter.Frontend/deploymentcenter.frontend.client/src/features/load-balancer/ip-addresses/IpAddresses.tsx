@@ -1,16 +1,20 @@
 import { LinearProgress, Paper } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { getLoadBalancerIpAddresses } from "../load-balancer-page-data-service";
+import useLoadBalancerPageDataService from "../load-balancer-page-data-service";
 import { IpAddressRow } from "./IpAddressRow";
 
 export function IpAddresses(props: {
   namespace: string;
   loadBalancerName: string;
 }) {
+  const dataService = useLoadBalancerPageDataService();
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["podsLoader"],
     queryFn: async () =>
-      await getLoadBalancerIpAddresses(props.namespace, props.loadBalancerName),
+      await dataService.getLoadBalancerIpAddresses(
+        props.namespace,
+        props.loadBalancerName
+      ),
   });
 
   const isLoading = isPending || isFetching || data == undefined;

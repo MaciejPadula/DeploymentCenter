@@ -1,5 +1,6 @@
 using DeploymentCenter.Deployments;
 using DeploymentCenter.Images;
+using DeploymentCenter.Namespaces;
 using DeploymentCenter.Services;
 using DeploymentCenter.SharedKernel;
 
@@ -15,6 +16,7 @@ builder.Services.AddCors();
 builder.Services.AddImagesModule();
 builder.Services.AddDeploymentsModule();
 builder.Services.AddServicesModule();
+builder.Services.AddNamespacesModule();
 builder.Services.AddSharedKernelModule();
 
 var app = builder.Build();

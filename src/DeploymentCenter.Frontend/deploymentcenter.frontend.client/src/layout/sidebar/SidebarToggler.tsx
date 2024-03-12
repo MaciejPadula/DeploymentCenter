@@ -1,6 +1,7 @@
 import { Drawer, IconButton } from "@mui/material";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
+import { SelectNamespaceDialog } from "./SelectNamespaceDialog";
 
 export function SidebarToggler() {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,7 @@ export function SidebarToggler() {
         <MenuIcon />
       </IconButton>
       <Drawer open={open} onClose={() => toggleDrawer(false)}>
-        Test
+        <SelectNamespaceDialog onClose={() => toggleDrawer(false)} />
       </Drawer>
     </>
   );

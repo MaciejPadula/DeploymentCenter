@@ -31,11 +31,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Interfaces
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{78782D7D-B78F-4FEC-B0BC-BCEC6FE9073B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Services.Contract", "DeploymentCenter.Services.Contract\DeploymentCenter.Services.Contract.csproj", "{5C728FCE-AF1A-44CC-BCD0-41780D037417}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Services.Contract", "DeploymentCenter.Services.Contract\DeploymentCenter.Services.Contract.csproj", "{5C728FCE-AF1A-44CC-BCD0-41780D037417}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Services", "DeploymentCenter.Services\DeploymentCenter.Services.csproj", "{13E7F025-7EA6-4E73-BCB6-3CEDE17C8B23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Services", "DeploymentCenter.Services\DeploymentCenter.Services.csproj", "{13E7F025-7EA6-4E73-BCB6-3CEDE17C8B23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Services.Api", "DeploymentCenter.Services.Api\DeploymentCenter.Services.Api.csproj", "{44DF58FA-04E6-4994-BC0E-762CD55B3AC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Services.Api", "DeploymentCenter.Services.Api\DeploymentCenter.Services.Api.csproj", "{44DF58FA-04E6-4994-BC0E-762CD55B3AC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Namespaces", "Namespaces", "{4D4A6434-6214-4CFA-A9D5-6A6B5E1A67B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Namespaces.Contract", "DeploymentCenter.Namespaces.Contract\DeploymentCenter.Namespaces.Contract.csproj", "{A8F684D0-C8C8-4D70-9DB9-6E1EF54A81C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Namespaces", "DeploymentCenter.Namespaces\DeploymentCenter.Namespaces.csproj", "{36DCF032-D9AB-4C3B-AA00-EE99AB80277C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Namespaces.Api", "DeploymentCenter.Namespaces.Api\DeploymentCenter.Namespaces.Api.csproj", "{67738527-B3B8-4173-9F93-E01E5EFB212D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +99,18 @@ Global
 		{44DF58FA-04E6-4994-BC0E-762CD55B3AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44DF58FA-04E6-4994-BC0E-762CD55B3AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44DF58FA-04E6-4994-BC0E-762CD55B3AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8F684D0-C8C8-4D70-9DB9-6E1EF54A81C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8F684D0-C8C8-4D70-9DB9-6E1EF54A81C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8F684D0-C8C8-4D70-9DB9-6E1EF54A81C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8F684D0-C8C8-4D70-9DB9-6E1EF54A81C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36DCF032-D9AB-4C3B-AA00-EE99AB80277C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36DCF032-D9AB-4C3B-AA00-EE99AB80277C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36DCF032-D9AB-4C3B-AA00-EE99AB80277C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36DCF032-D9AB-4C3B-AA00-EE99AB80277C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67738527-B3B8-4173-9F93-E01E5EFB212D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67738527-B3B8-4173-9F93-E01E5EFB212D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67738527-B3B8-4173-9F93-E01E5EFB212D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67738527-B3B8-4173-9F93-E01E5EFB212D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +130,10 @@ Global
 		{5C728FCE-AF1A-44CC-BCD0-41780D037417} = {78782D7D-B78F-4FEC-B0BC-BCEC6FE9073B}
 		{13E7F025-7EA6-4E73-BCB6-3CEDE17C8B23} = {78782D7D-B78F-4FEC-B0BC-BCEC6FE9073B}
 		{44DF58FA-04E6-4994-BC0E-762CD55B3AC0} = {78782D7D-B78F-4FEC-B0BC-BCEC6FE9073B}
+		{4D4A6434-6214-4CFA-A9D5-6A6B5E1A67B5} = {B238DB0E-9BBE-4CB9-9D3D-99084D449C1E}
+		{A8F684D0-C8C8-4D70-9DB9-6E1EF54A81C0} = {4D4A6434-6214-4CFA-A9D5-6A6B5E1A67B5}
+		{36DCF032-D9AB-4C3B-AA00-EE99AB80277C} = {4D4A6434-6214-4CFA-A9D5-6A6B5E1A67B5}
+		{67738527-B3B8-4173-9F93-E01E5EFB212D} = {4D4A6434-6214-4CFA-A9D5-6A6B5E1A67B5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75BDC6F9-FD28-42A4-B4A7-18D80AE76B7C}

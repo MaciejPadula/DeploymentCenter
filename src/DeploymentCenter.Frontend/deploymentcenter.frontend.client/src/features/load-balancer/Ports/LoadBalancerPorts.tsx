@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getLoadBalancerPorts } from "../load-balancer-page-data-service";
+import useLoadBalancerPageDataService from "../load-balancer-page-data-service";
 import { LinearProgress, Paper } from "@mui/material";
 import { LoadBalancerPortRow } from "./LoadBalancerPortRow";
 
@@ -7,10 +7,14 @@ export function LoadBalancerPorts(props: {
   loadBalancerName: string;
   namespace: string;
 }) {
+  const dataService = useLoadBalancerPageDataService();
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["loadBalancerPortsLoader"],
     queryFn: async () =>
-      await getLoadBalancerPorts(props.namespace, props.loadBalancerName),
+      await dataService.getLoadBalancerPorts(
+        props.namespace,
+        props.loadBalancerName
+      ),
   });
 
   const isLoading = isPending || isFetching || data == undefined;
