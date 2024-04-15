@@ -1,21 +1,9 @@
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SidebarToggler } from "./sidebar/SidebarToggler";
-import { SelectNamespace } from "../shared/components/select-namespaces/SelectNamespace";
-import { useConfigurationContext } from "../shared/contexts/context-helpers";
+import { SelectNamespaceDialog } from "./sidebar/SelectConnectionSettings";
 
 export function Navbar() {
-  const { configuration, setConfiguration } = useConfigurationContext();
-  const navigate = useNavigate();
-
-  function handleNamespaceChange(ns: string) {
-    setConfiguration({
-      ...configuration,
-      namespace: ns,
-    });
-    navigate('/');
-  }
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -33,10 +21,7 @@ export function Navbar() {
               </Typography>
             </div>
             <div className="flex flex-row justify-center items-center">
-              <SelectNamespace
-                namespace={configuration.namespace}
-                onNamespaceChanged={(ns) => handleNamespaceChange(ns)}
-              />
+              <SelectNamespaceDialog />
               {/* <Button color="inherit">Login</Button> */}
             </div>
           </div>

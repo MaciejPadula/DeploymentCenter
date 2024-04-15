@@ -1,4 +1,4 @@
-export interface Agent {
+export interface Cluster {
   name: string;
   apiUrl: string;
 }

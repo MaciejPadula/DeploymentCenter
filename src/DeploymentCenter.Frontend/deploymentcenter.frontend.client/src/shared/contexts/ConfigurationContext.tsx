@@ -1,10 +1,11 @@
 import { ReactNode, createContext, useReducer } from "react";
 import { getFromLocalStorage, setInLocalStorage } from "../helpers/local-storage-helper";
-import { Agent } from "../models/agent";
+import { Cluster } from "../models/cluster";
 
 export interface ConfigurationData {
-  agent: Agent;
+  cluster: string;
   namespace: string;
+  clusters: Cluster[];
 }
 
 type ConfigurationContextType = {
@@ -14,10 +15,17 @@ type ConfigurationContextType = {
 
 const configurationKey = "configuration";
 const defaultConfiguration: ConfigurationData = {
-  agent: {
-    apiUrl: "http://172.28.0.4:5500",
-    name: "Eris"
-  },
+  cluster: "Roxy",
+  clusters: [
+    {
+      apiUrl: "http://172.22.0.1:5500",
+      name: "Eris"
+    },
+    {
+      apiUrl: "http://172.22.0.10:5500",
+      name: "Roxy"
+    }
+  ],
   namespace: "default"
 };
 

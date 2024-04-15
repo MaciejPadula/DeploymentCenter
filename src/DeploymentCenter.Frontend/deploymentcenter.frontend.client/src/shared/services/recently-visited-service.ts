@@ -6,6 +6,7 @@ import {
 const MAX_RECENTLY_VISITED_PAGES = 5;
 
 export interface RecentlyVisitedPage {
+  clusterName: string;
   title: string;
   namespace: string;
   icon: string;
@@ -17,6 +18,7 @@ export function getRecentlyVisitedPages(): RecentlyVisitedPage[] {
 }
 
 export function addRecentlyVisitedPage(
+  clusterName: string,
   title: string,
   namespace: string,
   icon: string,
@@ -27,7 +29,7 @@ export function addRecentlyVisitedPage(
   if (existingPage) {
     recentlyVisitedPages.splice(recentlyVisitedPages.indexOf(existingPage), 1);
   }
-  recentlyVisitedPages.unshift({ title, namespace, icon, url });
+  recentlyVisitedPages.unshift({ title, namespace, icon, url, clusterName });
   if (recentlyVisitedPages.length > MAX_RECENTLY_VISITED_PAGES) {
     recentlyVisitedPages.pop();
   }

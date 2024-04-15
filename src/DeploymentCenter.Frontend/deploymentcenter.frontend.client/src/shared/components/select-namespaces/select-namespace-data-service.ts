@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Namespace } from "./namespace";
-import { useConfigurationContext } from "../../contexts/context-helpers";
 
 function SelectNamespaceDataService(apiUrl: string) {
   const controller = "api/Namespaces";
@@ -21,7 +20,6 @@ function SelectNamespaceDataService(apiUrl: string) {
   };
 }
 
-export function useSelectNamespaceDataService() {
-  const { configuration } = useConfigurationContext();
-  return SelectNamespaceDataService(configuration.agent.apiUrl);
+export function useSelectNamespaceDataService(apiUrl: string) {
+  return SelectNamespaceDataService(apiUrl);
 }

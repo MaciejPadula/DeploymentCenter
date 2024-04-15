@@ -4,10 +4,11 @@ import useLoadBalancerPageDataService from "../load-balancer-page-data-service";
 import { IpAddressRow } from "./IpAddressRow";
 
 export function IpAddresses(props: {
+  clusterUrl: string;
   namespace: string;
   loadBalancerName: string;
 }) {
-  const dataService = useLoadBalancerPageDataService();
+  const dataService = useLoadBalancerPageDataService(props.clusterUrl);
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["podsLoader"],
     queryFn: async () =>

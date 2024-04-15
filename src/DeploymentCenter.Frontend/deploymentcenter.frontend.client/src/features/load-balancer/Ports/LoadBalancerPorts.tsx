@@ -4,10 +4,11 @@ import { LinearProgress, Paper } from "@mui/material";
 import { LoadBalancerPortRow } from "./LoadBalancerPortRow";
 
 export function LoadBalancerPorts(props: {
+  clusterUrl: string;
   loadBalancerName: string;
   namespace: string;
 }) {
-  const dataService = useLoadBalancerPageDataService();
+  const dataService = useLoadBalancerPageDataService(props.clusterUrl);
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["loadBalancerPortsLoader"],
     queryFn: async () =>

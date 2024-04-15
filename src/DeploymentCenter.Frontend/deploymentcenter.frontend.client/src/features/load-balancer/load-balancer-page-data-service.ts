@@ -1,7 +1,6 @@
 import axios from "axios";
 import { LoadBalancerDetails } from "./load-balancer-details";
 import { LoadBalancerPort } from "./load-balancer-port";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
 
 function LoadBalancerPageDataService(apiUrl: string) {
   const controller = "api/Services";
@@ -51,7 +50,6 @@ function LoadBalancerPageDataService(apiUrl: string) {
   };
 }
 
-export default function useLoadBalancerPageDataService() {
-  const { configuration } = useConfigurationContext();
-  return LoadBalancerPageDataService(configuration.agent.apiUrl);
+export default function useLoadBalancerPageDataService(clusterUrl: string | undefined) {
+  return LoadBalancerPageDataService(clusterUrl ?? "");
 }

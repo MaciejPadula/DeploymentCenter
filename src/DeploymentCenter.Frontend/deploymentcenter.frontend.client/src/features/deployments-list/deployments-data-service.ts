@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Deployment } from "./deployment";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
 
 function DeploymentsDataService(apiUrl: string) {
   const controller = "api/Deployments";
@@ -21,7 +20,6 @@ function DeploymentsDataService(apiUrl: string) {
   };
 }
 
-export default function useDeploymentsDataService() {
-  const { configuration } = useConfigurationContext();
-  return DeploymentsDataService(configuration.agent.apiUrl);
+export default function useDeploymentsDataService(clusterUrl: string | undefined) {
+  return DeploymentsDataService(clusterUrl ?? "");
 }

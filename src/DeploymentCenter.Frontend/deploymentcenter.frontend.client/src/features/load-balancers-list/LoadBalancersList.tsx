@@ -8,24 +8,15 @@ import useLoadBalancersDataService from "./load-balancers-data-service";
 import { getLoadBalancerUrl } from "../../shared/services/routing-service";
 import { SvcIcon } from "../../assets/icons";
 import { useConfigurationContext } from "../../shared/contexts/context-helpers";
-import { useEffect } from "react";
 
 export function LoadBalancersList() {
-  const { configuration, setConfiguration } = useConfigurationContext();
+  const { configuration } = useConfigurationContext();
   const navigate = useNavigate();
-  const { namespace } = useParams();
-  const dataService = useLoadBalancersDataService();
+  const { namespace, clusterName } = useParams();
+  const cluster = configuration.clusters.find((x) => x.name === clusterName);
+  const dataService = useLoadBalancersDataService(cluster?.apiUrl);
 
-  useEffect(() => {
-    if (namespace !== undefined && namespace !== configuration.namespace) {
-      setConfiguration({
-        ...configuration,
-        namespace: namespace,
-      });
-    }
-  }, [namespace, configuration, setConfiguration]);
-
-  if (namespace === undefined) {
+  if (namespace === undefined || clusterName === undefined || cluster === undefined) {
     return <div>Error</div>;
   }
 
@@ -34,10 +25,11 @@ export function LoadBalancersList() {
     return response.map(
       (x) =>
         ({
+          clusterName: clusterName,
           name: x.name,
           namespace,
           icon: SvcIcon,
-          clickHandler: () => navigate(getLoadBalancerUrl(namespace, x.name)),
+          clickHandler: () => navigate(getLoadBalancerUrl(clusterName, namespace, x.name)),
         } as ResourceRowModel)
     );
   };
