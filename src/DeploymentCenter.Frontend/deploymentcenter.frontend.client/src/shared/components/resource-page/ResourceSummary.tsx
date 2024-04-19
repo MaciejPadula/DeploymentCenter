@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { ResourceSummaryFactory } from "./resource-summary-model";
-import { Icon, LinearProgress, Paper, Typography } from "@mui/material";
+import { Icon, LinearProgress, Paper, Tooltip, Typography } from "@mui/material";
 
 export function ResourceSummary(props: {
   resourceSummaryFactory: ResourceSummaryFactory;
@@ -31,7 +31,9 @@ export function ResourceSummary(props: {
             {Array.from(data.properties).map(([key, value]) => (
               <div className="w-1/2 sm:w-1/3 p-2" key={key}>
                 <Typography fontWeight={"bold"}>{key}:</Typography>
-                <Typography>{value}</Typography>
+                <Tooltip title={value}>
+                  <Typography className="truncate">{value}</Typography>
+                </Tooltip>
               </div>
             ))}
           </div>

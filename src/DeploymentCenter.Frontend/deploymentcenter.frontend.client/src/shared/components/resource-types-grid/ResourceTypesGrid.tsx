@@ -12,21 +12,21 @@ export function ResourceTypesGrid() {
         <ResourceTypeBox
           icon={DeployIcon}
           text="Deployments"
-          url={`/${configuration.namespace}/deployments`}
+          url={`/${configuration.cluster}/${configuration.namespace}/deployments`}
         />
       </Grid>
       <Grid sm={4} xs={6}>
         <ResourceTypeBox
           icon={SvcIcon}
           text="Load Balancers"
-          url={`/${configuration.namespace}/load-balancers`}
+          url={`/${configuration.cluster}/${configuration.namespace}/load-balancers`}
         />
       </Grid>
       <Grid sm={4} xs={6}>
         <ResourceTypeBox
           icon={CronJobIcon}
           text="Cron Jobs"
-          url={`${configuration.namespace}/cron-jobs`}
+          url={`/${configuration.cluster}/${configuration.namespace}/cron-jobs`}
         />
       </Grid>
     </Grid>

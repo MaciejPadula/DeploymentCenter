@@ -7,25 +7,16 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { getDeploymentUrl } from "../../shared/services/routing-service";
 import { DeployIcon } from "../../assets/icons";
-import { useEffect } from "react";
 import { useConfigurationContext } from "../../shared/contexts/context-helpers";
 
 export function DeploymentsList() {
-  const { configuration, setConfiguration } = useConfigurationContext();
+  const { configuration } = useConfigurationContext();
   const navigate = useNavigate();
-  const { namespace } = useParams();
-  const dataService = useDeploymentsDataService();
+  const { namespace, clusterName } = useParams();
+  const cluster = configuration.clusters.find((x) => x.name === clusterName);
+  const dataService = useDeploymentsDataService(cluster?.apiUrl);
 
-  useEffect(() => {
-    if (namespace !== undefined && namespace !== configuration.namespace) {
-      setConfiguration({
-        ...configuration,
-        namespace: namespace,
-      });
-    }
-  }, [namespace, configuration, setConfiguration]);
-
-  if (namespace === undefined) {
+  if (namespace === undefined || clusterName === undefined || cluster === undefined) {
     return <div>Error</div>;
   }
 
@@ -34,10 +25,11 @@ export function DeploymentsList() {
     return response.map(
       (x) =>
         ({
+          clusterName: clusterName,
           name: x.name,
           namespace: namespace,
           icon: DeployIcon,
-          clickHandler: () => navigate(getDeploymentUrl(namespace, x.name)),
+          clickHandler: () => navigate(getDeploymentUrl(clusterName, namespace, x.name)),
         } as ResourceRowModel)
     );
   };

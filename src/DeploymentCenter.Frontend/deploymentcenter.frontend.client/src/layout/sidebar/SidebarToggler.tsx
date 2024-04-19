@@ -1,7 +1,7 @@
 import { Drawer, IconButton } from "@mui/material";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { SelectNamespaceDialog } from "./SelectNamespaceDialog";
+import { SelectNamespaceDialog } from "./SelectConnectionSettings";
 
 export function SidebarToggler() {
   const [open, setOpen] = useState(false);

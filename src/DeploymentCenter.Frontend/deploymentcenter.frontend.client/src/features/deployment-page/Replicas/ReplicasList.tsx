@@ -4,10 +4,11 @@ import { LinearProgress } from "@mui/material";
 import { ReplicaRow } from "./ReplicaRow";
 
 export function ReplicasList(props: {
+  clusterUrl: string;
   deploymentName: string;
   namespace: string;
 }) {
-  const dataService = useDeploymentPageDataService();
+  const dataService = useDeploymentPageDataService(props.clusterUrl);
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["podsLoader"],
     queryFn: async () =>

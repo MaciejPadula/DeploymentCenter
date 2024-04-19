@@ -2,7 +2,6 @@ import { Container } from "./models/container";
 import { DeploymentDetails } from "./deployment-details";
 import { Pod } from "./models/pod";
 import axios from "axios";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
 
 function DeploymentPageDataService(apiUrl: string) {
   const controller = "api/Deployments";
@@ -59,7 +58,6 @@ function DeploymentPageDataService(apiUrl: string) {
   };
 }
 
-export default function useDeploymentPageDataService() {
-  const { configuration } = useConfigurationContext();
-  return DeploymentPageDataService(configuration.agent.apiUrl);
+export default function useDeploymentPageDataService(clusterUrl: string | undefined) {
+  return DeploymentPageDataService(clusterUrl ?? "");
 }

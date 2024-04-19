@@ -4,10 +4,11 @@ import { ContainerRow } from "./ContainerRow";
 import useDeploymentPageDataService from "../deployment-page-data-service";
 
 export function ContainersList(props: {
+  clusterUrl: string;
   deploymentName: string;
   namespace: string;
 }) {
-  const dataService = useDeploymentPageDataService();
+  const dataService = useDeploymentPageDataService(props.clusterUrl);
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["containersLoader"],
     queryFn: async () =>

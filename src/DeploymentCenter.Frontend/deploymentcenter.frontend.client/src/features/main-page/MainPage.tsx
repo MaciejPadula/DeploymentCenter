@@ -16,6 +16,7 @@ export function MainPage() {
     return response.map(
       (x) =>
         ({
+          clusterName: x.clusterName,
           name: x.title,
           namespace: x.namespace,
           icon: x.icon,
@@ -29,6 +30,7 @@ export function MainPage() {
       <ResourcesList
         resourceText="Recently Visited Resources"
         resourcesFactory={factory}
+        showIfEmpty={false}
       />
       <div className="flex flex-col p-4">
         <Typography variant="h5">All Resources</Typography>
