@@ -5,22 +5,30 @@ import {
   ResourceSummaryModel,
 } from "../../shared/components/resource-page/resource-summary-model";
 import { ReplicasList } from "./Replicas/ReplicasList";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-service";
 import { getDeploymentUrl } from "../../shared/services/routing-service";
 import { DeployIcon } from "../../assets/icons";
 import { ContainersList } from "./containers/ContainersList";
 import { useConfigurationContext } from "../../shared/contexts/context-helpers";
 import useDeploymentPageDataService from "./deployment-page-data-service";
+import { DeploymentDetails } from "./deployment-details";
+import { DeploymentStatistics } from "./statistics/DeploymentStatistics";
 
 export function DeploymentPage() {
   const { configuration } = useConfigurationContext();
   const { deploymentName, namespace, clusterName } = useParams();
+  const [details, setDetails] = useState<DeploymentDetails | null>(null);
   const cluster = configuration.clusters.find((x) => x.name === clusterName);
   const dataService = useDeploymentPageDataService(cluster?.apiUrl);
 
   useEffect(() => {
-    if (deploymentName === undefined || namespace === undefined || clusterName === undefined || cluster === undefined) {
+    if (
+      deploymentName === undefined ||
+      namespace === undefined ||
+      clusterName === undefined ||
+      cluster === undefined
+    ) {
       return;
     }
 
@@ -33,7 +41,12 @@ export function DeploymentPage() {
     );
   });
 
-  if (deploymentName === undefined || namespace === undefined || clusterName === undefined || cluster === undefined) {
+  if (
+    deploymentName === undefined ||
+    namespace === undefined ||
+    clusterName === undefined ||
+    cluster === undefined
+  ) {
     return <div>Error</div>;
   }
 
@@ -42,6 +55,7 @@ export function DeploymentPage() {
       namespace,
       deploymentName
     );
+    setDetails(summary);
     const properties = new Map<string, string>();
     properties.set("Name", summary.deploymentName);
     properties.set("Cluster", `${clusterName}:${cluster.apiUrl}`);
@@ -62,6 +76,12 @@ export function DeploymentPage() {
   return (
     <div className="flex flex-col w-full p-2 gap-2">
       <ResourceSummary resourceSummaryFactory={factory} />
+      {details && (
+        <DeploymentStatistics
+          alivePods={details?.aliveReplicas ?? 0}
+          deadPods={(details?.allReplicas ?? 0) - (details?.aliveReplicas ?? 0)}
+        />
+      )}
       <ReplicasList
         clusterUrl={cluster.apiUrl}
         deploymentName={deploymentName}
