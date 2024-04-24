@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { Container } from "../models/container";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { InputVariant } from "../../../shared/helpers/material-config";
 
 export function ContainerRow(props: { container: Container }) {
   return (
@@ -20,13 +21,13 @@ export function ContainerRow(props: { container: Container }) {
           <div key={x.key} className="flex flex-row justify-center">
             <TextField
               className="w-full sm:w-1/2"
-              variant="standard"
+              variant={InputVariant}
               label={"Key"}
               value={x.key}
             />
             <TextField
               className="w-full sm:w-1/2"
-              variant="standard"
+              variant={InputVariant}
               label={"Value"}
               value={x.value}
             />

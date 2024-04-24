@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useSelectNamespaceDataService } from "./select-namespace-data-service";
 import { useEffect } from "react";
+import { InputVariant } from "../../helpers/material-config";
 
 export function SelectNamespace(props: {
   namespace: string;
@@ -32,7 +33,7 @@ export function SelectNamespace(props: {
     <div className="w-full">
       {isLoading && <div>Loading...</div>}
       {!isLoading && (
-        <FormControl variant="standard" className="w-full">
+        <FormControl className="w-full" variant={InputVariant}>
           <InputLabel>Namespace</InputLabel>
           <Select
             value={props.namespace}

@@ -5,7 +5,7 @@ export function ResourceTypeBox(props: { icon: string; text: string, url: string
   return (
     <Link to={props.url}>
       <Paper elevation={2} className="h-full">
-        <div className="flex flex-col items-center p-4">
+        <div className="flex flex-col items-center p-4 justify-center h-full">
           <img className="w-18 h-18" src={props.icon} />
           <div className="text-lg mt-2 text-center">{props.text}</div>
         </div>

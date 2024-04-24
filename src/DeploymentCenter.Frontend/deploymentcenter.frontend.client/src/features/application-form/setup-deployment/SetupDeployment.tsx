@@ -10,6 +10,7 @@ import { DeploymentData } from "../deployment-data";
 import { SetupContainer } from "./SetupContainer";
 import { getDefaultContainer } from "../../deployment-page/models/container";
 import AddIcon from "@mui/icons-material/Add";
+import { InputVariant } from "../../../shared/helpers/material-config";
 
 export function SetupDeployment(props: {
   deployment: DeploymentData;
@@ -60,7 +61,7 @@ export function SetupDeployment(props: {
         <Grid sm={4} xs={12}>
           <TextField
             className="w-full"
-            variant="standard"
+            variant={InputVariant}
             label="Deployment Name"
             defaultValue={props.deployment.name}
             onBlur={(e) => setDeploymentName(e.target.value)}
@@ -70,7 +71,7 @@ export function SetupDeployment(props: {
         <Grid sm={4} xs={12}>
           <TextField
             className="w-full"
-            variant="standard"
+            variant={InputVariant}
             label="Replicas"
             type="number"
             defaultValue={props.deployment.replicas ?? 0}

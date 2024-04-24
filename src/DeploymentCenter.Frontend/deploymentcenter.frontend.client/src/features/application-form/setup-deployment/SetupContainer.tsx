@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Container } from "../../deployment-page/models/container";
 import { useState } from "react";
+import { InputVariant } from "../../../shared/helpers/material-config";
 
 export function SetupContainer(props: {
   container: Container;
@@ -56,13 +57,13 @@ export function SetupContainer(props: {
         <DialogContent className="w-full !px-8 !py-4 flex flex-col gap-4">
           <TextField
             label="Name"
-            variant="standard"
+            variant={InputVariant}
             defaultValue={props.container.name}
             onBlur={(e) => updateContainerName(e.currentTarget.value)}
           />
           <TextField
             label="Image"
-            variant="standard"
+            variant={InputVariant}
             defaultValue={props.container.image}
             onBlur={(e) => updateContainerImage(e.currentTarget.value)}
           />

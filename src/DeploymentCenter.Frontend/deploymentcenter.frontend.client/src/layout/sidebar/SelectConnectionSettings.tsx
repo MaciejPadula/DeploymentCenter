@@ -68,6 +68,7 @@ export function SelectNamespaceDialog(props: { onClose?: () => void }) {
             cluster={selectedCluster}
             clusters={configuration.clusters}
             onClusterChanged={(c) => setSelectedCluster(c)}
+            onClusterEdit={handleClose}
           />
           {clusterUrl?.length > 0 && (
             <SelectNamespace

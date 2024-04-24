@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ResourcesFactory } from "./resource-row-model";
 import { ResourceRow } from "./ResourceRow";
 import { LinearProgress, List, Typography } from "@mui/material";
+import { NoElementsToDisplay } from "../no-elements-to-display/NoElementsToDisplay";
 
 export function ResourcesList(props: {
   resourceText: string;
@@ -22,7 +23,8 @@ export function ResourcesList(props: {
 
   return (
     <div className="w-full">
-      {(props.showIfEmpty !== false || (data !== undefined && data.length > 0)) && (
+      {(props.showIfEmpty !== false ||
+        (data !== undefined && data.length > 0)) && (
         <div className="flex flex-row p-4">
           <Typography variant="h5">{props.resourceText}</Typography>
         </div>
@@ -30,16 +32,20 @@ export function ResourcesList(props: {
 
       {isLoading && <LinearProgress />}
 
-      <List>
-        {!isLoading &&
-          (props.showIfEmpty !== false || data.length > 0) &&
-          data.map((resource) => (
+      {!isLoading && (props.showIfEmpty !== false && data.length === 0) && (
+        <NoElementsToDisplay />
+      )}
+
+      {!isLoading && (props.showIfEmpty !== false || data.length > 0) && (
+        <List>
+          {data.map((resource) => (
             <ResourceRow
               key={`/${resource.clusterName}/${resource.namespace}/${resource.name}`}
               row={resource}
             />
           ))}
-      </List>
+        </List>
+      )}
     </div>
   );
 }

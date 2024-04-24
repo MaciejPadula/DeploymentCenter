@@ -10,6 +10,7 @@ import {
 import { Fragment, useState } from "react";
 import { Cluster } from "../../shared/models/cluster";
 import { useConfigurationContext } from "../../shared/contexts/context-helpers";
+import { InputVariant } from "../../shared/helpers/material-config";
 
 export function AddClusterDialog() {
   const { configuration, setConfiguration } = useConfigurationContext();
@@ -50,12 +51,12 @@ export function AddClusterDialog() {
           <div className="w-full flex flex-col gap-4">
             <TextField
               label="Cluster Name"
-              variant="standard"
+              variant={InputVariant}
               onChange={(v) => setClusterName(v.currentTarget.value)}
             />
             <TextField
               label="Cluster Api Url"
-              variant="standard"
+              variant={InputVariant}
               onChange={(v) => setClusterApiUrl(v.currentTarget.value)}
             />
           </div>

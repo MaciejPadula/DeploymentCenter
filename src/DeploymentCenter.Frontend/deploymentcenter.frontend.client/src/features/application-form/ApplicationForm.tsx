@@ -7,6 +7,7 @@ import { useConfiguredApiUrl } from "../../shared/contexts/context-helpers";
 import { getEmptyApplicationData } from "./application-data";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { useNavigate } from "react-router-dom";
+import { InputVariant } from "../../shared/helpers/material-config";
 
 export function ApplicationForm() {
   const apiUrl = useConfiguredApiUrl();
@@ -57,7 +58,7 @@ export function ApplicationForm() {
       </div>
       <TextField
         inputRef={nameRef}
-        variant="standard"
+        variant={InputVariant}
         label="Application Name"
         defaultValue={data.name}
         onBlur={(e) => setApplicationName(e.target.value)}

@@ -8,11 +8,13 @@ import {
 import { Cluster } from "../../models/cluster";
 import Edit from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
+import { InputVariant } from "../../helpers/material-config";
 
 export function SelectClusters(props: {
   cluster: string;
   clusters: Cluster[];
   onClusterChanged: (namespace: string) => void;
+  onClusterEdit?: () => void;
 }) {
   const navigate = useNavigate();
 
@@ -22,12 +24,15 @@ export function SelectClusters(props: {
 
   function editClusters() {
     navigate('/clusters-configuration');
-    navigate(0);
+
+    if (props.onClusterEdit){
+      props.onClusterEdit();
+    }
   }
 
   return (
-    <div className="w-full flex flex-row items-end justify-center">
-      <FormControl variant="standard" className="w-full">
+    <div className="w-full flex flex-row items-center justify-center">
+      <FormControl variant={InputVariant} className="w-full">
         <InputLabel>Clusters</InputLabel>
         <Select
           value={props.cluster}
@@ -40,7 +45,7 @@ export function SelectClusters(props: {
           ))}
         </Select>
       </FormControl>
-      <IconButton edge="end" onClick={editClusters}>
+      <IconButton onClick={editClusters}>
         <Edit />
       </IconButton>
     </div>
