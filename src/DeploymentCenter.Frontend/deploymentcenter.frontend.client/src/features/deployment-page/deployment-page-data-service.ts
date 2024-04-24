@@ -41,14 +41,7 @@ function DeploymentPageDataService(apiUrl: string) {
     const response = await axios.get<GetDeploymentContainersResponse>(
       `${apiUrl}/${controller}/GetDeploymentContainers?namespace=${namespace}&deploymentName=${deploymentName}`
     );
-    return response.data.containers.map((x) => {
-      return {
-        ...x,
-        environmentVariables: new Map<string, string>(
-          Object.entries(x.environmentVariables)
-        ),
-      };
-    });
+    return response.data.containers;
   }
 
   return {

@@ -35,6 +35,6 @@ export function LoadBalancersList() {
   };
 
   return (
-    <ResourcesList resourceText="Load Balancers" resourcesFactory={factory} />
+    <ResourcesList resourceKey="LoadBalancersLoader" resourceText="Load Balancers" resourcesFactory={factory} />
   );
 }

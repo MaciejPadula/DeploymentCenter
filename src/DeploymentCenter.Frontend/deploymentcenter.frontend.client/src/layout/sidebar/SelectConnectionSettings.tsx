@@ -10,6 +10,7 @@ import { SelectNamespace } from "../../shared/components/select-namespaces/Selec
 import { useLocation, useNavigate } from "react-router-dom";
 import { useConfigurationContext } from "../../shared/contexts/context-helpers";
 import { SelectClusters } from "../../shared/components/select-clusters/SelectClusters";
+import { createRedirectUrl } from "./redirect-helper";
 
 export function SelectNamespaceDialog(props: { onClose?: () => void }) {
   const navigate = useNavigate();
@@ -46,12 +47,7 @@ export function SelectNamespaceDialog(props: { onClose?: () => void }) {
       namespace: selectedNamespace,
       cluster: selectedCluster,
     });
-    const locationPath = location.pathname.split("/").slice(3);
-    const newUrl =
-      locationPath.length > 0
-        ? `/${selectedCluster}/${selectedNamespace}/${locationPath.join("/")}`
-        : "/";
-    navigate(newUrl);
+    navigate(createRedirectUrl(location.pathname, selectedCluster, selectedNamespace));
     setOpen(false);
     if (props.onClose) {
       props.onClose();

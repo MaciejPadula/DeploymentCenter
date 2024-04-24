@@ -35,6 +35,6 @@ export function DeploymentsList() {
   };
 
   return (
-    <ResourcesList resourceText="Deployments" resourcesFactory={factory} />
+    <ResourcesList resourceKey="DeploymentsLoader" resourceText="Deployments" resourcesFactory={factory} />
   );
 }

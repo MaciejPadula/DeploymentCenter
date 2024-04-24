@@ -28,6 +28,7 @@ export function MainPage() {
   return (
     <div className="w-full flex flex-col">
       <ResourcesList
+        resourceKey="RecentlyVisistedLoader"
         resourceText="Recently Visited Resources"
         resourcesFactory={factory}
         showIfEmpty={false}

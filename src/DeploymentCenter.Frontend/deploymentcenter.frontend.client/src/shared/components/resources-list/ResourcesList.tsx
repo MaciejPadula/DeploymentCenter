@@ -5,11 +5,12 @@ import { LinearProgress, List, Typography } from "@mui/material";
 
 export function ResourcesList(props: {
   resourceText: string;
+  resourceKey: string;
   resourcesFactory: ResourcesFactory;
   showIfEmpty?: boolean | undefined;
 }) {
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ["resourceLoader"],
+    queryKey: [props.resourceKey],
     queryFn: props.resourcesFactory,
   });
 

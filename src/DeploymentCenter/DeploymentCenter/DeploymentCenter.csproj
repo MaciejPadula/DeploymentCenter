@@ -8,16 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.Deployments.Api\DeploymentCenter.Deployments.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Deployments.Contract\DeploymentCenter.Deployments.Contract.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Deployments.Infrastructure\DeploymentCenter.Deployments.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Deployments\DeploymentCenter.Deployments.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Images.Api\DeploymentCenter.Images.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Images\DeploymentCenter.Images.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Infrastructure\DeploymentCenter.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Namespaces.Api\DeploymentCenter.Namespaces.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Namespaces.Contract\DeploymentCenter.Namespaces.Contract.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Namespaces\DeploymentCenter.Namespaces.csproj" />

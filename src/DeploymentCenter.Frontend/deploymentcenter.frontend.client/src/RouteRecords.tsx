@@ -8,6 +8,7 @@ import { LoadBalancerPage } from "./features/load-balancer/LoadBalancerPage";
 import { NotFound } from "./features/not-found/NotFound";
 import { useConfigurationContext } from "./shared/contexts/context-helpers";
 import { ClustersList } from "./features/clusters-list/ClustersList";
+import { ApplicationForm } from "./features/application-form/ApplicationForm";
 
 export function RouteRecords() {
   const config = useConfigurationContext();
@@ -18,6 +19,8 @@ export function RouteRecords() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<MainPage />} />
+
+            <Route path="setup-application" element={<ApplicationForm />} />
 
             <Route path="clusters-configuration" element={<ClustersList />} />
 
