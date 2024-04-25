@@ -7,13 +7,12 @@ import {
 import useLoadBalancersDataService from "./load-balancers-data-service";
 import { getLoadBalancerUrl } from "../../shared/services/routing-service";
 import { SvcIcon } from "../../assets/icons";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
+import { useConfiguredCluster } from "../../shared/contexts/context-helpers";
 
 export function LoadBalancersList() {
-  const { configuration } = useConfigurationContext();
   const navigate = useNavigate();
   const { namespace, clusterName } = useParams();
-  const cluster = configuration.clusters.find((x) => x.name === clusterName);
+  const cluster = useConfiguredCluster(clusterName);
   const dataService = useLoadBalancersDataService(cluster?.apiUrl);
 
   if (namespace === undefined || clusterName === undefined || cluster === undefined) {

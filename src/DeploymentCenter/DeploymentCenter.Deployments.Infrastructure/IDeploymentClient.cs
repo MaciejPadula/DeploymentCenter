@@ -9,4 +9,5 @@ public interface IDeploymentClient
     Task<List<DeploymentBasicInfo>> GetBasicInfos(string @namespace);
     Task<List<Container>> GetContainers(string @namespace, string deploymentName);
     Task<List<Pod>> GetPods(string @namespace, string deploymentName);
+    Task<string> GetPodLogs(string @namespace, string podName);
 }

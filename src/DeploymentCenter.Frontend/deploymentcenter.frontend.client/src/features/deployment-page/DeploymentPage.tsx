@@ -10,16 +10,15 @@ import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-s
 import { getDeploymentUrl } from "../../shared/services/routing-service";
 import { DeployIcon } from "../../assets/icons";
 import { ContainersList } from "./containers/ContainersList";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
+import { useConfiguredCluster } from "../../shared/contexts/context-helpers";
 import useDeploymentPageDataService from "./deployment-page-data-service";
 import { DeploymentDetails } from "./deployment-details";
 import { DeploymentStatistics } from "./statistics/DeploymentStatistics";
 
 export function DeploymentPage() {
-  const { configuration } = useConfigurationContext();
   const { deploymentName, namespace, clusterName } = useParams();
+  const cluster = useConfiguredCluster(clusterName);
   const [details, setDetails] = useState<DeploymentDetails | null>(null);
-  const cluster = configuration.clusters.find((x) => x.name === clusterName);
   const dataService = useDeploymentPageDataService(cluster?.apiUrl);
 
   useEffect(() => {

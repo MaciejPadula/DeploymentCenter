@@ -1,21 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import useDeploymentPageDataService from "../deployment-page-data-service";
 import { LinearProgress } from "@mui/material";
-import { ReplicaRow } from "./ReplicaRow";
+import { Terminal } from "../../../shared/components/terminal/Terminal";
 
-export function ReplicasList(props: {
-  clusterUrl: string;
-  deploymentName: string;
+export function PodLogs(props: {
   namespace: string;
+  podName: string;
+  clusterUrl: string;
 }) {
   const dataService = useDeploymentPageDataService(props.clusterUrl);
+
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ["podsLoader"],
+    queryKey: [
+      "podLogsLoader",
+      props.podName,
+      props.namespace,
+      props.clusterUrl,
+    ],
     queryFn: async () =>
-      await dataService.getDeploymentPods(
-        props.namespace,
-        props.deploymentName
-      ),
+      await dataService.getPodLogs(props.namespace, props.podName),
   });
 
   const isLoading = isPending || isFetching || data == undefined;
@@ -27,15 +30,7 @@ export function ReplicasList(props: {
   return (
     <div>
       {isLoading && <LinearProgress />}
-      {!isLoading &&
-        data.map((pod) => (
-          <ReplicaRow
-            key={pod.name}
-            pod={pod}
-            namespace={props.namespace}
-            clusterUrl={props.clusterUrl}
-          />
-        ))}
+      {!isLoading && <Terminal text={data} />}
     </div>
   );
 }

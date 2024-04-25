@@ -7,13 +7,12 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { getDeploymentUrl } from "../../shared/services/routing-service";
 import { DeployIcon } from "../../assets/icons";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
+import { useConfiguredCluster } from "../../shared/contexts/context-helpers";
 
 export function DeploymentsList() {
-  const { configuration } = useConfigurationContext();
   const navigate = useNavigate();
   const { namespace, clusterName } = useParams();
-  const cluster = configuration.clusters.find((x) => x.name === clusterName);
+  const cluster = useConfiguredCluster(clusterName);
   const dataService = useDeploymentsDataService(cluster?.apiUrl);
 
   if (namespace === undefined || clusterName === undefined || cluster === undefined) {

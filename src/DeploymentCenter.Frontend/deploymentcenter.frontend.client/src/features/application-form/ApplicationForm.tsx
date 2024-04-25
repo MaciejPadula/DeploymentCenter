@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import useApplicationFormService from "./application-form-service";
+import { useRef } from "react";
 import { SetupDeployment } from "./setup-deployment/SetupDeployment";
 import { Button, IconButton, TextField, Typography } from "@mui/material";
 import useApplicationFormDataService from "./application-form-data-service";
@@ -8,27 +7,25 @@ import { getEmptyApplicationData } from "./application-data";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { useNavigate } from "react-router-dom";
 import { InputVariant } from "../../shared/helpers/material-config";
+import { applicationFormData, updateAppData } from "./application-form-service";
+import { computed } from "@preact/signals-react";
 
 export function ApplicationForm() {
   const apiUrl = useConfiguredApiUrl();
   const formDatService = useApplicationFormDataService(apiUrl);
-  const formService = useApplicationFormService();
-  const [data, setData] = useState(formService.getStoredData());
   const nameRef = useRef<HTMLInputElement | undefined>();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    formService.storeData(data);
-  }, [data, formService]);
+  const showDeployment = computed(
+    () => applicationFormData.value.name.length > 0
+  );
 
   function setApplicationName(name: string) {
-    setData({ ...data, name });
+    updateAppData((oldData) => (oldData.name = name));
   }
 
   function restartForm() {
-    const newData = getEmptyApplicationData();
-    formService.storeData(newData);
-    setData(newData);
+    applicationFormData.value = getEmptyApplicationData();
     const nameInputRef = nameRef?.current;
     if (nameInputRef) {
       nameInputRef.value = "";
@@ -37,14 +34,14 @@ export function ApplicationForm() {
 
   async function submit() {
     await formDatService.createApplication({
-      ...data,
+      ...applicationFormData.value,
       deployment: {
-        ...data.deployment,
-        applicationName: data.name,
+        ...applicationFormData.value.deployment,
+        applicationName: applicationFormData.value.name,
       },
     });
 
-    navigate('/');
+    navigate("/");
     navigate(0);
   }
 
@@ -60,18 +57,11 @@ export function ApplicationForm() {
         inputRef={nameRef}
         variant={InputVariant}
         label="Application Name"
-        defaultValue={data.name}
+        defaultValue={applicationFormData.value.name}
         onBlur={(e) => setApplicationName(e.target.value)}
       />
 
-      {data.name.length > 0 && (
-        <SetupDeployment
-          deployment={data.deployment}
-          handleDeploymentChange={(deployment) =>
-            setData({ ...data, deployment })
-          }
-        />
-      )}
+      {showDeployment.value && <SetupDeployment />}
 
       <Button variant="contained" onClick={submit}>
         Submit

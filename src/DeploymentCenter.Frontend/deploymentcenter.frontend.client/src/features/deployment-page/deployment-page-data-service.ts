@@ -44,13 +44,30 @@ function DeploymentPageDataService(apiUrl: string) {
     return response.data.containers;
   }
 
+  interface GetPodLogs {
+    logText: string;
+  }
+
+  async function getPodLogs(
+    namespace: string,
+    podName: string
+  ): Promise<string> {
+    const response = await axios.get<GetPodLogs>(
+      `${apiUrl}/${controller}/GetPodLogs?namespace=${namespace}&podName=${podName}`
+    );
+    return response.data.logText;
+  }
+
   return {
     getDeploymentDetails,
     getDeploymentPods,
     getDeploymentContainers,
+    getPodLogs,
   };
 }
 
-export default function useDeploymentPageDataService(clusterUrl: string | undefined) {
+export default function useDeploymentPageDataService(
+  clusterUrl: string | undefined
+) {
   return DeploymentPageDataService(clusterUrl ?? "");
 }

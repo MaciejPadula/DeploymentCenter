@@ -1,16 +1,27 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { ConfigurationContext } from "./ConfigurationContext";
 
 export function useConfigurationContext() {
   return useContext(ConfigurationContext);
 }
 
-export function useConfiguredApiUrl() {
+export function useConfiguredApiUrl(clusterName: string | null = null) {
+  const cluster = useConfiguredCluster(clusterName);
+  return useMemo(() => cluster?.apiUrl, [cluster]);
+}
+
+export function useConfiguredCluster(clusterName: string | null = null) {
   const { configuration } = useConfigurationContext();
 
-  const cluster = configuration.clusters.find(
-    (x) => x.name === configuration.cluster
-  );
+  if (clusterName === null) {
+    clusterName = configuration.cluster;
+  }
 
-  return cluster?.apiUrl;
+  return useMemo(
+    () =>
+      configuration.clusters.find(
+        (x) => x.name === clusterName
+      ),
+    [configuration, clusterName]
+  );
 }

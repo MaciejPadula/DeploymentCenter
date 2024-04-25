@@ -1,3 +1,4 @@
+import { copyObject } from "../../../shared/helpers/object-helper";
 import { EnvironmentVariable } from "./environment-variable";
 import { Port } from "./port";
 
@@ -16,5 +17,5 @@ const emptyContainer: Container = {
 };
 
 export function getDefaultContainer(): Container {
-  return JSON.parse(JSON.stringify(emptyContainer));
+  return copyObject(emptyContainer);
 }

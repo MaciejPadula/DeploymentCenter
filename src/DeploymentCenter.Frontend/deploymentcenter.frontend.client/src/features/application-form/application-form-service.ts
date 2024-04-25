@@ -1,23 +1,28 @@
-import { getFromLocalStorage, setInLocalStorage } from "../../shared/helpers/local-storage-helper";
+import { effect, signal } from "@preact/signals-react";
+import {
+  getFromLocalStorage,
+  setInLocalStorage,
+} from "../../shared/helpers/local-storage-helper";
 import { ApplicationData, getEmptyApplicationData } from "./application-data";
+import { copyObject } from "../../shared/helpers/object-helper";
 
-function ApplicationFormService() {
-  const LOCAL_STORAGE_KEY = 'application-form-data';
+const LOCAL_STORAGE_KEY = "applicationData";
 
-  function getStoredData() {
-    return getFromLocalStorage<ApplicationData>(LOCAL_STORAGE_KEY, getEmptyApplicationData());
-  }
+const applicationFormData = signal<ApplicationData>(
+  getFromLocalStorage<ApplicationData>(
+    LOCAL_STORAGE_KEY,
+    getEmptyApplicationData()
+  )
+);
 
-  function storeData(data: ApplicationData) {
-    setInLocalStorage(LOCAL_STORAGE_KEY, data);
-  }
+effect(() => {
+  setInLocalStorage(LOCAL_STORAGE_KEY, applicationFormData.value);
+});
 
-  return {
-    getStoredData,
-    storeData
-  }
+function updateAppData(updater: (data: ApplicationData) => void) {
+  const newData = copyObject(applicationFormData.value);
+  updater(newData);
+  applicationFormData.value = newData;
 }
 
-export default function useApplicationFormService() {
-  return ApplicationFormService();
-}
+export { applicationFormData, updateAppData };

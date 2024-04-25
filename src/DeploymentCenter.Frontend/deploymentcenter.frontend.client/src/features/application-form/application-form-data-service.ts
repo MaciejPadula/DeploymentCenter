@@ -3,7 +3,10 @@ import { ApplicationData } from "./application-data";
 
 function ApplicationFormDataService(apiUrl: string) {
   async function createApplication(data: ApplicationData) {
-    await axios.post(`${apiUrl}/api/Deployments/CreateDeployment`, data.deployment);
+    await axios.post(
+      `${apiUrl}/api/Deployments/CreateDeployment`,
+      data.deployment
+    );
   }
 
   return {
@@ -11,6 +14,8 @@ function ApplicationFormDataService(apiUrl: string) {
   };
 }
 
-export default function useApplicationFormDataService(clusterUrl: string | undefined) {
+export default function useApplicationFormDataService(
+  clusterUrl: string | undefined
+) {
   return ApplicationFormDataService(clusterUrl ?? "");
 }

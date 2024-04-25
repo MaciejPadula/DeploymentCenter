@@ -1,49 +1,37 @@
-import {
-  Unstable_Grid2 as Grid,
-  IconButton,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Unstable_Grid2 as Grid, TextField, Typography } from "@mui/material";
 import { SelectNamespace } from "../../../shared/components/select-namespaces/SelectNamespace";
 import { useConfiguredApiUrl } from "../../../shared/contexts/context-helpers";
-import { DeploymentData } from "../deployment-data";
-import { SetupContainer } from "./SetupContainer";
-import { getDefaultContainer } from "../../deployment-page/models/container";
-import AddIcon from "@mui/icons-material/Add";
 import { InputVariant } from "../../../shared/helpers/material-config";
+import { Containers } from "./containers/Containers";
+import { Container } from "../../deployment-page/models/container";
+import {
+  applicationFormData,
+  updateAppData,
+} from "../application-form-service";
 
-export function SetupDeployment(props: {
-  deployment: DeploymentData;
-  handleDeploymentChange: (deployment: DeploymentData) => void;
-}) {
+export function SetupDeployment() {
   const apiUrl = useConfiguredApiUrl();
   if (apiUrl === undefined) {
     return <div>Error</div>;
   }
 
   function setNamespace(namespace: string) {
-    props.handleDeploymentChange({
-      ...props.deployment,
-      namespace,
-    });
+    updateAppData((oldData) => (oldData.deployment.namespace = namespace));
   }
 
   function setDeploymentName(name: string) {
-    props.handleDeploymentChange({
-      ...props.deployment,
-      name,
-    });
+    updateAppData((oldData) => (oldData.deployment.name = name));
   }
 
   function setReplicas(replicas: string) {
     const parsedValue = parseInt(replicas);
-
     const valueToSet = isNaN(parsedValue) ? 0 : parsedValue;
 
-    props.handleDeploymentChange({
-      ...props.deployment,
-      replicas: valueToSet,
-    });
+    updateAppData((oldData) => (oldData.deployment.replicas = valueToSet));
+  }
+
+  function setContainers(containers: Container[]) {
+    updateAppData((oldData) => (oldData.deployment.containers = containers));
   }
 
   return (
@@ -52,7 +40,7 @@ export function SetupDeployment(props: {
       <Grid container spacing={2}>
         <Grid sm={4} xs={12}>
           <SelectNamespace
-            namespace={props.deployment.namespace}
+            namespace={applicationFormData.value.deployment.namespace}
             apiUrl={apiUrl}
             onNamespaceChanged={setNamespace}
           />
@@ -63,7 +51,7 @@ export function SetupDeployment(props: {
             className="w-full"
             variant={InputVariant}
             label="Deployment Name"
-            defaultValue={props.deployment.name}
+            defaultValue={applicationFormData.value.deployment.name}
             onBlur={(e) => setDeploymentName(e.target.value)}
           />
         </Grid>
@@ -74,55 +62,15 @@ export function SetupDeployment(props: {
             variant={InputVariant}
             label="Replicas"
             type="number"
-            defaultValue={props.deployment.replicas ?? 0}
+            defaultValue={applicationFormData.value.deployment.replicas ?? 0}
             onBlur={(e) => setReplicas(e.target.value)}
           />
         </Grid>
       </Grid>
-      <div>
-        <Typography variant="h6">Containers</Typography>
-        <div className="flex flex-row">
-          {props.deployment.containers?.map((container, index) => (
-            <SetupContainer
-              key={`${index}-${container.name}-${container.image}`}
-              container={container}
-              handleContainerChange={(container) => {
-                const newContainers = [...props.deployment.containers];
-                newContainers[index] = container;
-
-                props.handleDeploymentChange({
-                  ...props.deployment,
-                  containers: newContainers,
-                });
-              }}
-              handleDelete={() => {
-                const newContainers = [...props.deployment.containers];
-                newContainers.splice(index, 1);
-
-                props.handleDeploymentChange({
-                  ...props.deployment,
-                  containers: newContainers,
-                });
-              }}
-            />
-          ))}
-
-          <IconButton
-            size="small"
-            onClick={() => {
-              props.handleDeploymentChange({
-                ...props.deployment,
-                containers: [
-                  ...(props.deployment.containers ?? []),
-                  getDefaultContainer(),
-                ],
-              });
-            }}
-          >
-            <AddIcon fontSize="inherit" />
-          </IconButton>
-        </div>
-      </div>
+      <Containers
+        containers={applicationFormData.value.deployment.containers}
+        onContainersChange={setContainers}
+      />
     </div>
   );
 }

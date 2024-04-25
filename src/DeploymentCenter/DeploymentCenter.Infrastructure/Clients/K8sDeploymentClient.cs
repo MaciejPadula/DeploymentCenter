@@ -3,6 +3,7 @@ using DeploymentCenter.Deployments.Infrastructure;
 using DeploymentCenter.SharedKernel;
 using k8s;
 using k8s.Models;
+using System.Reflection.PortableExecutable;
 
 namespace DeploymentCenter.Infrastructure.Clients;
 
@@ -118,6 +119,16 @@ internal class K8sDeploymentClient : IDeploymentClient
             deploy.Spec.Selector.MatchLabels.TryGetValue(Consts.ApplicationNameDictionaryKey, out var applicationName) ? applicationName : string.Empty,
             deploy.Status.AvailableReplicas ?? 0,
             deploy.Spec.Replicas ?? 0);
+    }
+
+    public async Task<string> GetPodLogs(string @namespace, string podName)
+    {
+        using var result = await _kubernetes.CoreV1.ReadNamespacedPodLogWithHttpMessagesAsync(
+            podName,
+            @namespace).ConfigureAwait(false);
+
+        using var reader = new  StreamReader(result.Body, System.Text.Encoding.UTF8);
+        return await reader.ReadToEndAsync();
     }
 
     public async Task<List<Pod>> GetPods(string @namespace, string deploymentName)

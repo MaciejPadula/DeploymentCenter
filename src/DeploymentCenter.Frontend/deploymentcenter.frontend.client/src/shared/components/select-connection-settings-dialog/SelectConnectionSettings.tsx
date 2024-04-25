@@ -6,11 +6,11 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
-import { SelectNamespace } from "../../shared/components/select-namespaces/SelectNamespace";
+import { SelectNamespace } from "../select-namespaces/SelectNamespace";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
-import { SelectClusters } from "../../shared/components/select-clusters/SelectClusters";
-import { createRedirectUrl } from "./redirect-helper";
+import { useConfigurationContext } from "../../contexts/context-helpers";
+import { SelectClusters } from "../select-clusters/SelectClusters";
+import { createRedirectUrl } from "../../helpers/redirect-helper";
 
 export function SelectNamespaceDialog(props: { onClose?: () => void }) {
   const navigate = useNavigate();

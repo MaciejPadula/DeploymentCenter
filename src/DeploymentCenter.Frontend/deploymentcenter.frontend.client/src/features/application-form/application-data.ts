@@ -1,3 +1,4 @@
+import { copyObject } from "../../shared/helpers/object-helper";
 import { DeploymentData } from "./deployment-data";
 
 export interface ApplicationData {
@@ -6,16 +7,16 @@ export interface ApplicationData {
 }
 
 const emptyApplicationData = {
-  name: '',
+  name: "",
   deployment: {
-    namespace: '',
-    name: '',
-    applicationName: '',
+    namespace: "",
+    name: "",
+    applicationName: "",
     replicas: 0,
-    containers: []
-  }
+    containers: [],
+  },
 };
 
 export function getEmptyApplicationData(): ApplicationData {
-  return JSON.parse(JSON.stringify(emptyApplicationData)) as ApplicationData;
+  return copyObject(emptyApplicationData);
 }

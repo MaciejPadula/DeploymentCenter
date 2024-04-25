@@ -1,7 +1,7 @@
 import { Button, Drawer, IconButton } from "@mui/material";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { SelectNamespaceDialog } from "./SelectConnectionSettings";
+import { SelectNamespaceDialog } from "../../shared/components/select-connection-settings-dialog/SelectConnectionSettings";
 import { useNavigate } from "react-router-dom";
 
 export function SidebarToggler() {
