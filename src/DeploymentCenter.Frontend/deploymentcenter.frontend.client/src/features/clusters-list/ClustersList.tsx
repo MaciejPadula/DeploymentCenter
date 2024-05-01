@@ -1,21 +1,19 @@
 import { IconButton, List, ListItem, ListItemText } from "@mui/material";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { AddClusterDialog } from "./AddClusterDialog";
+import {
+  configuration,
+  deleteCluster,
+} from "../../shared/services/configuration-service";
 
 export function ClustersList() {
-  const { configuration, setConfiguration } = useConfigurationContext();
-
   function handleClusterDeleted(clusterName: string) {
-    setConfiguration({
-      ...configuration,
-      clusters: configuration.clusters.filter((x) => x.name !== clusterName),
-    });
+    deleteCluster(clusterName);
   }
 
   return (
     <List className="w-full">
-      {configuration.clusters.map((cluster) => (
+      {configuration.value.clusters.map((cluster) => (
         <ListItem
           key={cluster.name}
           divider={true}

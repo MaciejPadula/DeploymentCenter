@@ -1,6 +1,5 @@
 ﻿using DeploymentCenter.Deployments.Contract.Features;
 using DeploymentCenter.Deployments.Contract.Models;
-using DeploymentCenter.Deployments.Extensions;
 using DeploymentCenter.Deployments.Infrastructure;
 using MediatR;
 
@@ -8,22 +7,17 @@ namespace DeploymentCenter.Deployments.Features;
 
 internal class GetDeploymentPodsHandler : IRequestHandler<GetDeploymentPodsQuery, List<Pod>>
 {
-    private readonly IKubernetesClientWrapper _kubernetesClientWrapper;
+    private readonly IDeploymentClient _deploymentClient;
 
-    public GetDeploymentPodsHandler(IKubernetesClientWrapper kubernetesClientWrapper)
+    public GetDeploymentPodsHandler(IDeploymentClient deploymentClient)
     {
-        _kubernetesClientWrapper = kubernetesClientWrapper;
+        _deploymentClient = deploymentClient;
     }
 
     public async Task<List<Pod>> Handle(GetDeploymentPodsQuery request, CancellationToken cancellationToken)
     {
-        var pods = await _kubernetesClientWrapper.GetDeploymentPods(
+        return await _deploymentClient.GetPods(
             request.Namespace,
             request.DeploymentName);
-
-        return pods
-            .Items
-            .ToDtos()
-            .ToList();
     }
 }

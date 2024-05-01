@@ -1,6 +1,5 @@
 ﻿using DeploymentCenter.Deployments.Contract.Features;
 using DeploymentCenter.Deployments.Contract.Models;
-using DeploymentCenter.Deployments.Extensions;
 using DeploymentCenter.Deployments.Infrastructure;
 using MediatR;
 
@@ -8,20 +7,15 @@ namespace DeploymentCenter.Deployments.Features;
 
 internal class GetDeploymentsListHandler : IRequestHandler<GetDeploymentsListQuery, List<DeploymentBasicInfo>>
 {
-    private readonly IKubernetesClientWrapper _kubernetesClientWrapper;
+    private readonly IDeploymentClient _deploymentClient;
 
-    public GetDeploymentsListHandler(IKubernetesClientWrapper kubernetesClientWrapper)
+    public GetDeploymentsListHandler(IDeploymentClient deploymentClient)
     {
-        _kubernetesClientWrapper = kubernetesClientWrapper;
+        _deploymentClient = deploymentClient;
     }
 
     public async Task<List<DeploymentBasicInfo>> Handle(GetDeploymentsListQuery request, CancellationToken cancellationToken)
     {
-        var deployments = await _kubernetesClientWrapper.GetDeployments(request.Namespace);
-
-        return deployments
-            .Items
-            .Select(x => x.ToBasicInfo())
-            .ToList();
+        return await _deploymentClient.GetBasicInfos(request.Namespace);
     }
 }

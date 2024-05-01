@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.Api\DeploymentCenter.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Namespaces.Contract\DeploymentCenter.Namespaces.Contract.csproj" />
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />

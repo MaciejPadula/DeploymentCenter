@@ -11,13 +11,12 @@ import { useEffect } from "react";
 import { SvcIcon } from "../../assets/icons";
 import { IpAddresses } from "./ip-addresses/IpAddresses";
 import { LoadBalancerPorts } from "./Ports/LoadBalancerPorts";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
+import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
 
 export function LoadBalancerPage() {
-  const { configuration } = useConfigurationContext();
   const { loadBalancerName, namespace, clusterName } = useParams();
-  const cluster = configuration.clusters.find((x) => x.name === clusterName);
-  const dataService = useLoadBalancerPageDataService(cluster?.apiUrl);
+  const clusterApiUrl = selectedClusterApiUrl.value;
+  const dataService = useLoadBalancerPageDataService(clusterApiUrl);
 
   useEffect(() => {
     if (
@@ -40,7 +39,7 @@ export function LoadBalancerPage() {
   if (
     loadBalancerName === undefined ||
     clusterName === undefined ||
-    cluster === undefined ||
+    clusterApiUrl === undefined ||
     namespace === undefined
   ) {
     return <div>Error</div>;
@@ -53,7 +52,7 @@ export function LoadBalancerPage() {
     );
     const properties = new Map<string, string>();
     properties.set("Name", summary.loadBalancerName);
-    properties.set("Cluster", `${clusterName}:${cluster.apiUrl}`);
+    properties.set("Cluster", `${clusterName}:${clusterApiUrl}`);
     properties.set("Namespace", summary.namespace);
     properties.set("Application", summary.applicationName);
 
@@ -66,14 +65,17 @@ export function LoadBalancerPage() {
 
   return (
     <div className="flex flex-col w-full p-2 gap-2">
-      <ResourceSummary resourceSummaryFactory={factory} />
+      <ResourceSummary
+        resourceSummaryKey={`loadbalancer-${namespace}-${loadBalancerName}`}
+        resourceSummaryFactory={factory}
+      />
       <IpAddresses
-        clusterUrl={cluster.apiUrl}
+        clusterUrl={clusterApiUrl}
         namespace={namespace}
         loadBalancerName={loadBalancerName}
       />
       <LoadBalancerPorts
-        clusterUrl={cluster.apiUrl}
+        clusterUrl={clusterApiUrl}
         namespace={namespace}
         loadBalancerName={loadBalancerName}
       />

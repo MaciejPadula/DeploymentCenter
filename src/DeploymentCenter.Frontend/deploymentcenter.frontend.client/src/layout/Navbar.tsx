@@ -1,7 +1,7 @@
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { SidebarToggler } from "./sidebar/SidebarToggler";
-import { SelectNamespaceDialog } from "./sidebar/SelectConnectionSettings";
+import { SelectNamespaceDialog } from "../shared/components/select-connection-settings-dialog/SelectConnectionSettings";
 
 export function Navbar() {
   return (

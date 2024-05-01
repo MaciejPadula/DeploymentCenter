@@ -39,11 +39,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Services.A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Namespaces", "Namespaces", "{4D4A6434-6214-4CFA-A9D5-6A6B5E1A67B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Namespaces.Contract", "DeploymentCenter.Namespaces.Contract\DeploymentCenter.Namespaces.Contract.csproj", "{A8F684D0-C8C8-4D70-9DB9-6E1EF54A81C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Namespaces.Contract", "DeploymentCenter.Namespaces.Contract\DeploymentCenter.Namespaces.Contract.csproj", "{A8F684D0-C8C8-4D70-9DB9-6E1EF54A81C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Namespaces", "DeploymentCenter.Namespaces\DeploymentCenter.Namespaces.csproj", "{36DCF032-D9AB-4C3B-AA00-EE99AB80277C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Namespaces", "DeploymentCenter.Namespaces\DeploymentCenter.Namespaces.csproj", "{36DCF032-D9AB-4C3B-AA00-EE99AB80277C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Namespaces.Api", "DeploymentCenter.Namespaces.Api\DeploymentCenter.Namespaces.Api.csproj", "{67738527-B3B8-4173-9F93-E01E5EFB212D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Namespaces.Api", "DeploymentCenter.Namespaces.Api\DeploymentCenter.Namespaces.Api.csproj", "{67738527-B3B8-4173-9F93-E01E5EFB212D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Infrastructure", "DeploymentCenter.Infrastructure\DeploymentCenter.Infrastructure.csproj", "{A9F79356-DD91-4517-9D96-8FB1D4D1D6D9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Deployments.Infrastructure", "DeploymentCenter.Deployments.Infrastructure\DeploymentCenter.Deployments.Infrastructure.csproj", "{1636CC21-A662-454C-89E3-B7A1C571B5AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{365A4DEF-FF24-4CD6-85DF-27995CE77D00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.ArchitectureTests", "DeploymentCenter.ArchitectureTests\DeploymentCenter.ArchitectureTests.csproj", "{C7E555E3-9780-4014-A63E-4C04706A2AB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +119,18 @@ Global
 		{67738527-B3B8-4173-9F93-E01E5EFB212D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67738527-B3B8-4173-9F93-E01E5EFB212D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67738527-B3B8-4173-9F93-E01E5EFB212D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9F79356-DD91-4517-9D96-8FB1D4D1D6D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9F79356-DD91-4517-9D96-8FB1D4D1D6D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9F79356-DD91-4517-9D96-8FB1D4D1D6D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9F79356-DD91-4517-9D96-8FB1D4D1D6D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1636CC21-A662-454C-89E3-B7A1C571B5AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1636CC21-A662-454C-89E3-B7A1C571B5AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1636CC21-A662-454C-89E3-B7A1C571B5AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1636CC21-A662-454C-89E3-B7A1C571B5AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7E555E3-9780-4014-A63E-4C04706A2AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7E555E3-9780-4014-A63E-4C04706A2AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7E555E3-9780-4014-A63E-4C04706A2AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7E555E3-9780-4014-A63E-4C04706A2AB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -134,6 +154,8 @@ Global
 		{A8F684D0-C8C8-4D70-9DB9-6E1EF54A81C0} = {4D4A6434-6214-4CFA-A9D5-6A6B5E1A67B5}
 		{36DCF032-D9AB-4C3B-AA00-EE99AB80277C} = {4D4A6434-6214-4CFA-A9D5-6A6B5E1A67B5}
 		{67738527-B3B8-4173-9F93-E01E5EFB212D} = {4D4A6434-6214-4CFA-A9D5-6A6B5E1A67B5}
+		{1636CC21-A662-454C-89E3-B7A1C571B5AB} = {5DE2A0BB-1FF9-4AEE-B249-E92FF7A5FBE1}
+		{C7E555E3-9780-4014-A63E-4C04706A2AB7} = {365A4DEF-FF24-4CD6-85DF-27995CE77D00}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75BDC6F9-FD28-42A4-B4A7-18D80AE76B7C}
