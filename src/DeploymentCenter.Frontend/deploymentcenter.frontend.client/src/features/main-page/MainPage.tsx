@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import {
   ResourceRowModel,
   ResourcesFactory,
@@ -7,9 +6,10 @@ import { getRecentlyVisitedPages } from "../../shared/services/recently-visited-
 import { ResourcesList } from "../../shared/components/resources-list/ResourcesList";
 import { ResourceTypesGrid } from "../../shared/components/resource-types-grid/ResourceTypesGrid";
 import { Typography } from "@mui/material";
+import { useAppRouting } from "../../shared/hooks/navigation";
 
 export function MainPage() {
-  const navigate = useNavigate();
+  const navigation = useAppRouting();
 
   const factory: ResourcesFactory = async () => {
     const response = getRecentlyVisitedPages();
@@ -20,7 +20,7 @@ export function MainPage() {
           name: x.title,
           namespace: x.namespace,
           icon: x.icon,
-          clickHandler: () => navigate(x.url),
+          clickHandler: () => navigation.navigateToUrl(x.url),
         } as ResourceRowModel)
     );
   };

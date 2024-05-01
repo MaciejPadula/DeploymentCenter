@@ -9,11 +9,10 @@ import {
 } from "@mui/material";
 import { Fragment, useState } from "react";
 import { Cluster } from "../../shared/models/cluster";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
 import { InputVariant } from "../../shared/helpers/material-config";
+import { addCluster } from "../../shared/services/configuration-service";
 
 export function AddClusterDialog() {
-  const { configuration, setConfiguration } = useConfigurationContext();
 
   const [open, setOpen] = useState(false);
   const [clusterName, setClusterName] = useState("");
@@ -28,10 +27,7 @@ export function AddClusterDialog() {
   }
 
   function handleClusterAdded(cluster: Cluster) {
-    setConfiguration({
-      ...configuration,
-      clusters: [...configuration.clusters, cluster],
-    });
+    addCluster(cluster);
   }
 
   function handleSave() {

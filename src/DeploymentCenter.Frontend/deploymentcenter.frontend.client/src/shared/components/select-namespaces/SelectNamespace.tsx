@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useSelectNamespaceDataService } from "./select-namespace-data-service";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { InputVariant } from "../../helpers/material-config";
 
 export function SelectNamespace(props: {
-  namespace: string;
+  defaultNamespace: string;
   apiUrl: string;
   onNamespaceChanged: (namespace: string) => void;
 }) {
@@ -14,6 +14,7 @@ export function SelectNamespace(props: {
     queryKey: ["namespaceLoader"],
     queryFn: async () => await dataService.getNamespaces(),
   });
+  const [namespace, setNamespace] = useState<string>(props.defaultNamespace);
 
   const isLoading = isPending || isFetching || data == undefined;
 
@@ -27,6 +28,7 @@ export function SelectNamespace(props: {
 
   function handleNamespaceChange(namespace: string) {
     props.onNamespaceChanged(namespace);
+    setNamespace(namespace);
   }
 
   return (
@@ -36,7 +38,7 @@ export function SelectNamespace(props: {
         <FormControl className="w-full" variant={InputVariant}>
           <InputLabel>Namespace</InputLabel>
           <Select
-            value={props.namespace}
+            value={namespace}
             onChange={(e) => handleNamespaceChange(e.target.value)}
           >
             {data.map((x) => (

@@ -2,11 +2,11 @@ import { Button, Drawer, IconButton } from "@mui/material";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { SelectNamespaceDialog } from "../../shared/components/select-connection-settings-dialog/SelectConnectionSettings";
-import { useNavigate } from "react-router-dom";
+import { useAppRouting } from "../../shared/hooks/navigation";
 
 export function SidebarToggler() {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
+  const navigation = useAppRouting();
 
   function toggleDrawer(newOpen: boolean) {
     setOpen(newOpen);
@@ -14,7 +14,7 @@ export function SidebarToggler() {
 
   function setupApplication() {
     toggleDrawer(false);
-    navigate("setup-application");
+    navigation.setupAplication();
   }
 
   return (

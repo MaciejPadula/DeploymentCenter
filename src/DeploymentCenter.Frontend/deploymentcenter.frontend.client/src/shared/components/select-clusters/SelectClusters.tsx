@@ -1,33 +1,35 @@
 import {
   FormControl,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
 } from "@mui/material";
 import { Cluster } from "../../models/cluster";
 import Edit from "@mui/icons-material/Edit";
-import { useNavigate } from "react-router-dom";
 import { InputVariant } from "../../helpers/material-config";
+import { useState } from "react";
+import { useAppRouting } from "../../hooks/navigation";
 
 export function SelectClusters(props: {
-  cluster: string;
+  defaultCluster: string;
   clusters: Cluster[];
   onClusterChanged: (namespace: string) => void;
   onClusterEdit?: () => void;
 }) {
-  const navigate = useNavigate();
+  const navigation = useAppRouting();
+  const [cluster, setCluster] = useState<string>(props.defaultCluster);
 
   function handleNamespaceChange(cluster: string) {
     props.onClusterChanged(cluster);
+    setCluster(cluster);
   }
 
   function editClusters() {
-    navigate('/clusters-configuration');
-
-    if (props.onClusterEdit){
+    if (props.onClusterEdit) {
       props.onClusterEdit();
     }
+
+    navigation.navigateToClustersConfiguration();
   }
 
   return (
@@ -35,7 +37,7 @@ export function SelectClusters(props: {
       <FormControl variant={InputVariant} className="w-full">
         <InputLabel>Clusters</InputLabel>
         <Select
-          value={props.cluster}
+          value={cluster}
           onChange={(e) => handleNamespaceChange(e.target.value)}
         >
           {props.clusters.map((x) => (
@@ -43,11 +45,12 @@ export function SelectClusters(props: {
               {`${x.name} - ${x.apiUrl}`}
             </MenuItem>
           ))}
+          <MenuItem onClick={editClusters} className="flex items-center gap-2">
+            <Edit />
+            Edit Clusters
+          </MenuItem>
         </Select>
       </FormControl>
-      <IconButton onClick={editClusters}>
-        <Edit />
-      </IconButton>
     </div>
   );
 }

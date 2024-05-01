@@ -1,6 +1,5 @@
 import { Unstable_Grid2 as Grid, TextField, Typography } from "@mui/material";
 import { SelectNamespace } from "../../../shared/components/select-namespaces/SelectNamespace";
-import { useConfiguredApiUrl } from "../../../shared/contexts/context-helpers";
 import { InputVariant } from "../../../shared/helpers/material-config";
 import { Containers } from "./containers/Containers";
 import { Container } from "../../deployment-page/models/container";
@@ -8,9 +7,10 @@ import {
   applicationFormData,
   updateAppData,
 } from "../application-form-service";
+import { selectedClusterApiUrl } from "../../../shared/services/configuration-service";
 
 export function SetupDeployment() {
-  const apiUrl = useConfiguredApiUrl();
+  const apiUrl = selectedClusterApiUrl.value;
   if (apiUrl === undefined) {
     return <div>Error</div>;
   }
@@ -40,7 +40,7 @@ export function SetupDeployment() {
       <Grid container spacing={2}>
         <Grid sm={4} xs={12}>
           <SelectNamespace
-            namespace={applicationFormData.value.deployment.namespace}
+            defaultNamespace={applicationFormData.value.deployment.namespace}
             apiUrl={apiUrl}
             onNamespaceChanged={setNamespace}
           />

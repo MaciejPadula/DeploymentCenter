@@ -12,8 +12,8 @@ import { Container } from "../../../deployment-page/models/container";
 import { useRef, useState } from "react";
 import { InputVariant } from "../../../../shared/helpers/material-config";
 import AddIcon from "@mui/icons-material/Add";
-import { SetupEnvVariable } from "./SetupEnvVariable";
 import { EnvironmentVariable } from "../../../deployment-page/models/environment-variable";
+import { DoubleInput } from "../../../../shared/components/double-input/DoubleInput";
 
 export function SetupContainer(props: {
   container: Container;
@@ -49,6 +49,18 @@ export function SetupContainer(props: {
       ? props.container.name
       : "Unnamed container";
 
+  function handleEnvVarKeyChange(index: number, key: string) {
+    const newEnvVariables = [...envVariables];
+    newEnvVariables[index].key = key;
+    setEnvVariables(newEnvVariables);
+  }
+
+  function handleEnvVarValueChange(index: number, value: string) {
+    const newEnvVariables = [...envVariables];
+    newEnvVariables[index].value = value;
+    setEnvVariables(newEnvVariables);
+  }
+
   return (
     <>
       <Chip
@@ -73,18 +85,25 @@ export function SetupContainer(props: {
           />
 
           {envVariables.map((envVar, index) => (
-            <SetupEnvVariable
+            <DoubleInput
               key={`${index}_${envVar.key}`}
-              environmentVariable={envVar}
+              defaultFirstValue={envVar.key}
+              defaultSecondValue={envVar.value}
+              onFirstChange={(key) => handleEnvVarKeyChange(index, key)}
+              onSecondChange={(value) => handleEnvVarValueChange(index, value)}
             />
           ))}
 
-          <IconButton
-            size="small"
-            onClick={() => setEnvVariables(old => [...old, { key: "", value: "" }])}
-          >
-            <AddIcon fontSize="inherit" />
-          </IconButton>
+          <div>
+            <IconButton
+              size="small"
+              onClick={() =>
+                setEnvVariables((old) => [...old, { key: "", value: "" }])
+              }
+            >
+              <AddIcon fontSize="inherit" />
+            </IconButton>
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

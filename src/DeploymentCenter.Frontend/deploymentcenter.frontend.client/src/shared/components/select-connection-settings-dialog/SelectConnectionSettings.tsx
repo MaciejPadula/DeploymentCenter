@@ -7,31 +7,37 @@ import {
 } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import { SelectNamespace } from "../select-namespaces/SelectNamespace";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useConfigurationContext } from "../../contexts/context-helpers";
+import { useLocation } from "react-router-dom";
 import { SelectClusters } from "../select-clusters/SelectClusters";
-import { createRedirectUrl } from "../../helpers/redirect-helper";
+import {
+  configuration,
+  selectedNamespace,
+  selectedCluster,
+  setClusterAndNamespace,
+} from "../../services/configuration-service";
+import { useAppRouting } from "../../hooks/navigation";
 
 export function SelectNamespaceDialog(props: { onClose?: () => void }) {
-  const navigate = useNavigate();
+  const navigation = useAppRouting();
   const location = useLocation();
-  const { configuration, setConfiguration } = useConfigurationContext();
-  const [selectedNamespace, setSelectedNamespace] = useState(
-    configuration.namespace
+  const [namespaceControl, setNamespaceControl] = useState(
+    selectedNamespace.value
   );
-  const [selectedCluster, setSelectedCluster] = useState(configuration.cluster);
+  const [clusterControl, setClusterControl] = useState(
+    selectedCluster.value?.name ?? ""
+  );
   const [open, setOpen] = useState<boolean>(false);
   const [clusterUrl, setClusterUrl] = useState<string>("");
 
   useEffect(() => {
-    const cluster = configuration.clusters.find(
-      (x) => x.name === selectedCluster
+    const cluster = configuration.value.clusters.find(
+      (x) => x.name === clusterControl
     );
     if (cluster === undefined) {
       return;
     }
     setClusterUrl(cluster.apiUrl);
-  }, [configuration.clusters, selectedCluster]);
+  }, [clusterControl]);
 
   function handleClickOpen() {
     setOpen(true);
@@ -42,39 +48,37 @@ export function SelectNamespaceDialog(props: { onClose?: () => void }) {
   }
 
   function handleSave() {
-    setConfiguration({
-      ...configuration,
-      namespace: selectedNamespace,
-      cluster: selectedCluster,
-    });
-    navigate(createRedirectUrl(location.pathname, selectedCluster, selectedNamespace));
+    setClusterAndNamespace(clusterControl, namespaceControl);
     setOpen(false);
     if (props.onClose) {
       props.onClose();
     }
-    navigate(0);
+
+    navigation.updateConnection(location.pathname, clusterControl, namespaceControl);
   }
 
   return (
     <Fragment>
       <Button variant="text" onClick={handleClickOpen}>
-        <span>{configuration.cluster}</span>
-        <span className="sm:block hidden">/{configuration.namespace}</span>
+        <span>{configuration.value.cluster}</span>
+        <span className="sm:block hidden">
+          /{configuration.value.namespace}
+        </span>
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Change Default Connection Settings</DialogTitle>
         <DialogContent className="w-full !px-8 !py-4 flex flex-col gap-4">
           <SelectClusters
-            cluster={selectedCluster}
-            clusters={configuration.clusters}
-            onClusterChanged={(c) => setSelectedCluster(c)}
+            defaultCluster={selectedCluster.value?.name ?? ""}
+            clusters={configuration.value.clusters}
+            onClusterChanged={setClusterControl}
             onClusterEdit={handleClose}
           />
           {clusterUrl?.length > 0 && (
             <SelectNamespace
-              namespace={selectedNamespace}
+              defaultNamespace={selectedNamespace.value}
               apiUrl={clusterUrl}
-              onNamespaceChanged={(ns) => setSelectedNamespace(ns)}
+              onNamespaceChanged={setNamespaceControl}
             />
           )}
         </DialogContent>

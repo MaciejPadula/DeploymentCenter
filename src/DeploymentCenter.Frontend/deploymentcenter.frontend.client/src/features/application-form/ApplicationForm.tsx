@@ -2,19 +2,19 @@ import { useRef } from "react";
 import { SetupDeployment } from "./setup-deployment/SetupDeployment";
 import { Button, IconButton, TextField, Typography } from "@mui/material";
 import useApplicationFormDataService from "./application-form-data-service";
-import { useConfiguredApiUrl } from "../../shared/contexts/context-helpers";
 import { getEmptyApplicationData } from "./application-data";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { useNavigate } from "react-router-dom";
 import { InputVariant } from "../../shared/helpers/material-config";
 import { applicationFormData, updateAppData } from "./application-form-service";
 import { computed } from "@preact/signals-react";
+import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
+import { useAppRouting } from "../../shared/hooks/navigation";
 
 export function ApplicationForm() {
-  const apiUrl = useConfiguredApiUrl();
+  const apiUrl = selectedClusterApiUrl.value;
   const formDatService = useApplicationFormDataService(apiUrl);
   const nameRef = useRef<HTMLInputElement | undefined>();
-  const navigate = useNavigate();
+  const navigation = useAppRouting();
 
   const showDeployment = computed(
     () => applicationFormData.value.name.length > 0
@@ -41,8 +41,7 @@ export function ApplicationForm() {
       },
     });
 
-    navigate("/");
-    navigate(0);
+    navigation.mainPage();
   }
 
   return (

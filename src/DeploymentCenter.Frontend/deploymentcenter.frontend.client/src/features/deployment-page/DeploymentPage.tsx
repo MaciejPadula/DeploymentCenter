@@ -10,23 +10,23 @@ import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-s
 import { getDeploymentUrl } from "../../shared/services/routing-service";
 import { DeployIcon } from "../../assets/icons";
 import { ContainersList } from "./containers/ContainersList";
-import { useConfiguredCluster } from "../../shared/contexts/context-helpers";
 import useDeploymentPageDataService from "./deployment-page-data-service";
 import { DeploymentDetails } from "./deployment-details";
 import { DeploymentStatistics } from "./statistics/DeploymentStatistics";
+import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
 
 export function DeploymentPage() {
   const { deploymentName, namespace, clusterName } = useParams();
-  const cluster = useConfiguredCluster(clusterName);
+  const clusterApiUrl = selectedClusterApiUrl.value;
   const [details, setDetails] = useState<DeploymentDetails | null>(null);
-  const dataService = useDeploymentPageDataService(cluster?.apiUrl);
+  const dataService = useDeploymentPageDataService(clusterApiUrl);
 
   useEffect(() => {
     if (
       deploymentName === undefined ||
       namespace === undefined ||
       clusterName === undefined ||
-      cluster === undefined
+      clusterApiUrl === undefined
     ) {
       return;
     }
@@ -44,7 +44,7 @@ export function DeploymentPage() {
     deploymentName === undefined ||
     namespace === undefined ||
     clusterName === undefined ||
-    cluster === undefined
+    clusterApiUrl === undefined
   ) {
     return <div>Error</div>;
   }
@@ -57,7 +57,7 @@ export function DeploymentPage() {
     setDetails(summary);
     const properties = new Map<string, string>();
     properties.set("Name", summary.deploymentName);
-    properties.set("Cluster", `${clusterName}:${cluster.apiUrl}`);
+    properties.set("Cluster", `${clusterName}:${clusterApiUrl}`);
     properties.set("Namespace", summary.namespace);
     properties.set("Application", summary.applicationName);
     properties.set(
@@ -74,23 +74,30 @@ export function DeploymentPage() {
 
   return (
     <div className="flex flex-col w-full p-2 gap-2">
-      <ResourceSummary resourceSummaryFactory={factory} />
+      <ResourceSummary
+        resourceSummaryKey={`deployment-${namespace}-${deploymentName}`}
+        resourceSummaryFactory={factory}
+      />
       {details && (
         <DeploymentStatistics
           alivePods={details?.aliveReplicas ?? 0}
           deadPods={(details?.allReplicas ?? 0) - (details?.aliveReplicas ?? 0)}
         />
       )}
-      <ReplicasList
-        clusterUrl={cluster.apiUrl}
-        deploymentName={deploymentName}
-        namespace={namespace}
-      />
-      <ContainersList
-        clusterUrl={cluster.apiUrl}
-        deploymentName={deploymentName}
-        namespace={namespace}
-      />
+      {details && (
+        <ReplicasList
+          clusterUrl={clusterApiUrl}
+          deploymentName={deploymentName}
+          namespace={namespace}
+        />
+      )}
+      {details && (
+        <ContainersList
+          clusterUrl={clusterApiUrl}
+          deploymentName={deploymentName}
+          namespace={namespace}
+        />
+      )}
     </div>
   );
 }

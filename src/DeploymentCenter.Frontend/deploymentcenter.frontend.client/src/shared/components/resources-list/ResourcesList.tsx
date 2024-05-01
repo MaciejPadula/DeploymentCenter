@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { ResourcesFactory } from "./resource-row-model";
 import { ResourceRow } from "./ResourceRow";
 import { LinearProgress, List, Typography } from "@mui/material";
-import { NoElementsToDisplay } from "../no-elements-to-display/NoElementsToDisplay";
+import { NoElementsToDisplay } from "../error/no-elements-to-display/NoElementsToDisplay";
+import { LoadingError } from "../error/loading-error/LoadingError";
 
 export function ResourcesList(props: {
   resourceText: string;
@@ -18,7 +19,7 @@ export function ResourcesList(props: {
   const isLoading = isPending || isFetching || data == undefined;
 
   if (error) {
-    <div>Error</div>;
+    return <LoadingError />;
   }
 
   return (
@@ -32,7 +33,7 @@ export function ResourcesList(props: {
 
       {isLoading && <LinearProgress />}
 
-      {!isLoading && (props.showIfEmpty !== false && data.length === 0) && (
+      {!isLoading && props.showIfEmpty !== false && data.length === 0 && (
         <NoElementsToDisplay />
       )}
 
