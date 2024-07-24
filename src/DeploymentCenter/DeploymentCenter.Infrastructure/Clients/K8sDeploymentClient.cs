@@ -3,7 +3,7 @@ using DeploymentCenter.Deployments.Infrastructure;
 using DeploymentCenter.SharedKernel;
 using k8s;
 using k8s.Models;
-using System.Reflection.PortableExecutable;
+using System.Linq;
 
 namespace DeploymentCenter.Infrastructure.Clients;
 
@@ -105,6 +105,31 @@ internal class K8sDeploymentClient : IDeploymentClient
             .ToList() ?? [];
     }
 
+    public async Task<List<Deployments.Contract.Models.ContainerMetrics>> GetDeploymentStatistics(string @namespace, string deploymentName)
+    {
+        var deploy = await GetDeployment(@namespace, deploymentName);
+        if (deploy is null)
+        {
+            return [];
+        }
+
+        var pods = await _kubernetes.CoreV1.ListNamespacedPodAsync(@namespace);
+
+        var metrics = await _kubernetes.GetKubernetesPodsMetricsByNamespaceAsync(@namespace);
+
+        return metrics.Items
+            .Where(x => x.Metadata.Name.StartsWith(deploymentName))
+            .SelectMany(x => x.Containers.Select(c =>
+                new Deployments.Contract.Models.ContainerMetrics(
+                    c.Name,
+                    x.Timestamp.GetValueOrDefault(),
+                    c.Usage["cpu"],
+                    c.Usage["memory"]
+                )
+            ))
+            .ToList();
+    }
+
     public async Task<DeploymentDetails?> GetDetails(string @namespace, string deploymentName)
     {
         var deploy = await GetDeployment(@namespace, deploymentName);
@@ -127,7 +152,7 @@ internal class K8sDeploymentClient : IDeploymentClient
             podName,
             @namespace).ConfigureAwait(false);
 
-        using var reader = new  StreamReader(result.Body, System.Text.Encoding.UTF8);
+        using var reader = new StreamReader(result.Body, System.Text.Encoding.UTF8);
         return await reader.ReadToEndAsync();
     }
 

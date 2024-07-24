@@ -1,6 +1,7 @@
 ﻿using DeploymentCenter.Deployments.Api.Features.CreateDeployment;
 using DeploymentCenter.Deployments.Api.Features.GetDeploymentContainers;
 using DeploymentCenter.Deployments.Api.Features.GetDeploymentDetails;
+using DeploymentCenter.Deployments.Api.Features.GetDeploymentMetrics;
 using DeploymentCenter.Deployments.Api.Features.GetDeploymentPods;
 using DeploymentCenter.Deployments.Api.Features.GetDeploymentsList;
 using DeploymentCenter.Deployments.Api.Features.GetPodLogs;
@@ -18,5 +19,6 @@ public static class DeploymentsEndpoints
         endpoints.MapGetDeploymentContainersEndpoint();
         endpoints.MapGetDeploymentPodsEndpoint();
         endpoints.MapGetPodLogsEndpoint();
+        endpoints.MapGetDeploymentMetricsEndpoint();
     }
 }
