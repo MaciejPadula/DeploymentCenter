@@ -1,46 +1,60 @@
-import { Unstable_Grid2 as Grid, TextField, Typography } from "@mui/material";
+import { Unstable_Grid2 as Grid, TextField } from "@mui/material";
 import { SelectNamespace } from "../../../shared/components/select-namespaces/SelectNamespace";
 import { InputVariant } from "../../../shared/helpers/material-config";
 import { Containers } from "./containers/Containers";
 import { Container } from "../../deployment-page/models/container";
-import {
-  applicationFormData,
-  updateAppData,
-} from "../application-form-service";
 import { selectedClusterApiUrl } from "../../../shared/services/configuration-service";
+import { DeploymentData } from "./deployment-data";
+import { UpdaterFunction } from "../shared";
 
-export function SetupDeployment() {
+export function SetupDeployment(props: {
+  value: DeploymentData;
+  updater: UpdaterFunction<DeploymentData>;
+}) {
   const apiUrl = selectedClusterApiUrl.value;
   if (apiUrl === undefined) {
     return <div>Error</div>;
   }
 
+  function setApplicationName(name: string) {
+    props.updater((data) => (data.applicationName = name));
+  }
+
   function setNamespace(namespace: string) {
-    updateAppData((oldData) => (oldData.deployment.namespace = namespace));
+    props.updater((data) => (data.namespace = namespace));
   }
 
   function setDeploymentName(name: string) {
-    updateAppData((oldData) => (oldData.deployment.name = name));
+    props.updater((data) => (data.name = name));
   }
 
   function setReplicas(replicas: string) {
     const parsedValue = parseInt(replicas);
     const valueToSet = isNaN(parsedValue) ? 0 : parsedValue;
 
-    updateAppData((oldData) => (oldData.deployment.replicas = valueToSet));
+    props.updater((data) => (data.replicas = valueToSet));
   }
 
   function setContainers(containers: Container[]) {
-    updateAppData((oldData) => (oldData.deployment.containers = containers));
+    props.updater((data) => (data.containers = containers));
   }
 
   return (
-    <div className="flex flex-col w-full gap-4">
-      <Typography variant="h6">Deployment</Typography>
+    <>
       <Grid container spacing={2}>
         <Grid sm={4} xs={12}>
+          <TextField
+            className="w-full"
+            variant={InputVariant}
+            label="Application Name"
+            defaultValue={props.value.applicationName}
+            onBlur={(e) => setApplicationName(e.target.value)}
+          />
+        </Grid>
+
+        <Grid sm={4} xs={12}>
           <SelectNamespace
-            defaultNamespace={applicationFormData.value.deployment.namespace}
+            defaultNamespace={props.value.namespace}
             apiUrl={apiUrl}
             onNamespaceChanged={setNamespace}
           />
@@ -51,7 +65,7 @@ export function SetupDeployment() {
             className="w-full"
             variant={InputVariant}
             label="Deployment Name"
-            defaultValue={applicationFormData.value.deployment.name}
+            defaultValue={props.value.name}
             onBlur={(e) => setDeploymentName(e.target.value)}
           />
         </Grid>
@@ -62,15 +76,15 @@ export function SetupDeployment() {
             variant={InputVariant}
             label="Replicas"
             type="number"
-            defaultValue={applicationFormData.value.deployment.replicas ?? 0}
+            defaultValue={props.value.replicas ?? 0}
             onBlur={(e) => setReplicas(e.target.value)}
           />
         </Grid>
       </Grid>
       <Containers
-        containers={applicationFormData.value.deployment.containers}
+        containers={props.value.containers}
         onContainersChange={setContainers}
       />
-    </div>
+    </>
   );
 }

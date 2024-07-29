@@ -5,4 +5,4 @@ namespace DeploymentCenter.Services.Contract.Features;
 
 public readonly record struct GetLoadBalancerPortsQuery(
     string Namespace,
-    string LoadBalancerName) : IRequest<List<Port>>;
+    string LoadBalancerName) : IRequest<List<LoadBalancerPort>>;

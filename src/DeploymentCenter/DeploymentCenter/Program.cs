@@ -5,6 +5,7 @@ using DeploymentCenter.Services;
 using DeploymentCenter.SharedKernel;
 using DeploymentCenter.Infrastructure;
 using DeploymentCenter.Deployments.Api;
+using DeploymentCenter.Services.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,5 +36,6 @@ app.UseCors(x => x
 app.UseHttpsRedirection();
 app.MapControllers();
 app.MapDeploymentsEndpoints();
+app.MapServicesEndpoints();
 
 app.Run();

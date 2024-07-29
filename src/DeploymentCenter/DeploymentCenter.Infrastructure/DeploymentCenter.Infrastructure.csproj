@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.Deployments.Infrastructure\DeploymentCenter.Deployments.Infrastructure.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Services.Infrastructure\DeploymentCenter.Services.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
   </ItemGroup>
 

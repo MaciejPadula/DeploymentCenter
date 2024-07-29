@@ -22,8 +22,12 @@ export function useAppRouting() {
     navigate(0);
   }
 
-  function setupAplication() {
-    navigate("setup-application");
+  function setupDeployment() {
+    navigate("setup-deployment");
+  }
+  
+  function setupService() {
+    navigate("setup-service");
   }
 
   function deploymentPage(
@@ -71,7 +75,8 @@ export function useAppRouting() {
     deploymentList,
     loadBalancerList,
     navigateToUrl,
-    setupAplication,
+    setupDeployment,
+    setupService,
     updateConnection,
     cronJobsList,
     namespacesList,

@@ -7,7 +7,8 @@ import { LoadBalancersList } from "./features/load-balancers-list/LoadBalancersL
 import { LoadBalancerPage } from "./features/load-balancer/LoadBalancerPage";
 import { NotFound } from "./shared/components/error/not-found/NotFound";
 import { ClustersList } from "./features/clusters-list/ClustersList";
-import { ApplicationForm } from "./features/application-form/ApplicationForm";
+import { CreateDeployment } from "./features/create-resource/CreateDeployment";
+import { CreateService } from "./features/create-resource/CreateService";
 
 export function RouteRecords() {
   return (
@@ -16,7 +17,8 @@ export function RouteRecords() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<MainPage />} />
 
-          <Route path="setup-application" element={<ApplicationForm />} />
+          <Route path="setup-deployment" element={<CreateDeployment />} />
+          <Route path="setup-service" element={<CreateService />} />
 
           <Route path="clusters-configuration" element={<ClustersList />} />
 

@@ -12,9 +12,14 @@ export function SidebarToggler() {
     setOpen(newOpen);
   }
 
-  function setupApplication() {
+  function setupDeployment() {
     toggleDrawer(false);
-    navigation.setupAplication();
+    navigation.setupDeployment();
+  }
+  
+  function setupService() {
+    toggleDrawer(false);
+    navigation.setupService();
   }
 
   return (
@@ -31,7 +36,8 @@ export function SidebarToggler() {
       </IconButton>
       <Drawer open={open} onClose={() => toggleDrawer(false)}>
         <SelectNamespaceDialog onClose={() => toggleDrawer(false)} />
-        <Button onClick={setupApplication}>Setup new application</Button>
+        <Button onClick={setupDeployment}>Setup new deployment</Button>
+        <Button onClick={setupService}>Setup new service</Button>
       </Drawer>
     </>
   );

@@ -8,12 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.Services.Contract\DeploymentCenter.Services.Contract.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Services.Infrastructure\DeploymentCenter.Services.Infrastructure.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="KubernetesClient" Version="13.0.26" />
   </ItemGroup>
 
 </Project>
