@@ -27,7 +27,15 @@ export function ReplicasList(props: {
   return (
     <div>
       {isLoading && <LinearProgress />}
-      {!isLoading && data.map((pod) => <ReplicaRow key={pod.name} pod={pod} />)}
+      {!isLoading &&
+        data.map((pod) => (
+          <ReplicaRow
+            key={pod.name}
+            pod={pod}
+            namespace={props.namespace}
+            clusterUrl={props.clusterUrl}
+          />
+        ))}
     </div>
   );
 }

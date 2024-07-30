@@ -1,22 +1,21 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ResourcesList } from "../../shared/components/resources-list/ResourcesList";
 import {
   ResourceRowModel,
   ResourcesFactory,
 } from "../../shared/components/resources-list/resource-row-model";
 import useLoadBalancersDataService from "./load-balancers-data-service";
-import { getLoadBalancerUrl } from "../../shared/services/routing-service";
 import { SvcIcon } from "../../assets/icons";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
+import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
+import { useAppRouting } from "../../shared/hooks/navigation";
 
 export function LoadBalancersList() {
-  const { configuration } = useConfigurationContext();
-  const navigate = useNavigate();
+  const navigation = useAppRouting();
   const { namespace, clusterName } = useParams();
-  const cluster = configuration.clusters.find((x) => x.name === clusterName);
-  const dataService = useLoadBalancersDataService(cluster?.apiUrl);
+  const clusterApiUrl = selectedClusterApiUrl.value;
+  const dataService = useLoadBalancersDataService(clusterApiUrl);
 
-  if (namespace === undefined || clusterName === undefined || cluster === undefined) {
+  if (namespace === undefined || clusterName === undefined || clusterApiUrl === undefined) {
     return <div>Error</div>;
   }
 
@@ -29,12 +28,17 @@ export function LoadBalancersList() {
           name: x.name,
           namespace,
           icon: SvcIcon,
-          clickHandler: () => navigate(getLoadBalancerUrl(clusterName, namespace, x.name)),
+          clickHandler: () =>
+            navigation.loadBalancerPage(clusterName, namespace, x.name),
         } as ResourceRowModel)
     );
   };
 
   return (
-    <ResourcesList resourceText="Load Balancers" resourcesFactory={factory} />
+    <ResourcesList
+      resourceKey="LoadBalancersLoader"
+      resourceText="Load Balancers"
+      resourcesFactory={factory}
+    />
   );
 }

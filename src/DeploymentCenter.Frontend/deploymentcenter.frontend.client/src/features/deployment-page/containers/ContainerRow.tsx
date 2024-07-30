@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { Container } from "../models/container";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { InputVariant } from "../../../shared/helpers/material-config";
 
 export function ContainerRow(props: { container: Container }) {
   return (
@@ -16,14 +17,22 @@ export function ContainerRow(props: { container: Container }) {
       </AccordionSummary>
       <AccordionDetails>
         <Typography>{props.container.image}</Typography>
-        {Array.from(props.container.environmentVariables).map(
-          ([key, value]) => (
-            <div key={key} className="flex flex-row justify-center">
-              <TextField className="w-full sm:w-1/2" variant="standard" label={'Key'} value={key} />
-              <TextField className="w-full sm:w-1/2" variant="standard" label={'Value'} value={value} />
-            </div>
-          )
-        )}
+        {Array.from(props.container.environmentVariables).map((x) => (
+          <div key={x.key} className="flex flex-row justify-center">
+            <TextField
+              className="w-full sm:w-1/2"
+              variant={InputVariant}
+              label={"Key"}
+              value={x.key}
+            />
+            <TextField
+              className="w-full sm:w-1/2"
+              variant={InputVariant}
+              label={"Value"}
+              value={x.value}
+            />
+          </div>
+        ))}
       </AccordionDetails>
     </Accordion>
   );

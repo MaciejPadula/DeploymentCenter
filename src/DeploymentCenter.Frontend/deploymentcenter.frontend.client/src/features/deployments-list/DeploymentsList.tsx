@@ -4,19 +4,22 @@ import {
   ResourceRowModel,
   ResourcesFactory,
 } from "../../shared/components/resources-list/resource-row-model";
-import { useNavigate, useParams } from "react-router-dom";
-import { getDeploymentUrl } from "../../shared/services/routing-service";
+import { useParams } from "react-router-dom";
 import { DeployIcon } from "../../assets/icons";
-import { useConfigurationContext } from "../../shared/contexts/context-helpers";
+import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
+import { useAppRouting } from "../../shared/hooks/navigation";
 
 export function DeploymentsList() {
-  const { configuration } = useConfigurationContext();
-  const navigate = useNavigate();
+  const navigation = useAppRouting();
   const { namespace, clusterName } = useParams();
-  const cluster = configuration.clusters.find((x) => x.name === clusterName);
-  const dataService = useDeploymentsDataService(cluster?.apiUrl);
+  const clusterApiUrl = selectedClusterApiUrl.value;
+  const dataService = useDeploymentsDataService(clusterApiUrl);
 
-  if (namespace === undefined || clusterName === undefined || cluster === undefined) {
+  if (
+    namespace === undefined ||
+    clusterName === undefined ||
+    clusterApiUrl === undefined
+  ) {
     return <div>Error</div>;
   }
 
@@ -29,12 +32,17 @@ export function DeploymentsList() {
           name: x.name,
           namespace: namespace,
           icon: DeployIcon,
-          clickHandler: () => navigate(getDeploymentUrl(clusterName, namespace, x.name)),
+          clickHandler: () =>
+            navigation.deploymentPage(clusterName, namespace, x.name),
         } as ResourceRowModel)
     );
   };
 
   return (
-    <ResourcesList resourceText="Deployments" resourcesFactory={factory} />
+    <ResourcesList
+      resourceKey="DeploymentsLoader"
+      resourceText="Deployments"
+      resourcesFactory={factory}
+    />
   );
 }

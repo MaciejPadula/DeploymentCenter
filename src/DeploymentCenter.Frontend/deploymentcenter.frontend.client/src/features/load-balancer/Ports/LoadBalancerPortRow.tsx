@@ -5,6 +5,6 @@ export function LoadBalancerPortRow(props: { port: LoadBalancerPort }) {
   const port = props.port;
   
   return (
-    <Chip label={`${port.hostPort}:${port.targetPort}/${port.protocol}`} />
+    <Chip label={`${port.hostPort}:${port.targetPort}`} />
   );
 }

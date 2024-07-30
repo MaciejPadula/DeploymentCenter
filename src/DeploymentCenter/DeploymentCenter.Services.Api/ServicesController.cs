@@ -69,8 +69,7 @@ public class ServicesController : ApiControllerBase
         return Ok(new GetLoadBalancerPortsResponse(
             loadBalancerPorts
                 .Select(x => new LoadBalancerPort(
-                    x.Protocol,
-                    x.HostPort,
+                    x.Port,
                     x.TargetPort))
                 .ToList()));
     }

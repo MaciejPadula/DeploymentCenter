@@ -3,39 +3,39 @@ using DeploymentCenter.Images;
 using DeploymentCenter.Namespaces;
 using DeploymentCenter.Services;
 using DeploymentCenter.SharedKernel;
+using DeploymentCenter.Infrastructure;
+using DeploymentCenter.Deployments.Api;
+using DeploymentCenter.Services.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add ASP.NET
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 
-// Register modules
 builder.Services.AddImagesModule();
 builder.Services.AddDeploymentsModule();
 builder.Services.AddServicesModule();
 builder.Services.AddNamespacesModule();
+
+builder.Services.AddInfrastructureModule();
 builder.Services.AddSharedKernelModule();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
-// Global CORS policy
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true) // Allow any origin
-    .AllowCredentials()); // Allow credentials
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
 
 app.UseHttpsRedirection();
 app.MapControllers();
+app.MapDeploymentsEndpoints();
+app.MapServicesEndpoints();
 
 app.Run();

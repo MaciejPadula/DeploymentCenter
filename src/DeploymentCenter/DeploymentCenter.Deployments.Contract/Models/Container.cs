@@ -3,4 +3,5 @@
 public readonly record struct Container(
     string Name,
     string Image,
-    Dictionary<string, string> EnvironmentVariables);
+    List<ContainerPort> Ports,
+    List<EnvironmentVariable> EnvironmentVariables);

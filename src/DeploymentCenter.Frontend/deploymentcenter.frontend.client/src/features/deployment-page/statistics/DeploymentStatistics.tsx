@@ -1,20 +1,70 @@
 import { Paper, Typography } from "@mui/material";
-import { LineChart, PieChart } from "@mui/x-charts";
+import { PieChart } from "@mui/x-charts";
+import { LineChartBox } from "../../../shared/components/charts/line-chart/LineChartBox";
+import { useEffect, useState } from "react";
+import useDeploymentPageDataService from "../deployment-page-data-service";
+import { XAxisData } from "../../../shared/components/charts/line-chart/x-axis-data";
+import { ChartSerie } from "../../../shared/components/charts/line-chart/chart-serie";
+import { getNowFormatedTime } from "../../../shared/helpers/date-helpers";
+import { lastElements } from "../../../shared/helpers/array-helpers";
+import { DeploymentMetrics } from "../models/deployment-metrics";
+
+const maxPointsOnChart = 10;
 
 export function DeploymentStatistics(props: {
+  clusterUrl: string;
+  deploymentName: string;
+  namespace: string;
   alivePods: number;
   deadPods: number;
 }) {
-    const cpuTreshold = 75;
-    const procesorUsages = [20, 2, 100, 0, 55, 11, 100];
+  const dataService = useDeploymentPageDataService(props.clusterUrl);
+  const [metrics, setMetrics] = useState<DeploymentMetrics[]>([]);
 
-    const memoryTreshold = 2048;
-    const memoryUsages = [5, 2, 512, 2, 2048, 2000, 1024, 5];
+  async function fetchDeploymentMetrics() {
+    const metrics = await dataService.getDeploymentMetrics(
+      props.namespace,
+      props.deploymentName
+    );
+
+    setMetrics((old) =>
+      lastElements(
+        [
+          ...old,
+          {
+            cpuUsage: metrics.cpuUsage,
+            memoryUsage: metrics.memoryUsage,
+            timestampUtc: getNowFormatedTime(),
+          },
+        ],
+        maxPointsOnChart
+      )
+    );
+  }
+
+  useEffect(() => {
+    const interval = setInterval(fetchDeploymentMetrics, 5000);
+    return () => clearInterval(interval);
+  });
+
+  const xAxisData: XAxisData<string> = {
+    values: metrics.map((x) => x.timestampUtc),
+  };
+
+  const cpuChart: ChartSerie = {
+    title: "Cpu Usage [%]",
+    data: metrics.map((x) => x.cpuUsage),
+  };
+
+  const memoryChart: ChartSerie = {
+    title: "Memory Usage [MB]",
+    data: metrics.map((x) => x.memoryUsage),
+  };
 
   return (
     <Paper className="flex flex-wrap w-full p-4 flex-col" elevation={2}>
       <Typography variant="h5">{"Pods Statistics"}</Typography>
-      <div className="w-full flex flex-col sm:flex-row items-center justify-center">
+      <div className="w-full flex flex-col 2xl:flex-row items-center justify-center">
         <div className="w-full">
           <PieChart
             series={[
@@ -39,43 +89,10 @@ export function DeploymentStatistics(props: {
           />
         </div>
         <div className="w-full">
-          <LineChart
-            series={[
-              {
-                data: procesorUsages,
-                area: true,
-                label: "CPU Usage [%]",
-                color: procesorUsages?.some(x => x > cpuTreshold) ? "red" : "green",
-              },
-              {
-                label: "CPU Limit [%]",
-                data: memoryUsages.map(() => cpuTreshold),
-                color: "blue",
-                showMark: false,
-              }
-            ]}
-            height={300}
-          />
+          <LineChartBox series={[cpuChart]} xAxis={xAxisData} />
         </div>
         <div className="w-full">
-          <LineChart
-            series={[
-              {
-                data: memoryUsages,
-                area: true,
-                label: "Memory Usage [MB]",
-                color: memoryUsages?.some(x => x > memoryTreshold) ? "red" : "green",
-              },
-              {
-                data: memoryUsages.map(() => memoryTreshold),
-                color: "blue",
-                label: "Memory Limit [MB]",
-                showMark: false,
-                curve: 'stepBefore'
-              }
-            ]}
-            height={300}
-          />
+          <LineChartBox series={[memoryChart]} xAxis={xAxisData} />
         </div>
       </div>
     </Paper>
