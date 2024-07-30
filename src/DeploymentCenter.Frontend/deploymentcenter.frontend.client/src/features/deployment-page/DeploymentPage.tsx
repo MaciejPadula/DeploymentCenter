@@ -80,6 +80,9 @@ export function DeploymentPage() {
       />
       {details && (
         <DeploymentStatistics
+          clusterUrl={clusterApiUrl}
+          deploymentName={deploymentName}
+          namespace={namespace}
           alivePods={details?.aliveReplicas ?? 0}
           deadPods={(details?.allReplicas ?? 0) - (details?.aliveReplicas ?? 0)}
         />

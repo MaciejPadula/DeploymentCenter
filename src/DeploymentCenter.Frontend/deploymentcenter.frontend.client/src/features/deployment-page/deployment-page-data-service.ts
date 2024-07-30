@@ -58,11 +58,28 @@ function DeploymentPageDataService(apiUrl: string) {
     return response.data.logText;
   }
 
+  interface GetDeploymentMetricsResponse {
+    cpuUsage: number;
+    memoryUsage: number;
+  }
+
+  async function getDeploymentMetrics(
+    namespace: string,
+    deploymentName: string
+  ): Promise<GetDeploymentMetricsResponse> {
+    const response = await axios.get<GetDeploymentMetricsResponse>(
+      `${apiUrl}/${controller}/GetDeploymentMetrics?namespace=${namespace}&deploymentName=${deploymentName}`
+    );
+
+    return response.data;
+  }
+
   return {
     getDeploymentDetails,
     getDeploymentPods,
     getDeploymentContainers,
     getPodLogs,
+    getDeploymentMetrics,
   };
 }
 

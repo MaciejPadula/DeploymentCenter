@@ -105,7 +105,7 @@ internal class K8sDeploymentClient : IDeploymentClient
             .ToList() ?? [];
     }
 
-    public async Task<List<Deployments.Contract.Models.ContainerMetrics>> GetDeploymentStatistics(string @namespace, string deploymentName)
+    public async Task<List<Deployments.Infrastructure.ContainerMetrics>> GetDeploymentStatistics(string @namespace, string deploymentName)
     {
         var deploy = await GetDeployment(@namespace, deploymentName);
         if (deploy is null)
@@ -120,7 +120,7 @@ internal class K8sDeploymentClient : IDeploymentClient
         return metrics.Items
             .Where(x => x.Metadata.Name.StartsWith(deploymentName))
             .SelectMany(x => x.Containers.Select(c =>
-                new Deployments.Contract.Models.ContainerMetrics(
+                new Deployments.Infrastructure.ContainerMetrics(
                     c.Name,
                     x.Timestamp.GetValueOrDefault(),
                     c.Usage["cpu"],

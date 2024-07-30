@@ -22,15 +22,10 @@ internal static class GetDeploymentMetricsEndpoint
             {
                 var result = await mediator.Send(new GetDeploymentMetricsQuery(@namespace, deploymentName));
 
-                var metrics = result
-                    .Select(c => new ContainerMetrics(
-                        c.ContainerName,
-                        c.TimestampUtc,
-                        c.CpuUsage,
-                        c.MemoryUsage))
-                    .ToList();
-
-                return Results.Ok(new GetDeploymentMetricsResponse(metrics));
+                return Results.Ok(new GetDeploymentMetricsResponse(
+                    result.TimestampUtc,
+                    result.CpuUsage,
+                    result.MemoryUsage));
             })
             .WithTags(DeploymentsConsts.EndpointGroupTag);
     }

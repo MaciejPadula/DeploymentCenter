@@ -1,4 +1,4 @@
-﻿namespace DeploymentCenter.Deployments.Contract.Models;
+﻿namespace DeploymentCenter.Deployments.Infrastructure;
 
 public readonly record struct ContainerMetrics(
     string ContainerName,

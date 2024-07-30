@@ -29,7 +29,7 @@ export function SelectClusters(props: {
       props.onClusterEdit();
     }
 
-    navigation.navigateToClustersConfiguration();
+    navigation.clustersConfiguration();
   }
 
   return (
