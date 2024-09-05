@@ -8,11 +8,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.Namespaces.Contract\DeploymentCenter.Namespaces.Contract.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Namespaces.Infrastructure\DeploymentCenter.Namespaces.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="KubernetesClient" Version="13.0.26" />
+    <PackageReference Include="KubernetesClient" Version="14.0.9" />
   </ItemGroup>
 
 </Project>

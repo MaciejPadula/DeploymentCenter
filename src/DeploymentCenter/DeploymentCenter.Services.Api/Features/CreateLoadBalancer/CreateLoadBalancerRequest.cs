@@ -1,4 +1,4 @@
-﻿using DeploymentCenter.Services.Api.Entities;
+﻿using DeploymentCenter.Services.Api.Shared.Models;
 
 namespace DeploymentCenter.Services.Api.Features.CreateLoadBalancer;
 

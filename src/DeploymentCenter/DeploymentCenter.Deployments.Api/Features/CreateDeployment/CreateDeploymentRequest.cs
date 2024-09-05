@@ -1,5 +1,4 @@
-﻿using DeploymentCenter.Api;
-using DeploymentCenter.Deployments.Api.Shared.Models;
+﻿using DeploymentCenter.Deployments.Api.Shared.Models;
 
 namespace DeploymentCenter.Deployments.Api.Features.CreateDeployment;
 
@@ -8,4 +7,4 @@ internal record CreateDeploymentRequest(
     string Name,
     string ApplicationName,
     int Replicas,
-    List<Container> Containers) : IApiBody;
+    List<Container> Containers);

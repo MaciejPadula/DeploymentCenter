@@ -1,27 +1,23 @@
-﻿using DeploymentCenter.Deployments.Api.Shared;
+﻿using DeploymentCenter.Api.Framework.Endpoints;
+using DeploymentCenter.Deployments.Api.Shared;
 using DeploymentCenter.Deployments.Contract.Features;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 
 namespace DeploymentCenter.Deployments.Api.Features.GetDeploymentPods;
 
-internal static class GetDeploymentPodsEndpoint
+internal class GetDeploymentPodsEndpoint() : ApiGetEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    public static void MapGetDeploymentPodsEndpoint(this IEndpointRouteBuilder endpoints)
+    protected override string EndpointName => "GetDeploymentPods";
+
+    protected override Delegate Handler => async (
+        [FromQuery] string @namespace,
+        [FromQuery] string deploymentName,
+        IMediator mediator,
+        CancellationToken cancellationToken) =>
     {
-        endpoints.MapGet(
-            "api/Deployments/GetDeploymentPods",
-            async (
-                [FromQuery] string @namespace,
-                [FromQuery] string deploymentName,
-                IMediator mediator) =>
-            {
-                var result = await mediator.Send(new GetDeploymentPodsQuery(@namespace, deploymentName));
-                return Results.Ok(new GetDeploymentPodsResponse(result.ToDtosList()));
-            })
-            .WithTags(DeploymentsConsts.EndpointGroupTag);
-    }
+        var result = await mediator.Send(new GetDeploymentPodsQuery(@namespace, deploymentName), cancellationToken);
+        return Results.Ok(new GetDeploymentPodsResponse(result.ToDtosList()));
+    };
 }

@@ -8,27 +8,11 @@ using System.Net;
 
 namespace DeploymentCenter.Services.Features;
 
-internal class GetLoadBalancerIpAddressesHandler : IRequestHandler<GetLoadBalancerIpAddressesQuery, List<IPAddress>>
+internal class GetLoadBalancerIpAddressesHandler(IServiceClient serviceClient, IIpAddressParser ipAddressParser) : IRequestHandler<GetLoadBalancerIpAddressesQuery, List<IPAddress>>
 {
-    private readonly IKubernetesClientWrapper _kubernetesClient;
-    private readonly IIpAddressParser _ipAddressParser;
-
-    public GetLoadBalancerIpAddressesHandler(
-        IKubernetesClientWrapper kubernetesClient,
-        IIpAddressParser ipAddressParser)
-    {
-        _kubernetesClient = kubernetesClient;
-        _ipAddressParser = ipAddressParser;
-    }
-
     public async Task<List<IPAddress>> Handle(GetLoadBalancerIpAddressesQuery request, CancellationToken cancellationToken)
     {
-        var services = await _kubernetesClient.GetServices(request.Namespace);
-
-        return services.Items
-            .Where(x => x.Spec.Type == Consts.LoadBalancerKey && x.Metadata.Name == request.LoadBalancerName)
-            .SelectMany(x => x.Spec.ExternalIPs)
-            .Select(_ipAddressParser.Parse)
-            .ToList();
+        var addresses = await serviceClient.GetLoadBalancerIpAddresses(request.Namespace, request.LoadBalancerName);
+        return addresses.Select(ipAddressParser.Parse).ToList();
     }
 }
