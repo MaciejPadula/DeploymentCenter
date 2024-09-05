@@ -7,12 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="KubernetesClient" Version="13.0.26" />
+    <PackageReference Include="KubernetesClient" Version="14.0.9" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.Deployments.Infrastructure\DeploymentCenter.Deployments.Infrastructure.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Namespaces.Infrastructure\DeploymentCenter.Namespaces.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Services.Infrastructure\DeploymentCenter.Services.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
   </ItemGroup>

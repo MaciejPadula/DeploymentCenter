@@ -1,4 +1,5 @@
-﻿using DeploymentCenter.Deployments.Api.Shared;
+﻿using DeploymentCenter.Api.Framework.Endpoints;
+using DeploymentCenter.Deployments.Api.Shared;
 using DeploymentCenter.Deployments.Contract.Features;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -8,19 +9,16 @@ using Microsoft.AspNetCore.Routing;
 
 namespace DeploymentCenter.Deployments.Api.Features.GetDeploymentsList;
 
-internal static class GetDeploymentsListEndpoint
+internal class GetDeploymentsListEndpoint() : ApiGetEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    public static void MapGetDeploymentsListEndpoint(this IEndpointRouteBuilder endpoints)
+    protected override string EndpointName => "GetDeploymentsList";
+
+    protected override Delegate Handler => async (
+        [FromQuery] string @namespace,
+        IMediator mediator,
+        CancellationToken cancellationToken) =>
     {
-        endpoints.MapGet(
-            "api/Deployments/GetDeploymentsList",
-            async (
-                [FromQuery] string @namespace,
-                IMediator mediator) =>
-            {
-                var result = await mediator.Send(new GetDeploymentsListQuery(@namespace));
-                return Results.Ok(new GetDeploymentsListResponse(result.ToDtosList()));
-            })
-            .WithTags(DeploymentsConsts.EndpointGroupTag);
-    }
+        var result = await mediator.Send(new GetDeploymentsListQuery(@namespace), cancellationToken);
+        return Results.Ok(new GetDeploymentsListResponse(result.ToDtosList()));
+    };
 }

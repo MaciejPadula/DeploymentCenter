@@ -1,5 +1,3 @@
-﻿using DeploymentCenter.Api;
+﻿namespace DeploymentCenter.Deployments.Api.Features.GetDeploymentPods;
 
-namespace DeploymentCenter.Deployments.Api.Features.GetDeploymentPods;
-
-internal record GetDeploymentPodsResponse(List<Pod> Pods) : IApiResponse;
+internal record GetDeploymentPodsResponse(List<Pod> Pods);

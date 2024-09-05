@@ -1,4 +1,5 @@
-﻿using DeploymentCenter.Deployments.Api.Shared;
+﻿using DeploymentCenter.Api.Framework.Endpoints;
+using DeploymentCenter.Deployments.Api.Shared;
 using DeploymentCenter.Deployments.Contract.Features;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -8,23 +9,19 @@ using Microsoft.AspNetCore.Routing;
 
 namespace DeploymentCenter.Deployments.Api.Features.GetPodLogs;
 
-internal static class GetPodLogsEndpoint
+internal class GetPodLogsEndpoint() : ApiGetEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    public static void MapGetPodLogsEndpoint(this IEndpointRouteBuilder app)
+    protected override string EndpointName => "GetPodLogs";
+
+    protected override Delegate Handler => async (
+        [FromQuery] string @namespace,
+        [FromQuery] string podName,
+        IMediator mediator,
+        CancellationToken cancellationToken) =>
     {
-        app.MapGet(
-            "/api/Deployments/GetPodLogs",
-            async (
-                [FromQuery] string @namespace,
-                [FromQuery] string podName,
-                IMediator mediator,
-                CancellationToken cancellationToken) =>
-            {
-                var result = await mediator.Send(new GetPodLogsQuery(
-                    @namespace,
-                    podName), cancellationToken);
-                return Results.Ok(new GetPodLogsResponse(result));
-            })
-            .WithTags(DeploymentsConsts.EndpointGroupTag);
-    }
+        var result = await mediator.Send(new GetPodLogsQuery(
+            @namespace,
+            podName), cancellationToken);
+        return Results.Ok(new GetPodLogsResponse(result));
+    };
 }

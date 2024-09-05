@@ -1,38 +1,34 @@
-﻿using DeploymentCenter.Deployments.Api.Shared;
+﻿using DeploymentCenter.Api.Framework.Endpoints;
+using DeploymentCenter.Deployments.Api.Shared;
 using DeploymentCenter.Deployments.Contract.Features;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 
 namespace DeploymentCenter.Deployments.Api.Features.GetDeploymentDetails;
 
-internal static class GetDeploymentDetailsEndpoint
+internal class GetDeploymentDetailsEndpoint() : ApiGetEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    public static void MapGetDeploymentDetailsEndpoint(this IEndpointRouteBuilder endpoints)
+    protected override string EndpointName => "GetDeploymentDetails";
+
+    protected override Delegate Handler => async (
+        [FromQuery] string @namespace,
+        [FromQuery] string deploymentName,
+        IMediator mediator,
+        CancellationToken cancellationToken) =>
     {
-        endpoints.MapGet(
-            "api/Deployments/GetDeploymentDetails",
-            async (
-                [FromQuery] string @namespace,
-                [FromQuery] string deploymentName,
-                IMediator mediator) =>
-            {
-                var details = await mediator.Send(new GetDeploymentDetailsQuery(@namespace, deploymentName));
+        var details = await mediator.Send(new GetDeploymentDetailsQuery(@namespace, deploymentName), cancellationToken);
 
-                if (!details.HasValue)
-                {
-                    return Results.NotFound();
-                }
+        if (!details.HasValue)
+        {
+            return Results.NotFound();
+        }
 
-                return Results.Ok(new GetDeploymentDetailsResponse(
-                    details.Value.Namespace,
-                    details.Value.Name,
-                    details.Value.ApplicationName,
-                    details.Value.AliveReplicas,
-                    details.Value.AllReplicas));
-            })
-            .WithTags(DeploymentsConsts.EndpointGroupTag);
-    }
+        return Results.Ok(new GetDeploymentDetailsResponse(
+            details.Value.Namespace,
+            details.Value.Name,
+            details.Value.ApplicationName,
+            details.Value.AliveReplicas,
+            details.Value.AllReplicas));
+    };
 }
