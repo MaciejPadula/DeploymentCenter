@@ -14,6 +14,7 @@ export function ResourcesList(props: {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: [props.resourceKey],
     queryFn: props.resourcesFactory,
+    retry: 2,
   });
 
   const isLoading = isPending || isFetching || data == undefined;

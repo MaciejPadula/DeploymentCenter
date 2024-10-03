@@ -5,7 +5,7 @@ using MediatR;
 
 namespace DeploymentCenter.Deployments.Features;
 
-internal class GetDeploymentMetricsHandler : IRequestHandler<GetDeploymentMetricsQuery, DeploymentMetrics>
+internal class GetDeploymentMetricsHandler : IRequestHandler<GetDeploymentMetricsQuery, DeploymentMetrics?>
 {
     private readonly IDeploymentClient _deploymentClient;
 
@@ -14,8 +14,13 @@ internal class GetDeploymentMetricsHandler : IRequestHandler<GetDeploymentMetric
         _deploymentClient = deploymentClient;
     }
 
-    public async Task<DeploymentMetrics> Handle(GetDeploymentMetricsQuery request, CancellationToken cancellationToken)
+    public async Task<DeploymentMetrics?> Handle(GetDeploymentMetricsQuery request, CancellationToken cancellationToken)
     {
+        if (!await _deploymentClient.AreMetricsAvailable())
+        {
+            return null;
+        }
+
         var containersMetrics = await _deploymentClient.GetDeploymentStatistics(request.Namespace, request.DeploymentName);
 
         var cpuUsage = containersMetrics.Sum(x => x.CpuUsage);

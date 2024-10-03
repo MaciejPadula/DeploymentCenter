@@ -18,6 +18,7 @@ export function ResourceSummary(props: {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: [props.resourceSummaryKey],
     queryFn: props.resourceSummaryFactory,
+    retry: 2,
   });
 
   const isLoading = isPending || isFetching || data == undefined;

@@ -1,29 +1,101 @@
+import { useEffect } from "react";
+import { useFormService } from "../../libs/forms/form-service";
 import { CreateResourceForm } from "../../shared/components/create-resource-form/CreateResourceForm";
 import { useAppRouting } from "../../shared/hooks/navigation";
 import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
 import useApplicationFormDataService from "./form-data-service";
 import { SetupDeployment } from "./setup-deployment/SetupDeployment";
-import { DeploymentData, getEmptyDeploymentData } from "./setup-deployment/deployment-data";
+import {
+  DeploymentData,
+  getEmptyDeploymentData,
+} from "./setup-deployment/deployment-data";
+import { containersValidator } from "./setup-deployment/validators/containers-validator";
+import { ValidatorBuilder } from "../../libs/forms/validator-builder";
+import { requiredValidator } from "../../shared/validators/required-validator";
+import { kubernetesNameValidator } from "./validators/kubernetes-name-validator";
+import { textValidator } from "../../shared/validators/text-validator";
+import { greaterThanValidator } from "../../shared/validators/greater-than-validator";
+import { numberValidator } from "../../shared/validators/number-validator";
 
 export function CreateDeployment() {
+  const storageKey = "deploymentData";
   const apiUrl = selectedClusterApiUrl.value;
-  const formDatService = useApplicationFormDataService(apiUrl);
+  const formDataService = useApplicationFormDataService(apiUrl);
   const navigation = useAppRouting();
+  const {
+    currentValue,
+    revalidate,
+    addValidator,
+    updateData,
+    resetData,
+    isValid,
+    validationResult,
+  } = useFormService<DeploymentData>(storageKey, getEmptyDeploymentData);
 
-  async function submit(deploymentData: DeploymentData) {
-    await formDatService.createDeployment(deploymentData);
+  useEffect(() => {
+    addValidator(
+      "applicationName",
+      new ValidatorBuilder<DeploymentData>()
+        .withValidation((data) => requiredValidator(data.applicationName))
+        .withValidation((data) => textValidator(data.applicationName))
+        .withValidation((data) => kubernetesNameValidator(data.applicationName))
+        .build()
+    );
+  
+    addValidator(
+      "namespace",
+      new ValidatorBuilder<DeploymentData>()
+        .withValidation((data) => requiredValidator(data.namespace))
+        .build()
+    );
+  
+    addValidator(
+      "name",
+      new ValidatorBuilder<DeploymentData>()
+        .withValidation((data) => requiredValidator(data.name))
+        .withValidation((data) => textValidator(data.name))
+        .withValidation((data) => kubernetesNameValidator(data.name))
+        .build()
+    );
+  
+    addValidator(
+      "replicas",
+      new ValidatorBuilder<DeploymentData>()
+        .withValidation((data) => requiredValidator(data.replicas))
+        .withValidation((data) => numberValidator(data.replicas))
+        .withValidation((data) => greaterThanValidator(data.replicas, 0))
+        .build()
+    );
+  
+    addValidator("containers", containersValidator);
+    
+    revalidate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function submit() {
+    await formDataService.createDeployment(currentValue);
     navigation.mainPage();
+  }
+
+  function reset() {
+    resetData();
+    navigation.reloadPage();
   }
 
   return (
     <CreateResourceForm
       resourceTitle="Creating Deployment"
-      storageKey="deploymentData"
-      defaultValueFactory={getEmptyDeploymentData}
+      storageKey={storageKey}
       onSubmit={submit}
-      childrenFactory={(defaultValue, updater) => {
-        return <SetupDeployment value={defaultValue} updater={updater} />;
-      }}
-    ></CreateResourceForm>
+      isValid={isValid}
+      resetForm={reset}
+    >
+      <SetupDeployment
+        value={currentValue}
+        updater={updateData}
+        validationResults={validationResult}
+      />
+    </CreateResourceForm>
   );
 }

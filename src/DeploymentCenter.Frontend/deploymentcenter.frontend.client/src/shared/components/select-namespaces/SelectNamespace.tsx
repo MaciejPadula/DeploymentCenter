@@ -1,5 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Skeleton,
+} from "@mui/material";
 import { useSelectNamespaceDataService } from "./select-namespace-data-service";
 import { useEffect, useState } from "react";
 import { InputVariant } from "../../helpers/material-config";
@@ -8,6 +15,8 @@ export function SelectNamespace(props: {
   defaultNamespace: string;
   apiUrl: string;
   onNamespaceChanged: (namespace: string) => void;
+  error?: boolean;
+  helperText?: string;
 }) {
   const dataService = useSelectNamespaceDataService(props.apiUrl);
   const { isPending, error, data, isFetching, refetch } = useQuery({
@@ -33,9 +42,18 @@ export function SelectNamespace(props: {
 
   return (
     <div className="w-full">
-      {isLoading && <div>Loading...</div>}
+      {isLoading && (
+        <>
+          <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+          <Skeleton variant="text" sx={{ fontSize: "2rem" }} />
+        </>
+      )}
       {!isLoading && (
-        <FormControl className="w-full" variant={InputVariant}>
+        <FormControl
+          className="w-full"
+          variant={InputVariant}
+          error={props.error}
+        >
           <InputLabel>Namespace</InputLabel>
           <Select
             value={namespace}
@@ -47,6 +65,9 @@ export function SelectNamespace(props: {
               </MenuItem>
             ))}
           </Select>
+          {props.error && (
+            <FormHelperText>{props?.helperText ?? ""}</FormHelperText>
+          )}
         </FormControl>
       )}
     </div>

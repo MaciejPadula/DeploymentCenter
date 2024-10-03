@@ -1,0 +1,22 @@
+.error-page {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  height: 70svh;
+
+  .frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30%;
+    height: 30%;
+    border: white 1px solid;
+
+    @media screen and (max-width: 768px) {
+      width: 80%;
+      height: 50%;
+    }
+  }
+}

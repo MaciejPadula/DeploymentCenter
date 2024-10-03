@@ -2,12 +2,31 @@
 using DeploymentCenter.Deployments.Infrastructure;
 using DeploymentCenter.SharedKernel;
 using k8s;
+using k8s.Autorest;
 using k8s.Models;
 
 namespace DeploymentCenter.Infrastructure.Clients;
 
 internal class K8sDeploymentClient(IKubernetes kubernetes) : IDeploymentClient
 {
+    public async Task<bool> AreMetricsAvailable()
+    {
+        try
+        {
+            var metrics = await kubernetes.GetKubernetesNodesMetricsAsync();
+            return true;
+        }
+        catch (HttpOperationException ex)
+        {
+            if (ex.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return false;
+            }
+
+            throw;
+        }
+    }
+
     public async Task CreateDeployment(Deployment deployment)
     {
         await kubernetes.AppsV1.CreateNamespacedDeploymentAsync(new()

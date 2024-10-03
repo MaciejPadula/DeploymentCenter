@@ -1,4 +1,6 @@
-export interface ServiceData {
+import { FormGroup } from "../../../libs/forms/form-group";
+
+export interface ServiceData extends FormGroup {
   applicationName: string;
   namespace: string;
   name: string;

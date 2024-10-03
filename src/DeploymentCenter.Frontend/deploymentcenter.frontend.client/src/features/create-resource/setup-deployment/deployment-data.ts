@@ -1,6 +1,7 @@
+import { FormGroup } from "../../../libs/forms/form-group";
 import { Container } from "../../deployment-page/models/container";
 
-export interface DeploymentData {
+export interface DeploymentData extends FormGroup {
   namespace: string;
   name: string;
   applicationName: string;

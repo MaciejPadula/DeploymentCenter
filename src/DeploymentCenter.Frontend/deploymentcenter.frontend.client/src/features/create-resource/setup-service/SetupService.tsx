@@ -10,6 +10,7 @@ export function SetupService(props: {
   updater: UpdaterFunction<ServiceData>;
 }) {
   const apiUrl = selectedClusterApiUrl.value;
+
   if (apiUrl === undefined) {
     return <div>Error</div>;
   }

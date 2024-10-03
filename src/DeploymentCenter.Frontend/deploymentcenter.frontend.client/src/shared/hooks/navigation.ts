@@ -6,7 +6,6 @@ export function useAppRouting() {
 
   function clustersConfiguration() {
     navigate("/clusters-configuration");
-    navigate(0);
   }
 
   function mainPage() {
@@ -19,13 +18,13 @@ export function useAppRouting() {
     namespace: string
   ) {
     navigate(createRedirectUrl(currentLocation, cluster, namespace));
-    navigate(0);
+    reloadPage();
   }
 
   function setupDeployment() {
     navigate("setup-deployment");
   }
-  
+
   function setupService() {
     navigate("setup-service");
   }
@@ -36,7 +35,6 @@ export function useAppRouting() {
     deploymentName: string
   ) {
     navigate(`/${clusterName}/${namespace}/deployments/${deploymentName}`);
-    navigate(0);
   }
 
   function loadBalancerPage(
@@ -67,6 +65,10 @@ export function useAppRouting() {
     navigate(url);
   }
 
+  function reloadPage() {
+    navigate(0);
+  }
+
   return {
     clustersConfiguration,
     mainPage,
@@ -80,5 +82,6 @@ export function useAppRouting() {
     updateConnection,
     cronJobsList,
     namespacesList,
+    reloadPage,
   };
 }

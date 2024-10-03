@@ -21,14 +21,14 @@ export function DoubleInput<TFirst, TSecond>(props: {
         label="Key"
         variant={InputVariant}
         defaultValue={props.defaultFirstValue}
-        onChange={(e) => handleFirstChange(e.target.value as TFirst)}
+        onBlur={(e) => handleFirstChange(e.target.value as TFirst)}
       />
 
       <TextField
         label="Value"
         variant={InputVariant}
         defaultValue={props.defaultSecondValue}
-        onChange={(e) => handleSecondChange(e.target.value as TSecond)}
+        onBlur={(e) => handleSecondChange(e.target.value as TSecond)}
       />
     </div>
   );

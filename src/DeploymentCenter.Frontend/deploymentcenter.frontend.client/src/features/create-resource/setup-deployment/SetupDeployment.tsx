@@ -6,14 +6,26 @@ import { Container } from "../../deployment-page/models/container";
 import { selectedClusterApiUrl } from "../../../shared/services/configuration-service";
 import { DeploymentData } from "./deployment-data";
 import { UpdaterFunction } from "../shared";
+import { ValidationResult } from "../../../shared/models/validation-result";
 
 export function SetupDeployment(props: {
   value: DeploymentData;
   updater: UpdaterFunction<DeploymentData>;
+  validationResults: Map<string, ValidationResult>;
 }) {
+  const applicationNameError = props.validationResults.get("applicationName");
+  const namespaceError = props.validationResults.get("namespace");
+  const nameError = props.validationResults.get("name");
+  const replicasError = props.validationResults.get("replicas");
+  const containersError = props.validationResults.get("containers");
   const apiUrl = selectedClusterApiUrl.value;
+
   if (apiUrl === undefined) {
     return <div>Error</div>;
+  }
+
+  function isError(result: ValidationResult | undefined) {
+    return result?.isValid === false;
   }
 
   function setApplicationName(name: string) {
@@ -49,6 +61,8 @@ export function SetupDeployment(props: {
             label="Application Name"
             defaultValue={props.value.applicationName}
             onBlur={(e) => setApplicationName(e.target.value)}
+            error={isError(applicationNameError)}
+            helperText={applicationNameError?.message ?? ""}
           />
         </Grid>
 
@@ -57,6 +71,8 @@ export function SetupDeployment(props: {
             defaultNamespace={props.value.namespace}
             apiUrl={apiUrl}
             onNamespaceChanged={setNamespace}
+            error={isError(namespaceError)}
+            helperText={namespaceError?.message ?? ""}
           />
         </Grid>
 
@@ -67,6 +83,8 @@ export function SetupDeployment(props: {
             label="Deployment Name"
             defaultValue={props.value.name}
             onBlur={(e) => setDeploymentName(e.target.value)}
+            error={isError(nameError)}
+            helperText={nameError?.message ?? ""}
           />
         </Grid>
 
@@ -75,15 +93,18 @@ export function SetupDeployment(props: {
             className="w-full"
             variant={InputVariant}
             label="Replicas"
-            type="number"
             defaultValue={props.value.replicas ?? 0}
             onBlur={(e) => setReplicas(e.target.value)}
+            error={isError(replicasError)}
+            helperText={replicasError?.message ?? ""}
           />
         </Grid>
       </Grid>
       <Containers
         containers={props.value.containers}
         onContainersChange={setContainers}
+        error={isError(containersError)}
+        helperText={containersError?.message ?? ""}
       />
     </>
   );
