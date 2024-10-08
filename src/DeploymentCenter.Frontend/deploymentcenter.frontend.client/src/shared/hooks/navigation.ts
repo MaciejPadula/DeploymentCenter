@@ -25,8 +25,8 @@ export function useAppRouting() {
     navigate("setup-deployment");
   }
 
-  function setupService() {
-    navigate("setup-service");
+  function setupLoadBalancer() {
+    navigate("setup-load-balancer");
   }
 
   function deploymentPage(
@@ -78,7 +78,7 @@ export function useAppRouting() {
     loadBalancerList,
     navigateToUrl,
     setupDeployment,
-    setupService,
+    setupService: setupLoadBalancer,
     updateConnection,
     cronJobsList,
     namespacesList,

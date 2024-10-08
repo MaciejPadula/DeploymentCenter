@@ -1,12 +1,16 @@
 import { Unstable_Grid2 as Grid, TextField } from "@mui/material";
 import { SelectNamespace } from "../../../shared/components/select-namespaces/SelectNamespace";
 import { InputVariant } from "../../../shared/helpers/material-config";
-import { Containers } from "./containers/Containers";
-import { Container } from "../../deployment-page/models/container";
+import {
+  Container,
+  getDefaultContainer,
+} from "../../deployment-page/models/container";
 import { selectedClusterApiUrl } from "../../../shared/services/configuration-service";
 import { DeploymentData } from "./deployment-data";
-import { UpdaterFunction } from "../shared";
+import { UpdaterFunction } from "../../../shared/helpers/function-helpers";
 import { ValidationResult } from "../../../shared/models/validation-result";
+import { ContainersDialog } from "./ContainersDialog";
+import { ChipListControl } from "../../../shared/components/chip-list-control/ChipListControl";
 
 export function SetupDeployment(props: {
   value: DeploymentData;
@@ -62,7 +66,7 @@ export function SetupDeployment(props: {
             defaultValue={props.value.applicationName}
             onBlur={(e) => setApplicationName(e.target.value)}
             error={isError(applicationNameError)}
-            helperText={applicationNameError?.message ?? ""}
+            helperText={applicationNameError?.message}
           />
         </Grid>
 
@@ -72,7 +76,7 @@ export function SetupDeployment(props: {
             apiUrl={apiUrl}
             onNamespaceChanged={setNamespace}
             error={isError(namespaceError)}
-            helperText={namespaceError?.message ?? ""}
+            helperText={namespaceError?.message}
           />
         </Grid>
 
@@ -84,7 +88,7 @@ export function SetupDeployment(props: {
             defaultValue={props.value.name}
             onBlur={(e) => setDeploymentName(e.target.value)}
             error={isError(nameError)}
-            helperText={nameError?.message ?? ""}
+            helperText={nameError?.message}
           />
         </Grid>
 
@@ -96,15 +100,25 @@ export function SetupDeployment(props: {
             defaultValue={props.value.replicas ?? 0}
             onBlur={(e) => setReplicas(e.target.value)}
             error={isError(replicasError)}
-            helperText={replicasError?.message ?? ""}
+            helperText={replicasError?.message}
           />
         </Grid>
       </Grid>
-      <Containers
-        containers={props.value.containers}
-        onContainersChange={setContainers}
+
+      <ChipListControl
+        dialogTitle={"Setup container"}
+        label={"Containers"}
+        value={props.value.containers}
+        toString={(container) =>
+          container.name?.length > 0 ? container.name : "Unnamed container"
+        }
+        getEmptyValue={getDefaultContainer}
+        onChange={setContainers}
         error={isError(containersError)}
-        helperText={containersError?.message ?? ""}
+        helperText={containersError?.message}
+        dialogContentFactory={(value, setValue) => (
+          <ContainersDialog container={value} onContainerChange={setValue} />
+        )}
       />
     </>
   );

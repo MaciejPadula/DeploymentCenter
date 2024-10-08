@@ -1,6 +1,6 @@
 import axios from "axios";
 import { DeploymentData } from "./setup-deployment/deployment-data";
-import { ServiceData } from "./setup-service/service-data";
+import { LoadBalancerData } from "./setup-load-balancer/load-balancer-data";
 
 function ApplicationFormDataService(apiUrl: string) {
   async function createDeployment(deployment: DeploymentData) {
@@ -10,7 +10,7 @@ function ApplicationFormDataService(apiUrl: string) {
     );
   }
 
-  async function createLoadBalancer(service: ServiceData) {
+  async function createLoadBalancer(service: LoadBalancerData) {
     await axios.post(
       `${apiUrl}/api/Services/CreateLoadBalancer`,
       service
