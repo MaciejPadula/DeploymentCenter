@@ -1,19 +1,19 @@
 import { Container } from "./models/container";
 import { DeploymentDetails } from "./deployment-details";
 import { Pod } from "./models/pod";
-import axios from "axios";
+import { HttpClient } from "../../shared/services/http-client";
+import { Cluster } from "../../shared/models/cluster";
 
-function DeploymentPageDataService(apiUrl: string) {
+function DeploymentPageDataService(httpClient: HttpClient) {
   const controller = "api/Deployments";
 
   async function getDeploymentDetails(
     namespace: string,
     deploymentName: string
   ): Promise<DeploymentDetails> {
-    const response = await axios.get<DeploymentDetails>(
-      `${apiUrl}/${controller}/GetDeploymentDetails?namespace=${namespace}&deploymentName=${deploymentName}`
+    return await httpClient.get<DeploymentDetails>(
+      `/${controller}/GetDeploymentDetails?namespace=${namespace}&deploymentName=${deploymentName}`,
     );
-    return response.data;
   }
 
   interface GetDeploymentPodsResponse {
@@ -24,10 +24,10 @@ function DeploymentPageDataService(apiUrl: string) {
     namespace: string,
     deploymentName: string
   ): Promise<Pod[]> {
-    const response = await axios.get<GetDeploymentPodsResponse>(
-      `${apiUrl}/${controller}/GetDeploymentPods?namespace=${namespace}&deploymentName=${deploymentName}`
+    const response = await httpClient.get<GetDeploymentPodsResponse>(
+      `/${controller}/GetDeploymentPods?namespace=${namespace}&deploymentName=${deploymentName}`
     );
-    return response.data.pods;
+    return response.pods;
   }
 
   interface GetDeploymentContainersResponse {
@@ -38,10 +38,10 @@ function DeploymentPageDataService(apiUrl: string) {
     namespace: string,
     deploymentName: string
   ): Promise<Container[]> {
-    const response = await axios.get<GetDeploymentContainersResponse>(
-      `${apiUrl}/${controller}/GetDeploymentContainers?namespace=${namespace}&deploymentName=${deploymentName}`
+    const response = await httpClient.get<GetDeploymentContainersResponse>(
+      `/${controller}/GetDeploymentContainers?namespace=${namespace}&deploymentName=${deploymentName}`
     );
-    return response.data.containers;
+    return response.containers;
   }
 
   interface GetPodLogs {
@@ -52,10 +52,10 @@ function DeploymentPageDataService(apiUrl: string) {
     namespace: string,
     podName: string
   ): Promise<string> {
-    const response = await axios.get<GetPodLogs>(
-      `${apiUrl}/${controller}/GetPodLogs?namespace=${namespace}&podName=${podName}`
+    const response = await httpClient.get<GetPodLogs>(
+      `/${controller}/GetPodLogs?namespace=${namespace}&podName=${podName}`
     );
-    return response.data.logText;
+    return response.logText;
   }
 
   interface GetDeploymentMetricsResponse {
@@ -67,11 +67,9 @@ function DeploymentPageDataService(apiUrl: string) {
     namespace: string,
     deploymentName: string
   ): Promise<GetDeploymentMetricsResponse> {
-    const response = await axios.get<GetDeploymentMetricsResponse>(
-      `${apiUrl}/${controller}/GetDeploymentMetrics?namespace=${namespace}&deploymentName=${deploymentName}`
+    return await httpClient.get<GetDeploymentMetricsResponse>(
+      `/${controller}/GetDeploymentMetrics?namespace=${namespace}&deploymentName=${deploymentName}`
     );
-
-    return response.data;
   }
 
   return {
@@ -84,7 +82,10 @@ function DeploymentPageDataService(apiUrl: string) {
 }
 
 export default function useDeploymentPageDataService(
-  clusterUrl: string | undefined
+  cluster: Cluster | undefined
 ) {
-  return DeploymentPageDataService(clusterUrl ?? "");
+  if (cluster == undefined) {
+    throw new Error("Cluster is undefined");
+  }
+  return DeploymentPageDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
 }

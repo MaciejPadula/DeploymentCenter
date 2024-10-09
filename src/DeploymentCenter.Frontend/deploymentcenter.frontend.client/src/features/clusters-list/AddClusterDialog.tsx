@@ -13,10 +13,10 @@ import { InputVariant } from "../../shared/helpers/material-config";
 import { addCluster } from "../../shared/services/configuration-service";
 
 export function AddClusterDialog() {
-
   const [open, setOpen] = useState(false);
   const [clusterName, setClusterName] = useState("");
   const [clusterApiUrl, setClusterApiUrl] = useState("");
+  const [kubeconfig, setKubeconfig] = useState("");
 
   function handleClickOpen() {
     setOpen(true);
@@ -34,6 +34,7 @@ export function AddClusterDialog() {
     handleClusterAdded({
       name: clusterName,
       apiUrl: clusterApiUrl,
+      kubeconfig: kubeconfig,
     });
     setOpen(false);
   }
@@ -55,11 +56,19 @@ export function AddClusterDialog() {
               variant={InputVariant}
               onChange={(v) => setClusterApiUrl(v.currentTarget.value)}
             />
+
+            <TextField
+              label="Cluster Kube Config"
+              variant={InputVariant}
+              onChange={(v) => setKubeconfig(v.currentTarget.value)}
+            />
           </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button variant="contained" onClick={handleSave}>Save</Button>
+          <Button variant="contained" onClick={handleSave}>
+            Save
+          </Button>
         </DialogActions>
       </Dialog>
     </Fragment>

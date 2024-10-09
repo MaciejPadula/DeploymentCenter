@@ -1,7 +1,7 @@
 import { SelectNamespace } from "../../../shared/components/select-namespaces/SelectNamespace";
 import { InputVariant } from "../../../shared/helpers/material-config";
 import { ValidationResult } from "../../../shared/models/validation-result";
-import { selectedClusterApiUrl } from "../../../shared/services/configuration-service";
+import { selectedCluster } from "../../../shared/services/configuration-service";
 import { UpdaterFunction } from "../../../shared/helpers/function-helpers";
 import {
   getDefaultIpAddress,
@@ -19,9 +19,9 @@ export function SetupLoadBalancer(props: {
   updater: UpdaterFunction<LoadBalancerData>;
   validationResults: Map<string, ValidationResult>;
 }) {
-  const apiUrl = selectedClusterApiUrl.value;
+  const cluster = selectedCluster.value;
 
-  if (apiUrl === undefined) {
+  if (cluster === undefined) {
     return <div>Error</div>;
   }
 
@@ -75,7 +75,7 @@ export function SetupLoadBalancer(props: {
         <Grid sm={4} xs={12}>
           <SelectNamespace
             defaultNamespace={props.value.namespace}
-            apiUrl={apiUrl}
+            cluster={cluster}
             onNamespaceChanged={setNamespace}
             error={isError(namespaceError)}
             helperText={namespaceError?.message}

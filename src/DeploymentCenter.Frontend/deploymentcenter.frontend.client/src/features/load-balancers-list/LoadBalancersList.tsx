@@ -6,16 +6,16 @@ import {
 } from "../../shared/components/resources-list/resource-row-model";
 import useLoadBalancersDataService from "./load-balancers-data-service";
 import { SvcIcon } from "../../assets/icons";
-import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
 import { useAppRouting } from "../../shared/hooks/navigation";
+import { selectedCluster } from "../../shared/services/configuration-service";
 
 export function LoadBalancersList() {
   const navigation = useAppRouting();
   const { namespace, clusterName } = useParams();
-  const clusterApiUrl = selectedClusterApiUrl.value;
-  const dataService = useLoadBalancersDataService(clusterApiUrl);
+  const cluster = selectedCluster.value;
+  const dataService = useLoadBalancersDataService(cluster);
 
-  if (namespace === undefined || clusterName === undefined || clusterApiUrl === undefined) {
+  if (namespace === undefined || clusterName === undefined || cluster === undefined) {
     return <div>Error</div>;
   }
 

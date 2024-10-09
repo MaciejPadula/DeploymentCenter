@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useFormService } from "../../libs/forms/form-service";
 import { CreateResourceForm } from "../../shared/components/create-resource-form/CreateResourceForm";
 import { useAppRouting } from "../../shared/hooks/navigation";
-import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
+import { selectedCluster } from "../../shared/services/configuration-service";
 import useApplicationFormDataService from "./form-data-service";
 import { SetupLoadBalancer } from "./setup-load-balancer/SetupLoadBalancer";
 import {
@@ -16,8 +16,8 @@ import { textValidator } from "../../shared/validators/text-validator";
 
 export function CreateLoadBalancer() {
   const storageKey = "loadBalancerData";
-  const apiUrl = selectedClusterApiUrl.value;
-  const formDatService = useApplicationFormDataService(apiUrl);
+  const cluster = selectedCluster.value;
+  const formDatService = useApplicationFormDataService(cluster);
   const navigation = useAppRouting();
   const {
     currentValue,

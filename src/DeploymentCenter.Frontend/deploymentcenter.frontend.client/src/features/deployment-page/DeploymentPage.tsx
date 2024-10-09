@@ -13,20 +13,20 @@ import { ContainersList } from "./containers/ContainersList";
 import useDeploymentPageDataService from "./deployment-page-data-service";
 import { DeploymentDetails } from "./deployment-details";
 import { DeploymentStatistics } from "./statistics/DeploymentStatistics";
-import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
+import { selectedCluster } from "../../shared/services/configuration-service";
 
 export function DeploymentPage() {
   const { deploymentName, namespace, clusterName } = useParams();
-  const clusterApiUrl = selectedClusterApiUrl.value;
+  const cluster = selectedCluster.value;
   const [details, setDetails] = useState<DeploymentDetails | null>(null);
-  const dataService = useDeploymentPageDataService(clusterApiUrl);
+  const dataService = useDeploymentPageDataService(cluster);
 
   useEffect(() => {
     if (
       deploymentName === undefined ||
       namespace === undefined ||
       clusterName === undefined ||
-      clusterApiUrl === undefined
+      cluster === undefined
     ) {
       return;
     }
@@ -44,7 +44,7 @@ export function DeploymentPage() {
     deploymentName === undefined ||
     namespace === undefined ||
     clusterName === undefined ||
-    clusterApiUrl === undefined
+    cluster === undefined
   ) {
     return <div>Error</div>;
   }
@@ -57,7 +57,7 @@ export function DeploymentPage() {
     setDetails(summary);
     const properties = new Map<string, string>();
     properties.set("Name", summary.deploymentName);
-    properties.set("Cluster", `${clusterName}:${clusterApiUrl}`);
+    properties.set("Cluster", `${clusterName}:${cluster.apiUrl}`);
     properties.set("Namespace", summary.namespace);
     properties.set("Application", summary.applicationName);
     properties.set(
@@ -80,7 +80,7 @@ export function DeploymentPage() {
       />
       {details && (
         <DeploymentStatistics
-          clusterUrl={clusterApiUrl}
+          cluster={cluster}
           deploymentName={deploymentName}
           namespace={namespace}
           alivePods={details?.aliveReplicas ?? 0}
@@ -89,14 +89,14 @@ export function DeploymentPage() {
       )}
       {details && (
         <ReplicasList
-          clusterUrl={clusterApiUrl}
+          cluster={cluster}
           deploymentName={deploymentName}
           namespace={namespace}
         />
       )}
       {details && (
         <ContainersList
-          clusterUrl={clusterApiUrl}
+          cluster={cluster}
           deploymentName={deploymentName}
           namespace={namespace}
         />

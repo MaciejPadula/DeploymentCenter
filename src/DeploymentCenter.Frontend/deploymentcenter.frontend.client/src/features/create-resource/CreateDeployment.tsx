@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useFormService } from "../../libs/forms/form-service";
 import { CreateResourceForm } from "../../shared/components/create-resource-form/CreateResourceForm";
 import { useAppRouting } from "../../shared/hooks/navigation";
-import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
+import { selectedCluster } from "../../shared/services/configuration-service";
 import useApplicationFormDataService from "./form-data-service";
 import { SetupDeployment } from "./setup-deployment/SetupDeployment";
 import {
@@ -19,8 +19,8 @@ import { numberValidator } from "../../shared/validators/number-validator";
 
 export function CreateDeployment() {
   const storageKey = "deploymentData";
-  const apiUrl = selectedClusterApiUrl.value;
-  const formDataService = useApplicationFormDataService(apiUrl);
+  const cluster = selectedCluster.value;
+  const formDataService = useApplicationFormDataService(cluster);
   const navigation = useAppRouting();
   const {
     currentValue,
@@ -41,14 +41,14 @@ export function CreateDeployment() {
         .withValidation((data) => kubernetesNameValidator(data.applicationName))
         .build()
     );
-  
+
     addValidator(
       "namespace",
       new ValidatorBuilder<DeploymentData>()
         .withValidation((data) => requiredValidator(data.namespace))
         .build()
     );
-  
+
     addValidator(
       "name",
       new ValidatorBuilder<DeploymentData>()
@@ -57,7 +57,7 @@ export function CreateDeployment() {
         .withValidation((data) => kubernetesNameValidator(data.name))
         .build()
     );
-  
+
     addValidator(
       "replicas",
       new ValidatorBuilder<DeploymentData>()
@@ -66,9 +66,9 @@ export function CreateDeployment() {
         .withValidation((data) => greaterThanValidator(data.replicas, 0))
         .build()
     );
-  
+
     addValidator("containers", containersValidator);
-    
+
     revalidate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

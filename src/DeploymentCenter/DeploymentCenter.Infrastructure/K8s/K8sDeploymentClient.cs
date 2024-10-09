@@ -5,15 +5,17 @@ using k8s;
 using k8s.Autorest;
 using k8s.Models;
 
-namespace DeploymentCenter.Infrastructure.Clients;
+namespace DeploymentCenter.Infrastructure.K8s;
 
-internal class K8sDeploymentClient(IKubernetes kubernetes) : IDeploymentClient
+internal class K8sDeploymentClient(IKubernetesClientFactory kubernetesClientFactory) : IDeploymentClient
 {
+    private readonly IKubernetes _kubernetes = kubernetesClientFactory.GetClient();
+
     public async Task<bool> AreMetricsAvailable()
     {
         try
         {
-            var metrics = await kubernetes.GetKubernetesNodesMetricsAsync();
+            var metrics = await _kubernetes.GetKubernetesNodesMetricsAsync();
             return true;
         }
         catch (HttpOperationException ex)
@@ -29,7 +31,7 @@ internal class K8sDeploymentClient(IKubernetes kubernetes) : IDeploymentClient
 
     public async Task CreateDeployment(Deployment deployment)
     {
-        await kubernetes.AppsV1.CreateNamespacedDeploymentAsync(new()
+        await _kubernetes.AppsV1.CreateNamespacedDeploymentAsync(new()
         {
             Metadata = new()
             {
@@ -89,7 +91,7 @@ internal class K8sDeploymentClient(IKubernetes kubernetes) : IDeploymentClient
 
     public async Task<List<DeploymentBasicInfo>> GetBasicInfos(string @namespace)
     {
-        var deployments = await kubernetes.AppsV1.ListNamespacedDeploymentAsync(@namespace);
+        var deployments = await _kubernetes.AppsV1.ListNamespacedDeploymentAsync(@namespace);
         return deployments
             .Items
             .Select(x => new DeploymentBasicInfo(x.Metadata.Name))
@@ -124,9 +126,9 @@ internal class K8sDeploymentClient(IKubernetes kubernetes) : IDeploymentClient
             return [];
         }
 
-        var pods = await kubernetes.CoreV1.ListNamespacedPodAsync(@namespace);
+        var pods = await _kubernetes.CoreV1.ListNamespacedPodAsync(@namespace);
 
-        var metrics = await kubernetes.GetKubernetesPodsMetricsByNamespaceAsync(@namespace);
+        var metrics = await _kubernetes.GetKubernetesPodsMetricsByNamespaceAsync(@namespace);
 
         return metrics.Items
             .Where(x => x.Metadata.Name.StartsWith(deploymentName))
@@ -159,7 +161,7 @@ internal class K8sDeploymentClient(IKubernetes kubernetes) : IDeploymentClient
 
     public async Task<string> GetPodLogs(string @namespace, string podName)
     {
-        using var result = await kubernetes.CoreV1.ReadNamespacedPodLogWithHttpMessagesAsync(
+        using var result = await _kubernetes.CoreV1.ReadNamespacedPodLogWithHttpMessagesAsync(
             podName,
             @namespace).ConfigureAwait(false);
 
@@ -169,7 +171,7 @@ internal class K8sDeploymentClient(IKubernetes kubernetes) : IDeploymentClient
 
     public async Task<List<Pod>> GetPods(string @namespace, string deploymentName)
     {
-        var pods = await kubernetes.CoreV1.ListNamespacedPodAsync(@namespace);
+        var pods = await _kubernetes.CoreV1.ListNamespacedPodAsync(@namespace);
         return pods.Items
             .Where(x => x.Metadata.Name.StartsWith(deploymentName))
             .Select(x => new Pod(
@@ -182,7 +184,7 @@ internal class K8sDeploymentClient(IKubernetes kubernetes) : IDeploymentClient
 
     private async Task<V1Deployment?> GetDeployment(string @namespace, string deploymentName)
     {
-        var deploys = await kubernetes.AppsV1.ListNamespacedDeploymentAsync(@namespace);
+        var deploys = await _kubernetes.AppsV1.ListNamespacedDeploymentAsync(@namespace);
         return deploys
             .Items
             .FirstOrDefault(d => d.Metadata.Name == deploymentName);

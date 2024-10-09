@@ -10,17 +10,18 @@ import { lastElements } from "../../../shared/helpers/array-helpers";
 import { DeploymentMetrics } from "../models/deployment-metrics";
 import StatisticsNotAvailable from "./StatisticsNotAvailable";
 import { AxiosError } from "axios";
+import { Cluster } from "../../../shared/models/cluster";
 
 const maxPointsOnChart = 10;
 
 export function DeploymentStatistics(props: {
-  clusterUrl: string;
+  cluster: Cluster;
   deploymentName: string;
   namespace: string;
   alivePods: number;
   deadPods: number;
 }) {
-  const dataService = useDeploymentPageDataService(props.clusterUrl);
+  const dataService = useDeploymentPageDataService(props.cluster);
   const [metrics, setMetrics] = useState<DeploymentMetrics[]>([]);
   const [metricsAvailable, setMetricsAvailable] = useState<boolean>(true);
 

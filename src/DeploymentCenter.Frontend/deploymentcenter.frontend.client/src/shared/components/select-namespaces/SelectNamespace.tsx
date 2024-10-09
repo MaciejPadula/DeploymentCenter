@@ -10,15 +10,18 @@ import {
 import { useSelectNamespaceDataService } from "./select-namespace-data-service";
 import { useEffect, useState } from "react";
 import { InputVariant } from "../../helpers/material-config";
+import { Cluster } from "../../models/cluster";
 
-export function SelectNamespace(props: {
+type Props = {
   defaultNamespace: string;
-  apiUrl: string;
+  cluster: Cluster;
   onNamespaceChanged: (namespace: string) => void;
   error?: boolean;
   helperText?: string;
-}) {
-  const dataService = useSelectNamespaceDataService(props.apiUrl);
+};
+
+export function SelectNamespace(props: Props) {
+  const dataService = useSelectNamespaceDataService(props.cluster);
   const { isPending, error, data, isFetching, refetch } = useQuery({
     queryKey: ["namespaceLoader"],
     queryFn: async () => await dataService.getNamespaces(),
@@ -29,7 +32,7 @@ export function SelectNamespace(props: {
 
   useEffect(() => {
     refetch();
-  }, [props.apiUrl, refetch]);
+  }, [props.cluster, refetch]);
 
   if (error) {
     return <div>Error</div>;

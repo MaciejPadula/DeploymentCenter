@@ -2,13 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import useDeploymentPageDataService from "../deployment-page-data-service";
 import { LinearProgress } from "@mui/material";
 import { ReplicaRow } from "./ReplicaRow";
+import { Cluster } from "../../../shared/models/cluster";
 
 export function ReplicasList(props: {
-  clusterUrl: string;
+  cluster: Cluster;
   deploymentName: string;
   namespace: string;
 }) {
-  const dataService = useDeploymentPageDataService(props.clusterUrl);
+  const dataService = useDeploymentPageDataService(props.cluster);
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["podsLoader"],
     queryFn: async () =>
@@ -33,7 +34,7 @@ export function ReplicasList(props: {
             key={pod.name}
             pod={pod}
             namespace={props.namespace}
-            clusterUrl={props.clusterUrl}
+            cluster={props.cluster}
           />
         ))}
     </div>
