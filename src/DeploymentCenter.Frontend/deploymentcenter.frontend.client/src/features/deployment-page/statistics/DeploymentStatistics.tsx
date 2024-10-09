@@ -8,38 +8,53 @@ import { ChartSerie } from "../../../shared/components/charts/line-chart/chart-s
 import { getNowFormatedTime } from "../../../shared/helpers/date-helpers";
 import { lastElements } from "../../../shared/helpers/array-helpers";
 import { DeploymentMetrics } from "../models/deployment-metrics";
+import StatisticsNotAvailable from "./StatisticsNotAvailable";
+import { AxiosError } from "axios";
+import { Cluster } from "../../../shared/models/cluster";
 
 const maxPointsOnChart = 10;
 
 export function DeploymentStatistics(props: {
-  clusterUrl: string;
+  cluster: Cluster;
   deploymentName: string;
   namespace: string;
   alivePods: number;
   deadPods: number;
 }) {
-  const dataService = useDeploymentPageDataService(props.clusterUrl);
+  const dataService = useDeploymentPageDataService(props.cluster);
   const [metrics, setMetrics] = useState<DeploymentMetrics[]>([]);
+  const [metricsAvailable, setMetricsAvailable] = useState<boolean>(true);
 
   async function fetchDeploymentMetrics() {
-    const metrics = await dataService.getDeploymentMetrics(
-      props.namespace,
-      props.deploymentName
-    );
+    if (!metricsAvailable) {
+      return;
+    }
 
-    setMetrics((old) =>
-      lastElements(
-        [
-          ...old,
-          {
-            cpuUsage: metrics.cpuUsage,
-            memoryUsage: metrics.memoryUsage,
-            timestampUtc: getNowFormatedTime(),
-          },
-        ],
-        maxPointsOnChart
-      )
-    );
+    try {
+      const metrics = await dataService.getDeploymentMetrics(
+        props.namespace,
+        props.deploymentName
+      );
+  
+      setMetrics((old) =>
+        lastElements(
+          [
+            ...old,
+            {
+              cpuUsage: metrics.cpuUsage,
+              memoryUsage: metrics.memoryUsage,
+              timestampUtc: getNowFormatedTime(),
+            },
+          ],
+          maxPointsOnChart
+        )
+      );
+    }
+    catch (error) {
+      if (error instanceof AxiosError && error?.response?.status === 501) {
+        setMetricsAvailable(false);
+      }
+    }
   }
 
   useEffect(() => {
@@ -89,10 +104,10 @@ export function DeploymentStatistics(props: {
           />
         </div>
         <div className="w-full">
-          <LineChartBox series={[cpuChart]} xAxis={xAxisData} />
+          { metricsAvailable ? <LineChartBox series={[cpuChart]} xAxis={xAxisData} /> : <StatisticsNotAvailable /> }
         </div>
         <div className="w-full">
-          <LineChartBox series={[memoryChart]} xAxis={xAxisData} />
+          { metricsAvailable ? <LineChartBox series={[memoryChart]} xAxis={xAxisData} /> : <StatisticsNotAvailable /> }
         </div>
       </div>
     </Paper>

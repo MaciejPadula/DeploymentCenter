@@ -1,15 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Skeleton,
+} from "@mui/material";
 import { useSelectNamespaceDataService } from "./select-namespace-data-service";
 import { useEffect, useState } from "react";
 import { InputVariant } from "../../helpers/material-config";
+import { Cluster } from "../../models/cluster";
 
-export function SelectNamespace(props: {
+type Props = {
   defaultNamespace: string;
-  apiUrl: string;
+  cluster: Cluster;
   onNamespaceChanged: (namespace: string) => void;
-}) {
-  const dataService = useSelectNamespaceDataService(props.apiUrl);
+  error?: boolean;
+  helperText?: string;
+};
+
+export function SelectNamespace(props: Props) {
+  const dataService = useSelectNamespaceDataService(props.cluster);
   const { isPending, error, data, isFetching, refetch } = useQuery({
     queryKey: ["namespaceLoader"],
     queryFn: async () => await dataService.getNamespaces(),
@@ -20,7 +32,7 @@ export function SelectNamespace(props: {
 
   useEffect(() => {
     refetch();
-  }, [props.apiUrl, refetch]);
+  }, [props.cluster, refetch]);
 
   if (error) {
     return <div>Error</div>;
@@ -33,9 +45,18 @@ export function SelectNamespace(props: {
 
   return (
     <div className="w-full">
-      {isLoading && <div>Loading...</div>}
+      {isLoading && (
+        <>
+          <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+          <Skeleton variant="text" sx={{ fontSize: "2rem" }} />
+        </>
+      )}
       {!isLoading && (
-        <FormControl className="w-full" variant={InputVariant}>
+        <FormControl
+          className="w-full"
+          variant={InputVariant}
+          error={props.error}
+        >
           <InputLabel>Namespace</InputLabel>
           <Select
             value={namespace}
@@ -47,6 +68,9 @@ export function SelectNamespace(props: {
               </MenuItem>
             ))}
           </Select>
+          {props.error && (
+            <FormHelperText>{props?.helperText ?? ""}</FormHelperText>
+          )}
         </FormControl>
       )}
     </div>

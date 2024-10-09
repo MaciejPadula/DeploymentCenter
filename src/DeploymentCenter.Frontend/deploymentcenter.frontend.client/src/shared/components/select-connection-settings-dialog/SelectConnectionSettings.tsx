@@ -16,6 +16,7 @@ import {
   setClusterAndNamespace,
 } from "../../services/configuration-service";
 import { useAppRouting } from "../../hooks/navigation";
+import { Cluster } from "../../models/cluster";
 
 export function SelectNamespaceDialog(props: { onClose?: () => void }) {
   const navigation = useAppRouting();
@@ -27,7 +28,7 @@ export function SelectNamespaceDialog(props: { onClose?: () => void }) {
     selectedCluster.value?.name ?? ""
   );
   const [open, setOpen] = useState<boolean>(false);
-  const [clusterUrl, setClusterUrl] = useState<string>("");
+  const [cluster, setCluster] = useState<Cluster | null>(null);
 
   useEffect(() => {
     const cluster = configuration.value.clusters.find(
@@ -36,7 +37,7 @@ export function SelectNamespaceDialog(props: { onClose?: () => void }) {
     if (cluster === undefined) {
       return;
     }
-    setClusterUrl(cluster.apiUrl);
+    setCluster(cluster);
   }, [clusterControl]);
 
   function handleClickOpen() {
@@ -74,10 +75,10 @@ export function SelectNamespaceDialog(props: { onClose?: () => void }) {
             onClusterChanged={setClusterControl}
             onClusterEdit={handleClose}
           />
-          {clusterUrl?.length > 0 && (
+          {cluster && (
             <SelectNamespace
               defaultNamespace={selectedNamespace.value}
-              apiUrl={clusterUrl}
+              cluster={cluster}
               onNamespaceChanged={setNamespaceControl}
             />
           )}

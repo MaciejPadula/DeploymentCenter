@@ -2,13 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { LinearProgress } from "@mui/material";
 import { ContainerRow } from "./ContainerRow";
 import useDeploymentPageDataService from "../deployment-page-data-service";
+import { Cluster } from "../../../shared/models/cluster";
 
 export function ContainersList(props: {
-  clusterUrl: string;
+  cluster: Cluster;
   deploymentName: string;
   namespace: string;
 }) {
-  const dataService = useDeploymentPageDataService(props.clusterUrl);
+  const dataService = useDeploymentPageDataService(props.cluster);
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["containersLoader"],
     queryFn: async () =>

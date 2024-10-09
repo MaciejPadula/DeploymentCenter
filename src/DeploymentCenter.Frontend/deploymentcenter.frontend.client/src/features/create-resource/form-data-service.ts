@@ -1,20 +1,15 @@
-import axios from "axios";
 import { DeploymentData } from "./setup-deployment/deployment-data";
-import { ServiceData } from "./setup-service/service-data";
+import { LoadBalancerData } from "./setup-load-balancer/load-balancer-data";
+import { Cluster } from "../../shared/models/cluster";
+import { HttpClient } from "../../shared/services/http-client";
 
-function ApplicationFormDataService(apiUrl: string) {
+function ApplicationFormDataService(httpClient: HttpClient) {
   async function createDeployment(deployment: DeploymentData) {
-    await axios.post(
-      `${apiUrl}/api/Deployments/CreateDeployment`,
-      deployment
-    );
+    await httpClient.post(`/api/Deployments/CreateDeployment`, deployment);
   }
 
-  async function createLoadBalancer(service: ServiceData) {
-    await axios.post(
-      `${apiUrl}/api/Services/CreateLoadBalancer`,
-      service
-    );
+  async function createLoadBalancer(service: LoadBalancerData) {
+    await httpClient.post(`/api/Services/CreateLoadBalancer`, service);
   }
 
   return {
@@ -24,7 +19,12 @@ function ApplicationFormDataService(apiUrl: string) {
 }
 
 export default function useApplicationFormDataService(
-  clusterUrl: string | undefined
+  cluster: Cluster | undefined
 ) {
-  return ApplicationFormDataService(clusterUrl ?? "");
+  if (!cluster) {
+    throw new Error("Cluster is required");
+  }
+  return ApplicationFormDataService(
+    new HttpClient(cluster.apiUrl, cluster.kubeconfig)
+  );
 }

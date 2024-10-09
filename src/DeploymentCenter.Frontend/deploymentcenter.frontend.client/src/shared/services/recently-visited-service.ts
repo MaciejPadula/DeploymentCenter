@@ -4,6 +4,7 @@ import {
 } from "../helpers/local-storage-helper";
 
 const MAX_RECENTLY_VISITED_PAGES = 5;
+const RECENTLY_VISITED_PAGES_LS_KEY = "recentlyVisitedPages";
 
 export interface RecentlyVisitedPage {
   clusterName: string;
@@ -14,7 +15,7 @@ export interface RecentlyVisitedPage {
 }
 
 export function getRecentlyVisitedPages(): RecentlyVisitedPage[] {
-  return getFromLocalStorage("recentlyVisitedPages", []);
+  return getFromLocalStorage(RECENTLY_VISITED_PAGES_LS_KEY, []);
 }
 
 export function addRecentlyVisitedPage(
@@ -33,5 +34,13 @@ export function addRecentlyVisitedPage(
   if (recentlyVisitedPages.length > MAX_RECENTLY_VISITED_PAGES) {
     recentlyVisitedPages.pop();
   }
-  setInLocalStorage("recentlyVisitedPages", recentlyVisitedPages);
+  setInLocalStorage(RECENTLY_VISITED_PAGES_LS_KEY, recentlyVisitedPages);
+}
+
+export function deleteRecentlyVisitedPage(title: string) {
+  const recentlyVisitedPages = getRecentlyVisitedPages();
+  setInLocalStorage(
+    RECENTLY_VISITED_PAGES_LS_KEY,
+    recentlyVisitedPages.filter((x) => x.title !== title)
+  );
 }

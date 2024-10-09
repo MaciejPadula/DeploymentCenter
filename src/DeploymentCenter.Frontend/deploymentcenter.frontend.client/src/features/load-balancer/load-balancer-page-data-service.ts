@@ -1,18 +1,18 @@
-import axios from "axios";
 import { LoadBalancerDetails } from "./load-balancer-details";
 import { LoadBalancerPort } from "./load-balancer-port";
+import { HttpClient } from "../../shared/services/http-client";
+import { Cluster } from "../../shared/models/cluster";
 
-function LoadBalancerPageDataService(apiUrl: string) {
+function LoadBalancerPageDataService(httpClient: HttpClient) {
   const controller = "api/Services";
 
   async function getLoadBalancerDetails(
     namespace: string,
     loadBalancerName: string
   ): Promise<LoadBalancerDetails> {
-    const response = await axios.get<LoadBalancerDetails>(
-      `${apiUrl}/${controller}/GetLoadBalancerDetails?namespace=${namespace}&loadBalancerName=${loadBalancerName}`
+    return await httpClient.get<LoadBalancerDetails>(
+      `/${controller}/GetLoadBalancerDetails?namespace=${namespace}&loadBalancerName=${loadBalancerName}`
     );
-    return response.data;
   }
 
   interface GetLoadBalancerIpAddressesResponse {
@@ -23,10 +23,10 @@ function LoadBalancerPageDataService(apiUrl: string) {
     namespace: string,
     loadBalancerName: string
   ): Promise<string[]> {
-    const response = await axios.get<GetLoadBalancerIpAddressesResponse>(
-      `${apiUrl}/${controller}/GetLoadBalancerIpAddresses?namespace=${namespace}&loadBalancerName=${loadBalancerName}`
+    const response = await httpClient.get<GetLoadBalancerIpAddressesResponse>(
+      `/${controller}/GetLoadBalancerIpAddresses?namespace=${namespace}&loadBalancerName=${loadBalancerName}`
     );
-    return response.data.ipAddresses;
+    return response.ipAddresses;
   }
 
   interface GetLoadBalancerPortsResponse {
@@ -37,10 +37,10 @@ function LoadBalancerPageDataService(apiUrl: string) {
     namespace: string,
     loadBalancerName: string
   ): Promise<LoadBalancerPort[]> {
-    const response = await axios.get<GetLoadBalancerPortsResponse>(
-      `${apiUrl}/${controller}/GetLoadBalancerPorts?namespace=${namespace}&loadBalancerName=${loadBalancerName}`
+    const response = await httpClient.get<GetLoadBalancerPortsResponse>(
+      `/${controller}/GetLoadBalancerPorts?namespace=${namespace}&loadBalancerName=${loadBalancerName}`
     );
-    return response.data.ports;
+    return response.ports;
   }
 
   return {
@@ -50,6 +50,9 @@ function LoadBalancerPageDataService(apiUrl: string) {
   };
 }
 
-export default function useLoadBalancerPageDataService(clusterUrl: string | undefined) {
-  return LoadBalancerPageDataService(clusterUrl ?? "");
+export default function useLoadBalancerPageDataService(cluster: Cluster | undefined) {
+  if (!cluster) {
+    throw new Error("Cluster is required");
+  }
+  return LoadBalancerPageDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
 }

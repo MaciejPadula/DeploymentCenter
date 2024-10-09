@@ -11,12 +11,12 @@ import { useEffect } from "react";
 import { SvcIcon } from "../../assets/icons";
 import { IpAddresses } from "./ip-addresses/IpAddresses";
 import { LoadBalancerPorts } from "./Ports/LoadBalancerPorts";
-import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
+import { selectedCluster } from "../../shared/services/configuration-service";
 
 export function LoadBalancerPage() {
   const { loadBalancerName, namespace, clusterName } = useParams();
-  const clusterApiUrl = selectedClusterApiUrl.value;
-  const dataService = useLoadBalancerPageDataService(clusterApiUrl);
+  const cluster = selectedCluster.value;
+  const dataService = useLoadBalancerPageDataService(cluster);
 
   useEffect(() => {
     if (
@@ -39,7 +39,7 @@ export function LoadBalancerPage() {
   if (
     loadBalancerName === undefined ||
     clusterName === undefined ||
-    clusterApiUrl === undefined ||
+    cluster === undefined ||
     namespace === undefined
   ) {
     return <div>Error</div>;
@@ -52,7 +52,7 @@ export function LoadBalancerPage() {
     );
     const properties = new Map<string, string>();
     properties.set("Name", summary.loadBalancerName);
-    properties.set("Cluster", `${clusterName}:${clusterApiUrl}`);
+    properties.set("Cluster", `${clusterName}:${cluster.apiUrl}`);
     properties.set("Namespace", summary.namespace);
     properties.set("Application", summary.applicationName);
 
@@ -70,12 +70,12 @@ export function LoadBalancerPage() {
         resourceSummaryFactory={factory}
       />
       <IpAddresses
-        clusterUrl={clusterApiUrl}
+        cluster={cluster}
         namespace={namespace}
         loadBalancerName={loadBalancerName}
       />
       <LoadBalancerPorts
-        clusterUrl={clusterApiUrl}
+        cluster={cluster}
         namespace={namespace}
         loadBalancerName={loadBalancerName}
       />

@@ -5,15 +5,17 @@ using DeploymentCenter.SharedKernel;
 using k8s;
 using k8s.Models;
 
-namespace DeploymentCenter.Infrastructure.Clients;
+namespace DeploymentCenter.Infrastructure.K8s;
 
-internal class K8sServiceClient(IKubernetes kubernetes) : IServiceClient
+internal class K8sServiceClient(IKubernetesClientFactory kubernetesClientFactory) : IServiceClient
 {
+    private readonly IKubernetes _kubernetes = kubernetesClientFactory.GetClient();
+
     private const string LoadBalancerKey = "LoadBalancer";
 
     public async Task CreateLoadBalancer(LoadBalancer loadBalancer)
     {
-        await kubernetes.CoreV1.CreateNamespacedServiceAsync(new()
+        await _kubernetes.CoreV1.CreateNamespacedServiceAsync(new()
         {
             Metadata = new()
             {
@@ -76,7 +78,7 @@ internal class K8sServiceClient(IKubernetes kubernetes) : IServiceClient
 
     private async Task<IEnumerable<V1Service>> GetLoadBalancers(string @namespace, string? loadBalancerName = null)
     {
-        var services = await kubernetes.CoreV1.ListNamespacedServiceAsync(@namespace);
+        var services = await _kubernetes.CoreV1.ListNamespacedServiceAsync(@namespace);
 
         return services.Items
             .Where(x => x.Spec.Type == LoadBalancerKey && (string.IsNullOrEmpty(loadBalancerName) || x.Metadata.Name == loadBalancerName));

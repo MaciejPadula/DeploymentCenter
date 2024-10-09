@@ -19,9 +19,14 @@ internal class GetDeploymentMetricsEndpoint() : ApiGetEndpointBase(new Deploymen
     {
         var result = await mediator.Send(new GetDeploymentMetricsQuery(@namespace, deploymentName), cancellationToken);
 
+        if (!result.HasValue)
+        {
+            return Results.StatusCode(StatusCodes.Status501NotImplemented);
+        }
+
         return Results.Ok(new GetDeploymentMetricsResponse(
-            result.TimestampUtc,
-            result.CpuUsage,
-            result.MemoryUsage));
+            result.Value.TimestampUtc,
+            result.Value.CpuUsage,
+            result.Value.MemoryUsage));
     };
 }

@@ -6,19 +6,19 @@ import {
 } from "../../shared/components/resources-list/resource-row-model";
 import { useParams } from "react-router-dom";
 import { DeployIcon } from "../../assets/icons";
-import { selectedClusterApiUrl } from "../../shared/services/configuration-service";
+import { selectedCluster } from "../../shared/services/configuration-service";
 import { useAppRouting } from "../../shared/hooks/navigation";
 
 export function DeploymentsList() {
   const navigation = useAppRouting();
   const { namespace, clusterName } = useParams();
-  const clusterApiUrl = selectedClusterApiUrl.value;
-  const dataService = useDeploymentsDataService(clusterApiUrl);
+  const cluster = selectedCluster.value;
+  const dataService = useDeploymentsDataService(cluster);
 
   if (
     namespace === undefined ||
     clusterName === undefined ||
-    clusterApiUrl === undefined
+    cluster === undefined
   ) {
     return <div>Error</div>;
   }

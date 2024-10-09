@@ -10,11 +10,12 @@ import { Pod } from "../models/pod";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { PodLogs } from "./PodLogs";
 import { useState } from "react";
+import { Cluster } from "../../../shared/models/cluster";
 
 export function ReplicaRow(props: {
   pod: Pod;
   namespace: string;
-  clusterUrl: string;
+  cluster: Cluster;
 }) {
   const [showLogs, setShowLogs] = useState(false);
 
@@ -37,7 +38,7 @@ export function ReplicaRow(props: {
           <PodLogs
             namespace={props.namespace}
             podName={props.pod.name}
-            clusterUrl={props.clusterUrl}
+            cluster={props.cluster}
           />
         )}
       </AccordionDetails>

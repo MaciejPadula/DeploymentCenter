@@ -1,7 +1,8 @@
-import axios from "axios";
 import { Deployment } from "./deployment";
+import { HttpClient } from "../../shared/services/http-client";
+import { Cluster } from "../../shared/models/cluster";
 
-function DeploymentsDataService(apiUrl: string) {
+function DeploymentsDataService(httpClient: HttpClient) {
   const controller = "api/Deployments";
 
   interface GetDeploymentsListResponse {
@@ -9,10 +10,9 @@ function DeploymentsDataService(apiUrl: string) {
   }
 
   async function getDeployments(namespace: string): Promise<Deployment[]> {
-    const response = await axios.get<GetDeploymentsListResponse>(
-      `${apiUrl}/${controller}/GetDeploymentsList?namespace=${namespace}`
-    );
-    return response.data.deployments;
+    const response = await httpClient.get<GetDeploymentsListResponse>(
+      `/${controller}/GetDeploymentsList?namespace=${namespace}`);
+    return response.deployments;
   }
 
   return {
@@ -20,6 +20,9 @@ function DeploymentsDataService(apiUrl: string) {
   };
 }
 
-export default function useDeploymentsDataService(clusterUrl: string | undefined) {
-  return DeploymentsDataService(clusterUrl ?? "");
+export default function useDeploymentsDataService(cluster: Cluster | undefined) {
+  if (!cluster) {
+    throw new Error("Cluster is required");
+  }
+  return DeploymentsDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
 }
