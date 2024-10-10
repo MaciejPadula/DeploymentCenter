@@ -1,7 +1,9 @@
 ﻿using DeploymentCenter.Deployments.Infrastructure;
 using DeploymentCenter.Infrastructure.Http;
 using DeploymentCenter.Infrastructure.K8s;
+using DeploymentCenter.Infrastructure.Security;
 using DeploymentCenter.Namespaces.Infrastructure;
+using DeploymentCenter.Security.Infrastructure;
 using DeploymentCenter.Services.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +18,10 @@ public static class InfrastructureModule
         services.AddTransient<IServiceClient, K8sServiceClient>();
         services.AddTransient<IDeploymentClient, K8sDeploymentClient>();
         services.AddTransient<INamespaceClient, K8sNamespaceClient>();
+
+        services.AddTransient<IKubeConfigDecoder, Base64PasswordSecurity>();
+        services.AddTransient<IPasswordSecurity, Base64PasswordSecurity>();
+
         return services;
     }
 }

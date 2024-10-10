@@ -14,6 +14,7 @@ import useDeploymentPageDataService from "./deployment-page-data-service";
 import { DeploymentDetails } from "./deployment-details";
 import { DeploymentStatistics } from "./statistics/DeploymentStatistics";
 import { selectedCluster } from "../../shared/services/configuration-service";
+import { DeploymentToolbar } from "./toolbar/DeploymentToolbar";
 
 export function DeploymentPage() {
   const { deploymentName, namespace, clusterName } = useParams();
@@ -74,6 +75,7 @@ export function DeploymentPage() {
 
   return (
     <div className="flex flex-col w-full p-2 gap-2">
+      <DeploymentToolbar deploymentName={deploymentName} />
       <ResourceSummary
         resourceSummaryKey={`deployment-${namespace}-${deploymentName}`}
         resourceSummaryFactory={factory}

@@ -5,6 +5,8 @@ using DeploymentCenter.Images;
 using DeploymentCenter.Infrastructure;
 using DeploymentCenter.Namespaces;
 using DeploymentCenter.Namespaces.Api;
+using DeploymentCenter.Security;
+using DeploymentCenter.Security.Api;
 using DeploymentCenter.Services;
 using DeploymentCenter.Services.Api;
 using DeploymentCenter.SharedKernel;
@@ -26,6 +28,9 @@ builder.Services.RegisterServicesEndpoints();
 
 builder.Services.AddNamespacesModule();
 builder.Services.RegisterNamespacesEndpoints();
+
+builder.Services.RegisterSecurityEndpoints();
+builder.Services.AddSecurityModule();
 
 builder.Services.AddInfrastructureModule();
 builder.Services.AddSharedKernelModule();
