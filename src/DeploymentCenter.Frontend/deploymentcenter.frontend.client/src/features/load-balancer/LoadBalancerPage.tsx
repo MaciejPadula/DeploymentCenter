@@ -10,7 +10,7 @@ import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-s
 import { useEffect } from "react";
 import { SvcIcon } from "../../assets/icons";
 import { IpAddresses } from "./ip-addresses/IpAddresses";
-import { LoadBalancerPorts } from "./Ports/LoadBalancerPorts";
+import { LoadBalancerPorts } from "./ports/LoadBalancerPorts";
 import { selectedCluster } from "../../shared/services/configuration-service";
 
 export function LoadBalancerPage() {

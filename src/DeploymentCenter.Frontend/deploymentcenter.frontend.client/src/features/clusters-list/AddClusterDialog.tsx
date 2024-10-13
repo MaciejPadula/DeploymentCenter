@@ -11,12 +11,26 @@ import { Fragment, useState } from "react";
 import { Cluster } from "../../shared/models/cluster";
 import { InputVariant } from "../../shared/helpers/material-config";
 import { addCluster } from "../../shared/services/configuration-service";
+import useClustersDataService from "./clusters-data-service";
 
 export function AddClusterDialog() {
   const [open, setOpen] = useState(false);
   const [clusterName, setClusterName] = useState("");
   const [clusterApiUrl, setClusterApiUrl] = useState("");
   const [kubeconfig, setKubeconfig] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const clustersDataService = useClustersDataService(clusterApiUrl);
+
+  async function secureKubeconfig(plainKubeconfig: string) {
+    if (!clustersDataService) {
+      return;
+    }
+    setLoading(true);
+    const result = await clustersDataService.securePassword(plainKubeconfig);
+    setKubeconfig(result);
+    setLoading(false);
+  }
 
   function handleClickOpen() {
     setOpen(true);
@@ -49,24 +63,27 @@ export function AddClusterDialog() {
             <TextField
               label="Cluster Name"
               variant={InputVariant}
-              onChange={(v) => setClusterName(v.currentTarget.value)}
+              onBlur={(v) => setClusterName(v.currentTarget.value)}
             />
             <TextField
               label="Cluster Api Url"
               variant={InputVariant}
-              onChange={(v) => setClusterApiUrl(v.currentTarget.value)}
+              onBlur={(v) => setClusterApiUrl(v.currentTarget.value)}
             />
 
             <TextField
               label="Cluster Kube Config"
               variant={InputVariant}
-              onChange={(v) => setKubeconfig(v.currentTarget.value)}
+              onBlur={(v) => secureKubeconfig(v.currentTarget.value)}
+              type={"password"}
+              disabled={clusterApiUrl?.length === 0}
+              multiline
             />
           </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button variant="contained" onClick={handleSave}>
+          <Button variant="contained" onClick={handleSave} disabled={loading}>
             Save
           </Button>
         </DialogActions>

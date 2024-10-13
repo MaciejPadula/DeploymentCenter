@@ -12,7 +12,7 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     deploymentName: string
   ): Promise<DeploymentDetails> {
     return await httpClient.get<DeploymentDetails>(
-      `/${controller}/GetDeploymentDetails?namespace=${namespace}&deploymentName=${deploymentName}`,
+      `/${controller}/GetDeploymentDetails?namespace=${namespace}&deploymentName=${deploymentName}`
     );
   }
 
@@ -72,12 +72,20 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     );
   }
 
+  async function restartDeployment(namespace: string, deploymentName: string) {
+    await httpClient.post(
+      `/${controller}/RestartDeployment?namespace=${namespace}&deploymentName=${deploymentName}`,
+      null
+    );
+  }
+
   return {
     getDeploymentDetails,
     getDeploymentPods,
     getDeploymentContainers,
     getPodLogs,
     getDeploymentMetrics,
+    restartDeployment,
   };
 }
 
@@ -87,5 +95,7 @@ export default function useDeploymentPageDataService(
   if (cluster == undefined) {
     throw new Error("Cluster is undefined");
   }
-  return DeploymentPageDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
+  return DeploymentPageDataService(
+    new HttpClient(cluster.apiUrl, cluster.kubeconfig)
+  );
 }

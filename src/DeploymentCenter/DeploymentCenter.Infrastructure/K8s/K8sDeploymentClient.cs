@@ -1,9 +1,12 @@
 ﻿using DeploymentCenter.Deployments.Contract.Models;
 using DeploymentCenter.Deployments.Infrastructure;
 using DeploymentCenter.SharedKernel;
+using Json.Patch;
 using k8s;
 using k8s.Autorest;
 using k8s.Models;
+using System.Text.Json;
+using System.Xml.Linq;
 
 namespace DeploymentCenter.Infrastructure.K8s;
 
@@ -180,6 +183,25 @@ internal class K8sDeploymentClient(IKubernetesClientFactory kubernetesClientFact
                 x.Status.PodIP,
                 !x.Status.ContainerStatuses.Any(c => !c.Ready)))
             .ToList();
+    }
+
+    public async Task RestartDeployment(string @namespace, string deploymentName)
+    {
+        var deployment = await _kubernetes.AppsV1.ReadNamespacedDeploymentAsync(deploymentName, @namespace);
+        var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, WriteIndented = true };
+        var old = JsonSerializer.SerializeToDocument(deployment, options);
+        var now = DateTimeOffset.Now.ToUnixTimeSeconds();
+        var restart = new Dictionary<string, string>
+        {
+            ["date"] = now.ToString()
+        };
+
+        deployment.Spec.Template.Metadata.Annotations = restart;
+
+        var expected = JsonSerializer.SerializeToDocument(deployment);
+
+        var patch = old.CreatePatch(expected);
+        await _kubernetes.AppsV1.PatchNamespacedDeploymentAsync(new V1Patch(patch, V1Patch.PatchType.JsonPatch), deploymentName, @namespace);
     }
 
     private async Task<V1Deployment?> GetDeployment(string @namespace, string deploymentName)

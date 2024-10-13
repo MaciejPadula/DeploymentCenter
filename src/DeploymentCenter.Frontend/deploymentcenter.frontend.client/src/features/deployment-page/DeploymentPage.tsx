@@ -4,7 +4,7 @@ import {
   ResourceSummaryFactory,
   ResourceSummaryModel,
 } from "../../shared/components/resource-page/resource-summary-model";
-import { ReplicasList } from "./Replicas/ReplicasList";
+import { ReplicasList } from "./replicas/ReplicasList";
 import { useEffect, useState } from "react";
 import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-service";
 import { getDeploymentUrl } from "../../shared/services/routing-service";
@@ -75,7 +75,11 @@ export function DeploymentPage() {
 
   return (
     <div className="flex flex-col w-full p-2 gap-2">
-      <DeploymentToolbar deploymentName={deploymentName} />
+      <DeploymentToolbar
+        namespace={namespace}
+        deploymentName={deploymentName}
+        cluster={cluster}
+      />
       <ResourceSummary
         resourceSummaryKey={`deployment-${namespace}-${deploymentName}`}
         resourceSummaryFactory={factory}
