@@ -31,7 +31,9 @@ jobs:
       run: dotnet build -c Release
       working-directory: ./src/DeploymentCenter
     - name: Copy Output
-      run: cp -r ./DeploymentCenter/bin/Release/net8.0 .
+      run: |
+        cp -r ./DeploymentCenter/bin/Release/net8.0 .
+        ls -l
       working-directory: ./src/DeploymentCenter
 
     - name: Generate Tag
@@ -39,7 +41,9 @@ jobs:
       run: echo "tag=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
 
     - name: Docker Build
-      run: docker build -t dulik65/deployment-center-api:${{ env.tag }} .
+      run: |
+        ls -l
+        docker build -t dulik65/deployment-center-api:${{ env.tag }} .
       working-directory: ./src/DeploymentCenter
 
     - name: Login to Docker Hub
