@@ -23,18 +23,15 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: move
-      run: |
-        cd src/DeploymentCenter
-        pwd
-        ls -l
-    - name: test
-      run: ls -l
     - name: test
       run: dotnet test
+      working-directory: ./src/DeploymentCenter
     - name: build
       run: dotnet build -c Release
+      working-directory: ./src/DeploymentCenter
     - name: copy files
       run: cp DeploymentCenter/bin/Release/net8.0/* .
+      working-directory: ./src/DeploymentCenter
     - name: docker build
       run: docker build -t dulik65/deployment-center-api:test .
+      working-directory: ./src/DeploymentCenter
