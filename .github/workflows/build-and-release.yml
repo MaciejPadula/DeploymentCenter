@@ -31,7 +31,7 @@ jobs:
       working-directory: ./src/DeploymentCenter
     - name: copy files
       run: |
-        cp DeploymentCenter/bin/Release/net8.0/* ./*
+        cp -r ./DeploymentCenter/bin/Release/net8.0 .
         ls -l
       working-directory: ./src/DeploymentCenter
     - name: docker build
