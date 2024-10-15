@@ -3,11 +3,16 @@ import axios from "axios";
 export class HttpClient {
   private headers: Record<string, string>;
 
-  constructor(private apiUrl: string, private authBase64: string) {
+  constructor(private apiUrl: string, private authBase64: string | null) {
     console.log("API URL", this.apiUrl);
-    this.headers = {
-      "Auth": this.authBase64,
-    };
+
+    if (this.authBase64 === null) {
+      this.headers = {};
+    } else {
+      this.headers = {
+        "Auth": this.authBase64,
+      };
+    }
   }
 
   public async get<T>(endpoint: string): Promise<T> {

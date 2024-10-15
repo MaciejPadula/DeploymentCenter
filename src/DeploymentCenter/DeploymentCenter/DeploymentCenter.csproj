@@ -14,18 +14,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.Deployments.Api\DeploymentCenter.Deployments.Api.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Deployments.Contract\DeploymentCenter.Deployments.Contract.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Deployments.Infrastructure\DeploymentCenter.Deployments.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Deployments\DeploymentCenter.Deployments.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Images.Api\DeploymentCenter.Images.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Images\DeploymentCenter.Images.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Infrastructure\DeploymentCenter.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Namespaces.Api\DeploymentCenter.Namespaces.Api.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Namespaces.Contract\DeploymentCenter.Namespaces.Contract.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Namespaces\DeploymentCenter.Namespaces.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Security.Api\DeploymentCenter.Security.Api.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Security\DeploymentCenter.Security.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Services.Api\DeploymentCenter.Services.Api.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Services.Contract\DeploymentCenter.Services.Contract.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Services.Infrastructure\DeploymentCenter.Services.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Services\DeploymentCenter.Services.csproj" />
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
   </ItemGroup>

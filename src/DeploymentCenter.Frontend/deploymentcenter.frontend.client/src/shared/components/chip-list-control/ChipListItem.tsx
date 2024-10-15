@@ -54,7 +54,7 @@ export function ChipListItem<T>(props: Props<T>) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button onClick={handleSave}>Save</Button>
+          <Button variant="contained" onClick={handleSave}>Save</Button>
         </DialogActions>
       </Dialog>
     </>

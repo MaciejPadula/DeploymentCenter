@@ -12,4 +12,5 @@ public interface IDeploymentClient
     Task<string> GetPodLogs(string @namespace, string podName);
     Task<List<ContainerMetrics>> GetDeploymentStatistics(string @namespace, string deploymentName);
     Task<bool> AreMetricsAvailable();
+    Task RestartDeployment(string @namespace, string deploymentName);
 }
