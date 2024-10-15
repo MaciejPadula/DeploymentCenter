@@ -25,7 +25,7 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     - name: Build
-      run: dotnet build -c Release
+      run: dotnet publish
       working-directory: ./src/DeploymentCenter
 
     - name: Run Tests
@@ -59,7 +59,7 @@ jobs:
 
 
     - name: Build
-      run: dotnet build -c Release
+      run: dotnet publish
       working-directory: ./src/DeploymentCenter.Frontend
 
     - name: Run Tests
