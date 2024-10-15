@@ -49,10 +49,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Deployments.Infrastructure", "DeploymentCenter.Deployments.Infrastructure\DeploymentCenter.Deployments.Infrastructure.csproj", "{1636CC21-A662-454C-89E3-B7A1C571B5AB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{365A4DEF-FF24-4CD6-85DF-27995CE77D00}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.ArchitectureTests", "DeploymentCenter.ArchitectureTests\DeploymentCenter.ArchitectureTests.csproj", "{C7E555E3-9780-4014-A63E-4C04706A2AB7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Services.Infrastructure", "DeploymentCenter.Services.Infrastructure\DeploymentCenter.Services.Infrastructure.csproj", "{BFC9D58A-F145-4140-9393-5859FCCF7FE5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Namespaces.Infrastructure", "DeploymentCenter.Namespaces.Infrastructure\DeploymentCenter.Namespaces.Infrastructure.csproj", "{01F747C9-9EC8-4EEB-8734-C358C1798145}"
@@ -63,16 +59,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Security",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Security.Contract", "DeploymentCenter.Security.Contract\DeploymentCenter.Security.Contract.csproj", "{ACE38F78-C8F5-4CE7-B4E2-4BE52DAAA062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Security.Api", "DeploymentCenter.Security.Api\DeploymentCenter.Security.Api.csproj", "{4AA3A227-A904-4826-8E6B-9547ACAB291C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Security.Api", "DeploymentCenter.Security.Api\DeploymentCenter.Security.Api.csproj", "{4AA3A227-A904-4826-8E6B-9547ACAB291C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Infrastructure.Tests", "DeploymentCenter.Infrastructure.Tests\DeploymentCenter.Infrastructure.Tests.csproj", "{F2FDB1DA-10FF-4E04-9A57-E0FA41FD8ACF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Infrastructure.Tests", "DeploymentCenter.Infrastructure.Tests\DeploymentCenter.Infrastructure.Tests.csproj", "{F2FDB1DA-10FF-4E04-9A57-E0FA41FD8ACF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{57806817-1C19-4C7F-AC0A-4B36E4937F05}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Security.Infrastructure", "DeploymentCenter.Security.Infrastructure\DeploymentCenter.Security.Infrastructure.csproj", "{B00992CE-EA49-49E7-ABEA-087A4FFA3BAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Security.Infrastructure", "DeploymentCenter.Security.Infrastructure\DeploymentCenter.Security.Infrastructure.csproj", "{B00992CE-EA49-49E7-ABEA-087A4FFA3BAA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{54EBCADE-FD7E-4EBA-AF94-D95A8E6873B7}"
 EndProject
@@ -150,10 +146,6 @@ Global
 		{1636CC21-A662-454C-89E3-B7A1C571B5AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1636CC21-A662-454C-89E3-B7A1C571B5AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1636CC21-A662-454C-89E3-B7A1C571B5AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7E555E3-9780-4014-A63E-4C04706A2AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7E555E3-9780-4014-A63E-4C04706A2AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7E555E3-9780-4014-A63E-4C04706A2AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7E555E3-9780-4014-A63E-4C04706A2AB7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BFC9D58A-F145-4140-9393-5859FCCF7FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BFC9D58A-F145-4140-9393-5859FCCF7FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFC9D58A-F145-4140-9393-5859FCCF7FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -207,7 +199,6 @@ Global
 		{67738527-B3B8-4173-9F93-E01E5EFB212D} = {4D4A6434-6214-4CFA-A9D5-6A6B5E1A67B5}
 		{A9F79356-DD91-4517-9D96-8FB1D4D1D6D9} = {54EBCADE-FD7E-4EBA-AF94-D95A8E6873B7}
 		{1636CC21-A662-454C-89E3-B7A1C571B5AB} = {5DE2A0BB-1FF9-4AEE-B249-E92FF7A5FBE1}
-		{C7E555E3-9780-4014-A63E-4C04706A2AB7} = {365A4DEF-FF24-4CD6-85DF-27995CE77D00}
 		{BFC9D58A-F145-4140-9393-5859FCCF7FE5} = {78782D7D-B78F-4FEC-B0BC-BCEC6FE9073B}
 		{01F747C9-9EC8-4EEB-8734-C358C1798145} = {4D4A6434-6214-4CFA-A9D5-6A6B5E1A67B5}
 		{EF65B7E5-D340-4A3D-85F5-D0D2AD9351D6} = {B238DB0E-9BBE-4CB9-9D3D-99084D449C1E}
