@@ -4,5 +4,5 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-COPY ./net8.0 .
+COPY ./publish .
 ENTRYPOINT ["dotnet", "DeploymentCenter.Frontend.Server.dll"]
