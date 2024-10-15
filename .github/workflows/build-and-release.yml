@@ -12,13 +12,13 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Generate Tag
-      id: date
-      run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      id: tag
+      run: echo "tag=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
 
     - name: Test with environment variables
       run: echo $TAG_NAME
       env:
-        TAG_NAME: ${{ env.date }}
+        TAG_NAME: ${{ env.tag }}
     
     - name: Install node
       uses: actions/setup-node@v4
