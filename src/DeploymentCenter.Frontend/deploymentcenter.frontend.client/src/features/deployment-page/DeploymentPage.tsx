@@ -4,7 +4,7 @@ import {
   ResourceSummaryFactory,
   ResourceSummaryModel,
 } from "../../shared/components/resource-page/resource-summary-model";
-import { ReplicasList } from "./replicas/ReplicasList";
+import { ReplicasList } from "./Replicas/ReplicasList";
 import { useEffect, useState } from "react";
 import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-service";
 import { getDeploymentUrl } from "../../shared/services/routing-service";
