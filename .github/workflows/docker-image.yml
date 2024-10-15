@@ -1,0 +1,35 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Install node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '21.1'
+
+    - name: Install dotnet
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: move
+      run: cd src/DeploymentCenter
+    - name: test
+      run: dotnet test
+    - name: build
+      run: dotnet build -c Release
+    - name: copy files
+      run: cp DeploymentCenter/bin/Release/net8.0/* .
+    - name: docker build
+      run: docker build -t dulik65/deployment-center-api:test .
