@@ -10,6 +10,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+
+    - name: Generate Tag
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Test with environment variables
+      run: echo $TAG_NAME
+      env:
+        TAG_NAME: ${{ steps.date.outputs.date }}
     
     - name: Install node
       uses: actions/setup-node@v4
