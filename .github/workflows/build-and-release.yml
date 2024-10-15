@@ -30,7 +30,9 @@ jobs:
       run: dotnet build -c Release
       working-directory: ./src/DeploymentCenter
     - name: copy files
-      run: cp DeploymentCenter/bin/Release/net8.0/* .
+      run: |
+        cp -r DeploymentCenter/bin/Release/net8.0/* .
+        ls -l
       working-directory: ./src/DeploymentCenter
     - name: docker build
       run: docker build -t dulik65/deployment-center-api:test .
