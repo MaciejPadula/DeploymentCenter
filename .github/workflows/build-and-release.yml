@@ -32,7 +32,7 @@ jobs:
       working-directory: ./src/DeploymentCenter
     - name: Copy Output
       run: |
-        cp -r ./DeploymentCenter/bin/Release/net8.0 .
+        cp -r ./DeploymentCenter/bin/Release/net8.0/* .
         ls -l
       working-directory: ./src/DeploymentCenter
 
