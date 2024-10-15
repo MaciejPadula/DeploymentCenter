@@ -37,3 +37,6 @@ jobs:
     - name: docker build
       run: docker build -t dulik65/deployment-center-api:test .
       working-directory: ./src/DeploymentCenter
+
+    - name: docker push
+      run: docker push dulik65/deployment-center-api:test
