@@ -26,6 +26,8 @@ jobs:
     - name: move
       run: cd src/DeploymentCenter
     - name: test
+      run: ls -l
+    - name: test
       run: dotnet test
     - name: build
       run: dotnet build -c Release
