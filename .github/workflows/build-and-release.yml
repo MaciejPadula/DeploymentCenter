@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build and Deploy
 
 on:
   workflow_dispatch:
@@ -125,5 +125,5 @@ jobs:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         
-      - name: Docker Push
-        run: docker push dulik65/deployment-center-frontend:${{ env.tag }}
+    - name: Docker Push
+      run: docker push dulik65/deployment-center-frontend:${{ env.tag }}
