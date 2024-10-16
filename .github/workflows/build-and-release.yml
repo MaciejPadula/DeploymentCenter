@@ -60,14 +60,14 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: deployment-center-api
-        path: ./src/DeploymentCenter/net8.0/publish
+        path: ./src/DeploymentCenter/publish
         retention-days: 1
 
     - name: 'Upload Artifact Frontend'
       uses: actions/upload-artifact@v4
       with:
         name: deployment-center-frontend
-        path: ./src/DeploymentCenter.Frontend/net8.0/publish
+        path: ./src/DeploymentCenter.Frontend/publish
         retention-days: 1
 
   release-api:
