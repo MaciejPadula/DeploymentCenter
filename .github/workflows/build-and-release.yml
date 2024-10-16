@@ -73,6 +73,7 @@ jobs:
   release-api:
       runs-on: ubuntu-latest
       environment: prod
+      needs: build
       steps:
       - name: Download Artifact
         uses: actions/download-artifact@v4
@@ -98,6 +99,7 @@ jobs:
   release-frontend:
       runs-on: ubuntu-latest
       environment: prod
+      needs: build
       steps:
       - name: Download Artifact
         uses: actions/download-artifact@v4
