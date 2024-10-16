@@ -10,6 +10,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+
+    - name: Generate Tag
+      id: tag
+      run: echo "tag=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
       
     - name: Install node
       uses: actions/setup-node@v4
@@ -38,26 +42,6 @@ jobs:
         ls -l
       working-directory: ./src/DeploymentCenter
 
-    - name: Generate Tag
-      id: tag
-      run: echo "tag=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
-
-    - name: Docker Build
-      run: |
-        ls -l
-        docker build -t dulik65/deployment-center-api:${{ env.tag }} .
-      working-directory: ./src/DeploymentCenter
-
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ vars.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-        
-    - name: Docker Push
-      run: docker push dulik65/deployment-center-api:${{ env.tag }}
-
-
     - name: Build
       run: dotnet publish
       working-directory: ./src/DeploymentCenter.Frontend
@@ -72,17 +56,66 @@ jobs:
         ls -l
       working-directory: ./src/DeploymentCenter.Frontend
 
-    - name: Docker Build
-      run: |
-        ls -l
-        docker build -t dulik65/deployment-center-frontend:${{ env.tag }} .
-      working-directory: ./src/DeploymentCenter.Frontend
-
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
+    - name: 'Upload Artifact Api'
+      uses: actions/upload-artifact@v4
       with:
-        username: ${{ vars.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        name: deployment-center-api
+        path: ./src/DeploymentCenter/net8.0/publish
+        retention-days: 1
+
+    - name: 'Upload Artifact Frontend'
+      uses: actions/upload-artifact@v4
+      with:
+        name: deployment-center-frontend
+        path: ./src/DeploymentCenter.Frontend/net8.0/publish
+        retention-days: 1
+
+  release-api:
+      runs-on: ubuntu-latest
+      environment: prod
+      steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-center-api
+          path: ./src/DeploymentCenter/publish
+      
+      - name: Docker Build
+        run: |
+          ls -l
+          docker build -t dulik65/deployment-center-api:${{ env.tag }} .
+        working-directory: ./src/DeploymentCenter
+  
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Docker Push
+        run: docker push dulik65/deployment-center-api:${{ env.tag }}
         
-    - name: Docker Push
-      run: docker push dulik65/deployment-center-frontend:${{ env.tag }}
+  release-frontend:
+      runs-on: ubuntu-latest
+      environment: prod
+      steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-center-frontend
+          path: ./src/DeploymentCenter.Frontend/publish
+          
+      - name: Docker Build
+        run: |
+          ls -l
+          docker build -t dulik65/deployment-center-frontend:${{ env.tag }} .
+        working-directory: ./src/DeploymentCenter.Frontend
+  
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Docker Push
+        run: docker push dulik65/deployment-center-frontend:${{ env.tag }}
