@@ -10,10 +10,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-
-    - name: Generate Tag
-      id: tag
-      run: echo "tag=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
       
     - name: Install node
       uses: actions/setup-node@v4
@@ -80,6 +76,10 @@ jobs:
         with:
           name: deployment-center-api
           path: ./src/DeploymentCenter/publish
+
+      - name: Generate Tag
+        id: tag
+        run: echo "tag=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
       
       - name: Docker Build
         run: |
@@ -106,6 +106,10 @@ jobs:
         with:
           name: deployment-center-frontend
           path: ./src/DeploymentCenter.Frontend/publish
+
+      - name: Generate Tag
+        id: tag
+        run: echo "tag=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
           
       - name: Docker Build
         run: |
