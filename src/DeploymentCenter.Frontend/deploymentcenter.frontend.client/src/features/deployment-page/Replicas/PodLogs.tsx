@@ -11,7 +11,7 @@ export function PodLogs(props: {
 }) {
   const dataService = useDeploymentPageDataService(props.cluster);
 
-  const { isPending, error, data, isFetching } = useQuery({
+  const { error, data } = useQuery({
     queryKey: [
       "podLogsLoader",
       props.podName,
@@ -20,9 +20,8 @@ export function PodLogs(props: {
     ],
     queryFn: async () =>
       await dataService.getPodLogs(props.namespace, props.podName),
+    refetchInterval: 1000,
   });
-
-  const isLoading = isPending || isFetching || data == undefined;
 
   if (error) {
     <div>Error</div>;
@@ -30,8 +29,7 @@ export function PodLogs(props: {
 
   return (
     <div>
-      {isLoading && <LinearProgress />}
-      {!isLoading && <Terminal text={data} />}
+      {data === undefined ? <LinearProgress /> : <Terminal text={data} />}
     </div>
   );
 }

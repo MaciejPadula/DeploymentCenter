@@ -1,7 +1,7 @@
 import { Paper, Typography } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 import { LineChartBox } from "../../../shared/components/charts/line-chart/LineChartBox";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useDeploymentPageDataService from "../deployment-page-data-service";
 import { XAxisData } from "../../../shared/components/charts/line-chart/x-axis-data";
 import { ChartSerie } from "../../../shared/components/charts/line-chart/chart-serie";
@@ -11,6 +11,7 @@ import { DeploymentMetrics } from "../models/deployment-metrics";
 import StatisticsNotAvailable from "./StatisticsNotAvailable";
 import { AxiosError } from "axios";
 import { Cluster } from "../../../shared/models/cluster";
+import { useQuery } from "@tanstack/react-query";
 
 const maxPointsOnChart = 10;
 
@@ -23,44 +24,41 @@ export function DeploymentStatistics(props: {
 }) {
   const dataService = useDeploymentPageDataService(props.cluster);
   const [metrics, setMetrics] = useState<DeploymentMetrics[]>([]);
-  const [metricsAvailable, setMetricsAvailable] = useState<boolean>(true);
 
-  async function fetchDeploymentMetrics() {
-    if (!metricsAvailable) {
-      return;
-    }
-
-    try {
-      const metrics = await dataService.getDeploymentMetrics(
-        props.namespace,
-        props.deploymentName
-      );
-  
-      setMetrics((old) =>
-        lastElements(
-          [
-            ...old,
-            {
-              cpuUsage: metrics.cpuUsage,
-              memoryUsage: metrics.memoryUsage,
-              timestampUtc: getNowFormatedTime(),
-            },
-          ],
-          maxPointsOnChart
-        )
-      );
-    }
-    catch (error) {
-      if (error instanceof AxiosError && error?.response?.status === 501) {
-        setMetricsAvailable(false);
-      }
-    }
+  async function fetchMetrics() {
+    const metr = await dataService.getDeploymentMetrics(
+      props.namespace,
+      props.deploymentName
+    );
+    setMetrics((old) =>
+      lastElements(
+        [
+          ...old,
+          {
+            cpuUsage: metr.cpuUsage,
+            memoryUsage: metr.memoryUsage,
+            timestampUtc: getNowFormatedTime(),
+          },
+        ],
+        maxPointsOnChart
+      )
+    );
   }
 
-  useEffect(() => {
-    const interval = setInterval(fetchDeploymentMetrics, 5000);
-    return () => clearInterval(interval);
+  const { error } = useQuery({
+    queryKey: [
+      "deploymentStatisticsLoader",
+      props.deploymentName,
+      props.namespace,
+      props.cluster.apiUrl,
+    ],
+    queryFn: async () => await fetchMetrics(),
+    refetchInterval: 1000,
   });
+
+  const metricsAvailable =
+    error === undefined ||
+    !(error instanceof AxiosError && error?.response?.status === 501);
 
   const xAxisData: XAxisData<string> = {
     values: metrics.map((x) => x.timestampUtc),
@@ -104,10 +102,18 @@ export function DeploymentStatistics(props: {
           />
         </div>
         <div className="w-full">
-          { metricsAvailable ? <LineChartBox series={[cpuChart]} xAxis={xAxisData} /> : <StatisticsNotAvailable /> }
+          {metricsAvailable ? (
+            <LineChartBox series={[cpuChart]} xAxis={xAxisData} />
+          ) : (
+            <StatisticsNotAvailable />
+          )}
         </div>
         <div className="w-full">
-          { metricsAvailable ? <LineChartBox series={[memoryChart]} xAxis={xAxisData} /> : <StatisticsNotAvailable /> }
+          {metricsAvailable ? (
+            <LineChartBox series={[memoryChart]} xAxis={xAxisData} />
+          ) : (
+            <StatisticsNotAvailable />
+          )}
         </div>
       </div>
     </Paper>
