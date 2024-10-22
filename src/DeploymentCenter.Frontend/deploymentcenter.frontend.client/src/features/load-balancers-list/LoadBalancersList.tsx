@@ -7,12 +7,12 @@ import {
 import useLoadBalancersDataService from "./load-balancers-data-service";
 import { SvcIcon } from "../../assets/icons";
 import { useAppRouting } from "../../shared/hooks/navigation";
-import { selectedCluster } from "../../shared/services/configuration-service";
+import { configuration } from "../../shared/services/configuration-service";
 
 export function LoadBalancersList() {
   const navigation = useAppRouting();
   const { namespace, clusterName } = useParams();
-  const cluster = selectedCluster.value;
+  const cluster = configuration.value.clusters.find(c => c.name === clusterName);
   const dataService = useLoadBalancersDataService(cluster);
 
   if (namespace === undefined || clusterName === undefined || cluster === undefined) {

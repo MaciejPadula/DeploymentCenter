@@ -1,40 +1,40 @@
 import {
   Accordion,
-  AccordionActions,
+  // AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Button,
   Typography,
 } from "@mui/material";
 import { Pod } from "../models/pod";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { PodLogs } from "./PodLogs";
-import { useState } from "react";
 import { Cluster } from "../../../shared/models/cluster";
+import { useState } from "react";
 
 export function ReplicaRow(props: {
   pod: Pod;
   namespace: string;
   cluster: Cluster;
 }) {
-  const [showLogs, setShowLogs] = useState(false);
+  const [accordationStatus, setAccordationStatus] = useState(false);
 
-  function toggleLogs() {
-    setShowLogs((oldShowLogs) => !oldShowLogs);
+  function toggleAccordation() {
+    setAccordationStatus(old => !old);
   }
 
   return (
     <Accordion>
-      <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-        <Typography color={props.pod.isRunning ? "green" : "red"}>
-          {props.pod.name}
-        </Typography>
+      <AccordionSummary expandIcon={<ArrowDropDownIcon />} onClick={() => toggleAccordation()}>
+        <div className={"flex flex-row justify-between w-full"}>
+          <Typography color={props.pod.isRunning ? "green" : "red"}>
+            {props.pod.name}
+          </Typography>
+          <Typography>Pod status: {props.pod.status}</Typography>
+          <Typography>Internal Ip: {props.pod.ip}</Typography>
+        </div>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography>{props.pod.status}</Typography>
-        <Typography>{props.pod.ip}</Typography>
-        <Button onClick={toggleLogs}>Show logs</Button>
-        {showLogs && (
+        {accordationStatus && (
           <PodLogs
             namespace={props.namespace}
             podName={props.pod.name}
@@ -42,7 +42,7 @@ export function ReplicaRow(props: {
           />
         )}
       </AccordionDetails>
-      <AccordionActions>xd</AccordionActions>
+      {/* <AccordionActions>xd</AccordionActions> */}
     </Accordion>
   );
 }

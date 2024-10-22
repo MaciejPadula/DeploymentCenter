@@ -13,12 +13,12 @@ import { ContainersList } from "./containers/ContainersList";
 import useDeploymentPageDataService from "./deployment-page-data-service";
 import { DeploymentDetails } from "./deployment-details";
 import { DeploymentStatistics } from "./statistics/DeploymentStatistics";
-import { selectedCluster } from "../../shared/services/configuration-service";
+import { configuration } from "../../shared/services/configuration-service";
 import { DeploymentToolbar } from "./toolbar/DeploymentToolbar";
 
 export function DeploymentPage() {
   const { deploymentName, namespace, clusterName } = useParams();
-  const cluster = selectedCluster.value;
+  const cluster = configuration.value.clusters.find(c => c.name === clusterName);
   const [details, setDetails] = useState<DeploymentDetails | null>(null);
   const dataService = useDeploymentPageDataService(cluster);
 

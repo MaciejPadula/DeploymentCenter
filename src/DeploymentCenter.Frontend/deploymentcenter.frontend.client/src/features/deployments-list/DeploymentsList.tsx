@@ -6,13 +6,13 @@ import {
 } from "../../shared/components/resources-list/resource-row-model";
 import { useParams } from "react-router-dom";
 import { DeployIcon } from "../../assets/icons";
-import { selectedCluster } from "../../shared/services/configuration-service";
+import { configuration } from "../../shared/services/configuration-service";
 import { useAppRouting } from "../../shared/hooks/navigation";
 
 export function DeploymentsList() {
   const navigation = useAppRouting();
   const { namespace, clusterName } = useParams();
-  const cluster = selectedCluster.value;
+  const cluster = configuration.value.clusters.find(c => c.name === clusterName);
   const dataService = useDeploymentsDataService(cluster);
 
   if (

@@ -11,11 +11,11 @@ import { useEffect } from "react";
 import { SvcIcon } from "../../assets/icons";
 import { IpAddresses } from "./ip-addresses/IpAddresses";
 import { LoadBalancerPorts } from "./Ports/LoadBalancerPorts";
-import { selectedCluster } from "../../shared/services/configuration-service";
+import { configuration } from "../../shared/services/configuration-service";
 
 export function LoadBalancerPage() {
   const { loadBalancerName, namespace, clusterName } = useParams();
-  const cluster = selectedCluster.value;
+  const cluster = configuration.value.clusters.find(c => c.name === clusterName);
   const dataService = useLoadBalancerPageDataService(cluster);
 
   useEffect(() => {
