@@ -10,16 +10,15 @@ export function ReplicasList(props: {
   namespace: string;
 }) {
   const dataService = useDeploymentPageDataService(props.cluster);
-  const { isPending, error, data, isFetching } = useQuery({
+  const { error, data } = useQuery({
     queryKey: ["podsLoader"],
     queryFn: async () =>
       await dataService.getDeploymentPods(
         props.namespace,
         props.deploymentName
       ),
+    refetchInterval: 2000,
   });
-
-  const isLoading = isPending || isFetching || data == undefined;
 
   if (error) {
     <div>Error</div>;
@@ -27,8 +26,9 @@ export function ReplicasList(props: {
 
   return (
     <div>
-      {isLoading && <LinearProgress />}
-      {!isLoading &&
+      {data == undefined ? (
+        <LinearProgress />
+      ) : (
         data.map((pod) => (
           <ReplicaRow
             key={pod.name}
@@ -36,7 +36,8 @@ export function ReplicasList(props: {
             namespace={props.namespace}
             cluster={props.cluster}
           />
-        ))}
+        ))
+      )}
     </div>
   );
 }

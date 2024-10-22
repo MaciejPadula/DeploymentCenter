@@ -1,31 +1,25 @@
 ﻿using DeploymentCenter.Deployments.Contract.Features;
 using DeploymentCenter.Deployments.Contract.Models;
 using DeploymentCenter.Deployments.Infrastructure;
+using DeploymentCenter.SharedKernel.Extensions;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features;
 
-internal class GetDeploymentMetricsHandler : IRequestHandler<GetDeploymentMetricsQuery, DeploymentMetrics?>
+internal class GetDeploymentMetricsHandler(IDeploymentClient deploymentClient, TimeProvider timeProvider) : IRequestHandler<GetDeploymentMetricsQuery, DeploymentMetrics?>
 {
-    private readonly IDeploymentClient _deploymentClient;
-
-    public GetDeploymentMetricsHandler(IDeploymentClient deploymentClient)
-    {
-        _deploymentClient = deploymentClient;
-    }
-
     public async Task<DeploymentMetrics?> Handle(GetDeploymentMetricsQuery request, CancellationToken cancellationToken)
     {
-        if (!await _deploymentClient.AreMetricsAvailable())
+        if (!await deploymentClient.AreMetricsAvailable())
         {
             return null;
         }
 
-        var containersMetrics = await _deploymentClient.GetDeploymentStatistics(request.Namespace, request.DeploymentName);
+        var containersMetrics = await deploymentClient.GetDeploymentStatistics(request.Namespace, request.DeploymentName);
 
-        var cpuUsage = containersMetrics.Sum(x => x.CpuUsage);
-        var memoryUsage = containersMetrics.Sum(x => x.MemoryUsage);
-        var timestamp = containersMetrics.Max(x => x.TimestampUtc);
+        var cpuUsage = containersMetrics.SumOrDefault(x => x.CpuUsage, 0);
+        var memoryUsage = containersMetrics.SumOrDefault(x => x.MemoryUsage, 0);
+        var timestamp = containersMetrics.MaxOrDefault(x => x.TimestampUtc, timeProvider.GetUtcNow().DateTime);
 
         return new DeploymentMetrics(timestamp, cpuUsage, memoryUsage);
     }

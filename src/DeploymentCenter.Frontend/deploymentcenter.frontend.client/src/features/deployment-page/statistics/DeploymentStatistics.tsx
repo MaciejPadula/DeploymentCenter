@@ -53,7 +53,7 @@ export function DeploymentStatistics(props: {
       props.cluster.apiUrl,
     ],
     queryFn: async () => await fetchMetrics(),
-    refetchInterval: 1000,
+    refetchInterval: 5000,
   });
 
   const metricsAvailable =

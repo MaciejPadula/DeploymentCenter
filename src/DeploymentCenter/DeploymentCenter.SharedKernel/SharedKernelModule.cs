@@ -7,5 +7,6 @@ public static class SharedKernelModule
     public static void AddSharedKernelModule(this IServiceCollection services)
     {
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+        services.AddSingleton(TimeProvider.System);
     }
 }
