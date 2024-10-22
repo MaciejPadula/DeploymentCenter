@@ -1,7 +1,7 @@
 import { Paper, Typography } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 import { LineChartBox } from "../../../shared/components/charts/line-chart/LineChartBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useDeploymentPageDataService from "../deployment-page-data-service";
 import { XAxisData } from "../../../shared/components/charts/line-chart/x-axis-data";
 import { ChartSerie } from "../../../shared/components/charts/line-chart/chart-serie";
@@ -24,37 +24,42 @@ export function DeploymentStatistics(props: {
 }) {
   const dataService = useDeploymentPageDataService(props.cluster);
   const [metrics, setMetrics] = useState<DeploymentMetrics[]>([]);
-
-  async function fetchMetrics() {
-    const metr = await dataService.getDeploymentMetrics(
-      props.namespace,
-      props.deploymentName
-    );
-    setMetrics((old) =>
-      lastElements(
-        [
-          ...old,
-          {
-            cpuUsage: metr.cpuUsage,
-            memoryUsage: metr.memoryUsage,
-            timestampUtc: getNowFormatedTime(),
-          },
-        ],
-        maxPointsOnChart
-      )
-    );
-  }
-
-  const { error } = useQuery({
+  const { error, data } = useQuery({
     queryKey: [
       "deploymentStatisticsLoader",
       props.deploymentName,
       props.namespace,
       props.cluster.apiUrl,
     ],
-    queryFn: async () => await fetchMetrics(),
+    queryFn: async () =>
+      await dataService.getDeploymentMetrics(
+        props.namespace,
+        props.deploymentName
+      ),
     refetchInterval: 5000,
   });
+
+  useEffect(() => {
+    if (data === undefined) {
+      return;
+    }
+
+    setMetrics((old) =>
+      lastElements(
+        [
+          ...old,
+          {
+            cpuUsage: data.cpuUsage * 100,
+            memoryUsage: Number.parseInt(
+              (data.memoryUsage / 1024 / 1024).toString()
+            ),
+            timestampUtc: getNowFormatedTime(),
+          },
+        ],
+        maxPointsOnChart
+      )
+    );
+  }, [data]);
 
   const metricsAvailable =
     error === undefined ||
