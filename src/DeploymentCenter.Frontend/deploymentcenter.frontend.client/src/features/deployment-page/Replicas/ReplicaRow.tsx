@@ -19,19 +19,27 @@ export function ReplicaRow(props: {
   const [accordationStatus, setAccordationStatus] = useState(false);
 
   function toggleAccordation() {
-    setAccordationStatus(old => !old);
+    setAccordationStatus((old) => !old);
   }
 
   return (
     <Accordion>
-      <AccordionSummary expandIcon={<ArrowDropDownIcon />} onClick={() => toggleAccordation()}>
-        <div className={"flex flex-row justify-between w-full"}>
-          <Typography color={props.pod.isRunning ? "green" : "red"}>
-            {props.pod.name}
-          </Typography>
-          <Typography>Pod status: {props.pod.status}</Typography>
-          <Typography>Internal Ip: {props.pod.ip}</Typography>
-        </div>
+      <AccordionSummary
+        expandIcon={<ArrowDropDownIcon />}
+        onClick={() => toggleAccordation()}
+      >
+        <Typography
+          color={props.pod.isRunning ? "green" : "red"}
+          sx={{ width: "33%", flexShrink: 0 }}
+        >
+          {props.pod.name}
+        </Typography>
+        <Typography sx={{ width: "33%", flexShrink: 0 }}>
+          Pod status: {props.pod.status}
+        </Typography>
+        <Typography sx={{ width: "33%", flexShrink: 0 }}>
+          Internal Ip: {props.pod.ip}
+        </Typography>
       </AccordionSummary>
       <AccordionDetails>
         {accordationStatus && (
