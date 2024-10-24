@@ -1,16 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { ResourcesFactory } from "./resource-row-model";
 import { ResourceRow } from "./ResourceRow";
-import { LinearProgress, List, Typography } from "@mui/material";
+import { Button, LinearProgress, List, Typography } from "@mui/material";
 import { NoElementsToDisplay } from "../error/no-elements-to-display/NoElementsToDisplay";
 import { LoadingError } from "../error/loading-error/LoadingError";
 
-export function ResourcesList(props: {
+type Props = {
   resourceText: string;
+  setupResourceText: string;
   resourceKey: string;
   resourcesFactory: ResourcesFactory;
+  onSetupClicked: () => void;
   showIfEmpty?: boolean | undefined;
-}) {
+};
+
+export function ResourcesList(props: Props) {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: [props.resourceKey],
     queryFn: props.resourcesFactory,
@@ -37,7 +41,9 @@ export function ResourcesList(props: {
       {!isLoading && props.showIfEmpty !== false && data.length === 0 && (
         <NoElementsToDisplay />
       )}
-
+      <Button onClick={() => props.onSetupClicked()} className={"flex w-full"}>
+        {props.setupResourceText}
+      </Button>
       {!isLoading && (props.showIfEmpty !== false || data.length > 0) && (
         <List>
           {data.map((resource) => (

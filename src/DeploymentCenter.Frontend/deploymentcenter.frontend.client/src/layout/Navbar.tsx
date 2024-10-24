@@ -1,6 +1,5 @@
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { SidebarToggler } from "./sidebar/SidebarToggler";
 import { SelectNamespaceDialog } from "../shared/components/select-connection-settings-dialog/SelectConnectionSettings";
 
 export function Navbar() {
@@ -10,7 +9,6 @@ export function Navbar() {
         <Toolbar>
           <div className="flex flex-row justify-between w-full items-center">
             <div className="flex flex-row items-center justify-start">
-              <SidebarToggler />
               <Typography
                 variant="h6"
                 component={Link}
@@ -22,7 +20,6 @@ export function Navbar() {
             </div>
             <div className="flex flex-row justify-center items-center">
               <SelectNamespaceDialog />
-              {/* <Button color="inherit">Login</Button> */}
             </div>
           </div>
         </Toolbar>

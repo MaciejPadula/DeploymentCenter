@@ -1,6 +1,6 @@
 import { Unstable_Grid2 as Grid } from "@mui/material";
 import { ResourceTypeBox } from "./ResourceTypeBox";
-import { CronJobIcon, DeployIcon, NamespaceIcon, SvcIcon } from "../../../assets/icons";
+import { DeployIcon, NamespaceIcon, SvcIcon } from "../../../assets/icons";
 import { configuration } from "../../services/configuration-service";
 import { useAppRouting } from "../../hooks/navigation";
 
@@ -30,13 +30,6 @@ export function ResourceTypesGrid() {
           icon={SvcIcon}
           text="Load Balancers"
           navigate={() => navigation.loadBalancerList(config.cluster, config.namespace)}
-        />
-      </GridBox>
-      <GridBox>
-        <ResourceTypeBox
-          icon={CronJobIcon}
-          text="Cron Jobs"
-          navigate={() => navigation.cronJobsList(config.cluster, config.namespace)}
         />
       </GridBox>
       <GridBox>
