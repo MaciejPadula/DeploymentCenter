@@ -4,14 +4,14 @@ import { ResourceRow } from "./ResourceRow";
 import { Button, LinearProgress, List, Typography } from "@mui/material";
 import { NoElementsToDisplay } from "../error/no-elements-to-display/NoElementsToDisplay";
 import { LoadingError } from "../error/loading-error/LoadingError";
+import { CreateResourceModel } from "./create-resource-model";
 
 type Props = {
   resourceText: string;
-  setupResourceText: string;
   resourceKey: string;
   resourcesFactory: ResourcesFactory;
-  onSetupClicked: () => void;
   showIfEmpty?: boolean | undefined;
+  setupResource?: CreateResourceModel;
 };
 
 export function ResourcesList(props: Props) {
@@ -41,9 +41,16 @@ export function ResourcesList(props: Props) {
       {!isLoading && props.showIfEmpty !== false && data.length === 0 && (
         <NoElementsToDisplay />
       )}
-      <Button onClick={() => props.onSetupClicked()} className={"flex w-full"}>
-        {props.setupResourceText}
-      </Button>
+
+      {props.setupResource && (
+        <Button
+          onClick={() => props.setupResource?.clickHandler()}
+          className={"flex w-full"}
+        >
+          {props.setupResource.title}
+        </Button>
+      )}
+
       {!isLoading && (props.showIfEmpty !== false || data.length > 0) && (
         <List>
           {data.map((resource) => (
