@@ -71,4 +71,11 @@ export default defineConfig({
     //     cert: fs.readFileSync(certFilePath),
     // }
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler' // or "modern"
+      }
+    }
+  }
 });

@@ -12,10 +12,16 @@ import { configuration } from "../../shared/services/configuration-service";
 export function LoadBalancersList() {
   const navigation = useAppRouting();
   const { namespace, clusterName } = useParams();
-  const cluster = configuration.value.clusters.find(c => c.name === clusterName);
+  const cluster = configuration.value.clusters.find(
+    (c) => c.name === clusterName
+  );
   const dataService = useLoadBalancersDataService(cluster);
 
-  if (namespace === undefined || clusterName === undefined || cluster === undefined) {
+  if (
+    namespace === undefined ||
+    clusterName === undefined ||
+    cluster === undefined
+  ) {
     return <div>Error</div>;
   }
 
@@ -38,7 +44,9 @@ export function LoadBalancersList() {
     <ResourcesList
       resourceKey="LoadBalancersLoader"
       resourceText="Load Balancers"
+      setupResourceText="Setup new load balancer"
       resourcesFactory={factory}
+      onSetupClicked={() => navigation.setupService()}
     />
   );
 }

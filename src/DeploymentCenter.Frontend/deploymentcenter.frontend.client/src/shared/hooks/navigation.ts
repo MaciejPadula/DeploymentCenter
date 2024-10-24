@@ -22,11 +22,11 @@ export function useAppRouting() {
   }
 
   function setupDeployment() {
-    navigate("setup-deployment");
+    navigate("/setup-deployment");
   }
 
   function setupLoadBalancer() {
-    navigate("setup-load-balancer");
+    navigate("/setup-load-balancer");
   }
 
   function deploymentPage(

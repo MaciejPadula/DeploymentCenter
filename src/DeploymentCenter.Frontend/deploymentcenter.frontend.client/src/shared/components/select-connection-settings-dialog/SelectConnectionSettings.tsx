@@ -55,16 +55,26 @@ export function SelectNamespaceDialog(props: { onClose?: () => void }) {
       props.onClose();
     }
 
-    navigation.updateConnection(location.pathname, clusterControl, namespaceControl);
+    navigation.updateConnection(
+      location.pathname,
+      clusterControl,
+      namespaceControl
+    );
   }
 
   return (
     <Fragment>
       <Button variant="text" onClick={handleClickOpen}>
-        <span>{configuration.value.cluster}</span>
-        <span className="sm:block hidden">
-          /{configuration.value.namespace}
-        </span>
+        {configuration.value?.clusters?.length === 0 ? (
+          <span>No Clusters</span>
+        ) : (
+          <>
+            <span>{configuration.value.cluster}</span>
+            <span className="sm:block hidden">
+              /{configuration.value.namespace}
+            </span>
+          </>
+        )}
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Change Default Connection Settings</DialogTitle>
