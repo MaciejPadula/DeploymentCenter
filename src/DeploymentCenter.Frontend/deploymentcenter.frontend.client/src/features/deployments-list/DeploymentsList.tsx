@@ -43,10 +43,12 @@ export function DeploymentsList() {
   return (
     <ResourcesList
       resourceKey="DeploymentsLoader"
-      setupResourceText="Setup new deployment"
       resourceText="Deployments"
       resourcesFactory={factory}
-      onSetupClicked={() => navigation.setupDeployment()}
+      setupResource={{
+        title: "Setup new deployment",
+        clickHandler: () => navigation.setupDeployment(),
+      }}
     />
   );
 }

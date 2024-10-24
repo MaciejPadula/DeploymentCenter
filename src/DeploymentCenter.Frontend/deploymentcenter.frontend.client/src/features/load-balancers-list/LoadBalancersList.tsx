@@ -44,9 +44,11 @@ export function LoadBalancersList() {
     <ResourcesList
       resourceKey="LoadBalancersLoader"
       resourceText="Load Balancers"
-      setupResourceText="Setup new load balancer"
       resourcesFactory={factory}
-      onSetupClicked={() => navigation.setupService()}
+      setupResource={{
+        title: "Setup new load balancer",
+        clickHandler: () => navigation.setupService(),
+      }}
     />
   );
 }
