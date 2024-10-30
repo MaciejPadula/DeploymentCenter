@@ -86,6 +86,21 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     );
   }
 
+  async function scaleDeployment(
+    namespace: string,
+    deploymentName: string,
+    replicasCount: number
+  ) {
+    await httpClient.post(
+      `/${controller}/ScaleDeployment`,
+      {
+        namespace: namespace,
+        deploymentName: deploymentName,
+        replicasCount: replicasCount,
+      }
+    );
+  }
+
   return {
     getDeploymentDetails,
     getDeploymentPods,
@@ -94,6 +109,7 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     getDeploymentMetrics,
     restartDeployment,
     removeDeployment,
+    scaleDeployment,
   };
 }
 

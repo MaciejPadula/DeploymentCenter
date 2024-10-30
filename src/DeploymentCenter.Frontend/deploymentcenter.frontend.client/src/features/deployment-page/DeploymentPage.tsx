@@ -18,7 +18,9 @@ import { DeploymentToolbar } from "./toolbar/DeploymentToolbar";
 
 export function DeploymentPage() {
   const { deploymentName, namespace, clusterName } = useParams();
-  const cluster = configuration.value.clusters.find(c => c.name === clusterName);
+  const cluster = configuration.value.clusters.find(
+    (c) => c.name === clusterName
+  );
   const [details, setDetails] = useState<DeploymentDetails | null>(null);
   const dataService = useDeploymentPageDataService(cluster);
 
@@ -61,10 +63,7 @@ export function DeploymentPage() {
     properties.set("Cluster", `${clusterName}:${cluster.apiUrl}`);
     properties.set("Namespace", summary.namespace);
     properties.set("Application", summary.applicationName);
-    properties.set(
-      "Replicas",
-      `${summary.aliveReplicas}/${summary.allReplicas}`
-    );
+    properties.set("Replicas", summary.allReplicas.toString());
 
     return {
       resourceTitle: "Deployment",
@@ -79,6 +78,7 @@ export function DeploymentPage() {
         namespace={namespace}
         deploymentName={deploymentName}
         cluster={cluster}
+        replicas={details?.allReplicas ?? 0}
       />
       <ResourceSummary
         resourceSummaryKey={`deployment-${namespace}-${deploymentName}`}

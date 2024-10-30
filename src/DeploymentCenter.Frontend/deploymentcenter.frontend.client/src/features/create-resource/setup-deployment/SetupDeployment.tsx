@@ -11,6 +11,7 @@ import { UpdaterFunction } from "../../../shared/helpers/function-helpers";
 import { ValidationResult } from "../../../shared/models/validation-result";
 import { ContainersDialog } from "./ContainersDialog";
 import { ChipListControl } from "../../../shared/components/chip-list-control/ChipListControl";
+import { PlusMinusInput } from "../../../shared/components/plus-minus-input/PlusMinusInput";
 
 export function SetupDeployment(props: {
   value: DeploymentData;
@@ -44,11 +45,8 @@ export function SetupDeployment(props: {
     props.updater((data) => (data.name = name));
   }
 
-  function setReplicas(replicas: string) {
-    const parsedValue = parseInt(replicas);
-    const valueToSet = isNaN(parsedValue) ? 0 : parsedValue;
-
-    props.updater((data) => (data.replicas = valueToSet));
+  function setReplicas(replicas: number) {
+    props.updater((data) => (data.replicas = replicas));
   }
 
   function setContainers(containers: Container[]) {
@@ -93,14 +91,14 @@ export function SetupDeployment(props: {
         </Grid>
 
         <Grid sm={4} xs={12}>
-          <TextField
+          <PlusMinusInput
             className="w-full"
-            variant={InputVariant}
             label="Replicas"
             defaultValue={props.value.replicas ?? 0}
-            onBlur={(e) => setReplicas(e.target.value)}
+            onChange={(e) => setReplicas(e)}
             error={isError(replicasError)}
             helperText={replicasError?.message}
+            min={0}
           />
         </Grid>
       </Grid>

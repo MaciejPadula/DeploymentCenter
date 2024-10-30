@@ -22,6 +22,16 @@ export function ReplicaRow(props: {
     setAccordationStatus((old) => !old);
   }
 
+  function podTextColor() {
+    if (props.pod.status === "Running") {
+      return "green";
+    } else if (props.pod.status === "Pending") {
+      return "orange";
+    } else {
+      return "red";
+    }
+  }
+
   return (
     <Accordion>
       <AccordionSummary
@@ -29,7 +39,7 @@ export function ReplicaRow(props: {
         onClick={() => toggleAccordation()}
       >
         <Typography
-          color={props.pod.isRunning ? "green" : "red"}
+          color={podTextColor()}
           sx={{ width: "33%", flexShrink: 0 }}
         >
           {props.pod.name}

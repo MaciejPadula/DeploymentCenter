@@ -5,16 +5,22 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { Cluster } from "../../../shared/models/cluster";
 import useDeploymentPageDataService from "../deployment-page-data-service";
 import { useAppRouting } from "../../../shared/hooks/navigation";
+import { ScaleDialog } from "./ScaleDialog";
+import { useQuery } from "@tanstack/react-query";
 
 type Props = {
   deploymentName: string;
   namespace: string;
   cluster: Cluster;
+  replicas: number;
 };
 
 export function DeploymentToolbar(props: Props) {
   const navigation = useAppRouting();
   const deploymentService = useDeploymentPageDataService(props.cluster);
+  const { refetch } = useQuery({
+    queryKey: [`deployment-${props.namespace}-${props.deploymentName}`],
+  });
 
   async function deleteDeployment() {
     await deploymentService.removeDeployment(
@@ -24,12 +30,38 @@ export function DeploymentToolbar(props: Props) {
     navigation.deploymentList(props.cluster.name, props.namespace);
   }
 
-  function restartDeployment() {
-    deploymentService.restartDeployment(props.namespace, props.deploymentName);
+  async function restartDeployment() {
+    await deploymentService.restartDeployment(
+      props.namespace,
+      props.deploymentName
+    );
+  }
+
+  async function onReplicasChanged(value: number) {
+    await deploymentService.scaleDeployment(
+      props.namespace,
+      props.deploymentName,
+      value
+    );
+    await refetch();
   }
 
   return (
     <Paper className="flex flex-wrap w-full p-4 flex-row" elevation={2}>
+      <ScaleDialog
+        deploymentName={props.deploymentName}
+        namespace={props.namespace}
+        cluster={props.cluster}
+        replicasCount={props.replicas}
+        onChange={onReplicasChanged}
+      />
+
+      <div>
+        <IconButton onClick={restartDeployment}>
+          <RestartAltIcon className="text-yellow-400" />
+        </IconButton>
+      </div>
+
       <DeleteResource
         resourceName={props.deploymentName}
         onDelete={deleteDeployment}
@@ -38,12 +70,6 @@ export function DeploymentToolbar(props: Props) {
           <DeleteIcon className="text-red-700" />
         </IconButton>
       </DeleteResource>
-
-      <div>
-        <IconButton onClick={restartDeployment}>
-          <RestartAltIcon className="text-yellow-400" />
-        </IconButton>
-      </div>
     </Paper>
   );
 }
