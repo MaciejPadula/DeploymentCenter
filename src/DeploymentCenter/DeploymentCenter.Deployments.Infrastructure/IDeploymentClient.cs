@@ -13,4 +13,6 @@ public interface IDeploymentClient
     Task<List<ContainerMetrics>> GetDeploymentStatistics(string @namespace, string deploymentName);
     Task<bool> AreMetricsAvailable();
     Task RestartDeployment(string @namespace, string deploymentName);
+    Task ScaleDeployment(string @namespace, string deploymentName, int replicas);
+    Task RemoveDeployment(string @namespace, string deploymentName);
 }

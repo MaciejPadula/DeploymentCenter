@@ -1,21 +1,23 @@
-﻿using DeploymentCenter.Deployments.Contract.Features;
+﻿using DeploymentCenter.Deployments.Contract.Exceptions;
+using DeploymentCenter.Deployments.Contract.Features;
 using DeploymentCenter.Deployments.Infrastructure;
+using DeploymentCenter.Deployments.Shared;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features;
 
-internal class CreateDeploymentHandler : IRequestHandler<CreateDeploymentCommand>
+internal class CreateDeploymentHandler(IDeploymentClient deploymentClient, IReplicasCountValidator replicasCountValidator) : IRequestHandler<CreateDeploymentCommand>
 {
-    private readonly IDeploymentClient _deploymentClient;
-
-    public CreateDeploymentHandler(IDeploymentClient deploymentClient)
-    {
-        _deploymentClient = deploymentClient;
-    }
-
     public async Task Handle(CreateDeploymentCommand request, CancellationToken cancellationToken)
     {
-        await _deploymentClient.CreateDeployment(new(
+        var isValid = replicasCountValidator.Validate(request.Replicas);
+
+        if (!isValid)
+        {
+            throw new ReplicasInvalidException(request.Replicas);
+        }
+
+        await deploymentClient.CreateDeployment(new(
             request.Namespace,
             request.Name,
             request.ApplicationName,

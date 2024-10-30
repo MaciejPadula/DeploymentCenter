@@ -1,13 +1,13 @@
-﻿using DeploymentCenter.Infrastructure.Extensions;
-using DeploymentCenter.Services.Contract.Models;
+﻿using DeploymentCenter.Services.Contract.Models;
 using DeploymentCenter.Services.Infrastructure;
-using DeploymentCenter.SharedKernel;
 using k8s;
 using k8s.Models;
 
 namespace DeploymentCenter.Infrastructure.K8s;
 
-internal class K8sServiceClient(IKubernetesClientFactory kubernetesClientFactory) : IServiceClient
+internal class K8sServiceClient(
+    IKubernetesClientFactory kubernetesClientFactory,
+    IK8sServiceMapper serviceMapper) : IServiceClient
 {
     private readonly IKubernetes _kubernetes = kubernetesClientFactory.GetClient();
 
@@ -15,28 +15,9 @@ internal class K8sServiceClient(IKubernetesClientFactory kubernetesClientFactory
 
     public async Task CreateLoadBalancer(LoadBalancer loadBalancer)
     {
-        await _kubernetes.CoreV1.CreateNamespacedServiceAsync(new()
-        {
-            Metadata = new()
-            {
-                Name = loadBalancer.Name,
-                NamespaceProperty = loadBalancer.Namespace
-            },
-            Spec = new()
-            {
-                Type = "LoadBalancer",
-                Selector = new Dictionary<string, string>()
-                {
-                    { Consts.ApplicationNameDictionaryKey, loadBalancer.ApplicationName }
-                },
-                Ports = loadBalancer.Ports.Select(p => new V1ServicePort
-                {
-                    Port = p.Port,
-                    TargetPort = p.TargetPort
-                }).ToList(),
-                ExternalIPs = loadBalancer.ExternalIps
-            }
-        }, loadBalancer.Namespace);
+        await _kubernetes.CoreV1.CreateNamespacedServiceAsync(
+            serviceMapper.Map(loadBalancer),
+            loadBalancer.Namespace);
     }
 
     public async Task<List<string>> GetLoadBalancerIpAddresses(string @namespace, string loadBalancerName)
@@ -53,7 +34,7 @@ internal class K8sServiceClient(IKubernetesClientFactory kubernetesClientFactory
         var services = await GetLoadBalancers(@namespace, loadBalancerName);
 
         return services
-            .Select(x => x.ToLBDetails())
+            .Select(serviceMapper.MapDetails)
             .FirstOrDefault();
     }
 
@@ -70,9 +51,8 @@ internal class K8sServiceClient(IKubernetesClientFactory kubernetesClientFactory
     public async Task<List<LoadBalancerBasicInfo>> GetLoadBalancersBasicInfos(string @namespace)
     {
         var services = await GetLoadBalancers(@namespace);
-
         return services
-            .ToLBBasicInfo()
+            .Select(serviceMapper.Map)
             .ToList();
     }
 
@@ -82,5 +62,11 @@ internal class K8sServiceClient(IKubernetesClientFactory kubernetesClientFactory
 
         return services.Items
             .Where(x => x.Spec.Type == LoadBalancerKey && (string.IsNullOrEmpty(loadBalancerName) || x.Metadata.Name == loadBalancerName));
+    }
+
+    public async Task RemoveLoadBalancer(string @namespace, string name)
+    {
+        var loadBalancer = await GetLoadBalancerDetails(@namespace, name) ?? throw new Exception();
+        await _kubernetes.CoreV1.DeleteNamespacedServiceAsync(loadBalancer.Name, loadBalancer.Namespace);
     }
 }

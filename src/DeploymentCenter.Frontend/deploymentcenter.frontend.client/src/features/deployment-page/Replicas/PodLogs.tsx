@@ -29,7 +29,11 @@ export function PodLogs(props: {
 
   return (
     <div>
-      {data === undefined ? <LinearProgress /> : <Terminal text={data} />}
+      {data === undefined ? (
+        <LinearProgress />
+      ) : (
+        <Terminal name={props.podName} text={data} />
+      )}
     </div>
   );
 }

@@ -79,6 +79,13 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     );
   }
 
+  async function removeDeployment(namespace: string, deploymentName: string) {
+    await httpClient.post(
+      `/${controller}/RemoveDeployment?namespace=${namespace}&deploymentName=${deploymentName}`,
+      null
+    );
+  }
+
   return {
     getDeploymentDetails,
     getDeploymentPods,
@@ -86,6 +93,7 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     getPodLogs,
     getDeploymentMetrics,
     restartDeployment,
+    removeDeployment,
   };
 }
 

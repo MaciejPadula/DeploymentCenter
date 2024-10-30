@@ -2,16 +2,21 @@ import { useEffect, useRef } from "react";
 import { Button } from "@mui/material";
 import { saveFileWithDialog } from "../../helpers/file-saver";
 
-export function Terminal(props: { text: string }) {
+type Props = {
+  name: string;
+  text: string;
+};
+
+export function Terminal(props: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     ref.current?.scrollTo(0, ref.current.scrollHeight);
   }, [props.text]);
 
-  async function saveLogsToFile() {
+  function saveLogsToFile() {
     const blob = new Blob([props.text], { type: "text/plain;charset=utf-8" });
-    saveFileWithDialog(blob, "logs.txt");
+    saveFileWithDialog(blob, `${props.name}-logs.txt`);
   }
 
   return (

@@ -15,7 +15,7 @@ export function DeploymentToolbar(props: Props) {
   const deploymentService = useDeploymentPageDataService(props.cluster);
 
   function deleteDeployment() {
-    console.log("delete deployment");
+    deploymentService.removeDeployment(props.namespace, props.deploymentName);
   }
 
   function restartDeployment() {

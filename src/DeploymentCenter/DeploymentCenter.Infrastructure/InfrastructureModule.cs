@@ -18,6 +18,8 @@ public static class InfrastructureModule
         services.AddTransient<IServiceClient, K8sServiceClient>();
         services.AddTransient<IDeploymentClient, K8sDeploymentClient>();
         services.AddTransient<INamespaceClient, K8sNamespaceClient>();
+        services.AddTransient<IK8sServiceMapper, K8sServiceMapper>();
+        services.AddTransient<IK8sDeploymentMapper, K8sDeploymentMapper>();
 
         services.AddTransient<IKubeConfigDecoder, Base64PasswordSecurity>();
         services.AddTransient<IPasswordSecurity, Base64PasswordSecurity>();
