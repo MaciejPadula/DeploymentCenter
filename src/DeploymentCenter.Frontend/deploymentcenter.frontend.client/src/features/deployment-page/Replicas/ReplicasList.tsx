@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import useDeploymentPageDataService from "../deployment-page-data-service";
-import { LinearProgress } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import { ReplicaRow } from "./ReplicaRow";
 import { Cluster } from "../../../shared/models/cluster";
 
@@ -11,7 +11,7 @@ export function ReplicasList(props: {
 }) {
   const dataService = useDeploymentPageDataService(props.cluster);
   const { error, data } = useQuery({
-    queryKey: ["podsLoader"],
+    queryKey: [`podsLoader-${props.deploymentName}-${props.namespace}`],
     queryFn: async () =>
       await dataService.getDeploymentPods(
         props.namespace,
@@ -27,7 +27,7 @@ export function ReplicasList(props: {
   return (
     <div>
       {data == undefined ? (
-        <LinearProgress />
+        <Skeleton variant="rectangular" width="100%" height={70} />
       ) : (
         data.map((pod) => (
           <ReplicaRow

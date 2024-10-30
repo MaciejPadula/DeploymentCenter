@@ -15,6 +15,7 @@ export function LineChartBox<T>(props: {
         data: serie.data,
         area: serie.area ?? false,
         label: serie.title,
+        curve: 'linear',
       } as LineSeriesType;
     })
     .filter((x) => (x.data?.length ?? 0) > 1);
@@ -24,9 +25,13 @@ export function LineChartBox<T>(props: {
     : [];
 
   return chartData.length > 0 ? (
-    <LineChart series={chartData} height={height} xAxis={axisData} />
+    <LineChart
+      series={chartData}
+      height={height}
+      xAxis={axisData}
+    />
   ) : (
-    <div className="flex items-center justify-center w-full" style={{height: `${height}px`}}>
+    <div className="flex items-center justify-center w-full" style={{ height: `${height}px` }}>
       <CircularProgress size={60} />
     </div>
   );

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { LinearProgress } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import { ContainerRow } from "./ContainerRow";
 import useDeploymentPageDataService from "../deployment-page-data-service";
 import { Cluster } from "../../../shared/models/cluster";
@@ -27,11 +27,11 @@ export function ContainersList(props: {
 
   return (
     <div>
-      {isLoading && <LinearProgress />}
-      {!isLoading &&
-        data.map((container) => (
-          <ContainerRow key={container.name} container={container} />
-        ))}
+      {
+        isLoading
+          ? (<Skeleton variant="rectangular" width="100%" height={70} />)
+          : data.map((container) => (<ContainerRow key={container.name} container={container} />))
+      }
     </div>
   );
 }

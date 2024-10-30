@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Deployment Center</title>
     <link rel="manifest" href="/manifest.json" />
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.body.style.backgroundColor = prefersDarkMode ? '#121212' : '#ffffff';
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

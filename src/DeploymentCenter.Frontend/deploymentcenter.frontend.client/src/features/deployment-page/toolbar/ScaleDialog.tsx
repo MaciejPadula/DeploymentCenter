@@ -6,8 +6,11 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import { PlusMinusInput } from "../../../shared/components/plus-minus-input/PlusMinusInput";
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 type Props = {
   deploymentName: string;
@@ -37,7 +40,11 @@ export function ScaleDialog(props: Props) {
 
   return (
     <>
-      <Button onClick={() => handleClickOpen()}>Scale Deployment</Button>
+      <Tooltip title={'Scale'}>
+        <IconButton onClick={() => handleClickOpen()}>
+          <SwapHorizIcon />
+        </IconButton>
+      </Tooltip>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Scale Deployment</DialogTitle>
         <DialogContent className="w-full !px-8 !py-4 flex flex-col gap-4">

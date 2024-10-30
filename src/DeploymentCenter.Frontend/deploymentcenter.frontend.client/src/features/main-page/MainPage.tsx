@@ -4,9 +4,10 @@ import {
 } from "../../shared/components/resources-list/resource-row-model";
 import { getRecentlyVisitedPages } from "../../shared/services/recently-visited-service";
 import { ResourcesList } from "../../shared/components/resources-list/ResourcesList";
-import { ResourceTypesGrid } from "../../shared/components/resource-types-grid/ResourceTypesGrid";
+import { ResourceTypesGrid } from "./resource-types-grid/ResourceTypesGrid";
 import { Typography } from "@mui/material";
 import { useAppRouting } from "../../shared/hooks/navigation";
+import { ClusterStatistics } from "./ClusterStatistics";
 
 export function MainPage() {
   const navigation = useAppRouting();
@@ -27,6 +28,7 @@ export function MainPage() {
 
   return (
     <div className="w-full flex flex-col">
+      <ClusterStatistics />
       <ResourcesList
         resourceKey="RecentlyVisistedLoader"
         resourceText="Recently Visited Resources"

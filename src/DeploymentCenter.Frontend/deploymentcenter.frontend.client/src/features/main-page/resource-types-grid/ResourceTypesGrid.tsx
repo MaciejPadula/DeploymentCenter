@@ -1,8 +1,8 @@
 import { Unstable_Grid2 as Grid } from "@mui/material";
 import { ResourceTypeBox } from "./ResourceTypeBox";
 import { DeployIcon, NamespaceIcon, SvcIcon } from "../../../assets/icons";
-import { configuration } from "../../services/configuration-service";
-import { useAppRouting } from "../../hooks/navigation";
+import { configuration } from "../../../shared/services/configuration-service";
+import { useAppRouting } from "../../../shared/hooks/navigation";
 
 function GridBox(props: { children: React.ReactNode }) {
   return (

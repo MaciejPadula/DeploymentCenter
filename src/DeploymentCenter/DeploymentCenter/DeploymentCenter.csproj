@@ -18,6 +18,8 @@
     <ProjectReference Include="..\DeploymentCenter.Images.Api\DeploymentCenter.Images.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Images\DeploymentCenter.Images.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Infrastructure\DeploymentCenter.Infrastructure.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Metrics.Api\DeploymentCenter.Metrics.Api.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Metrics\DeploymentCenter.Metrics.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Namespaces.Api\DeploymentCenter.Namespaces.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Namespaces\DeploymentCenter.Namespaces.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Security.Api\DeploymentCenter.Security.Api.csproj" />
