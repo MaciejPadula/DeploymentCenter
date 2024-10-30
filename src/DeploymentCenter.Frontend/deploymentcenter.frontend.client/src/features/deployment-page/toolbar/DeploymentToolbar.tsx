@@ -4,6 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { Cluster } from "../../../shared/models/cluster";
 import useDeploymentPageDataService from "../deployment-page-data-service";
+import { useAppRouting } from "../../../shared/hooks/navigation";
 
 type Props = {
   deploymentName: string;
@@ -12,10 +13,15 @@ type Props = {
 };
 
 export function DeploymentToolbar(props: Props) {
+  const navigation = useAppRouting();
   const deploymentService = useDeploymentPageDataService(props.cluster);
 
-  function deleteDeployment() {
-    deploymentService.removeDeployment(props.namespace, props.deploymentName);
+  async function deleteDeployment() {
+    await deploymentService.removeDeployment(
+      props.namespace,
+      props.deploymentName
+    );
+    navigation.deploymentList(props.cluster.name, props.namespace);
   }
 
   function restartDeployment() {

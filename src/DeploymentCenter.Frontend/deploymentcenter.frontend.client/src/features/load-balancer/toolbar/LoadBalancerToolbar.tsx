@@ -3,6 +3,7 @@ import { Cluster } from "../../../shared/models/cluster";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DeleteResource } from "../../../shared/components/delete-resource/DeleteResource";
 import useLoadBalancerPageDataService from "../load-balancer-page-data-service";
+import { useAppRouting } from "../../../shared/hooks/navigation";
 
 type Props = {
   loadBalancerName: string;
@@ -11,13 +12,16 @@ type Props = {
 };
 
 export function LoadBalancerToolbar(props: Props) {
+  const navigation = useAppRouting();
   const loadBalancerService = useLoadBalancerPageDataService(props.cluster);
 
-  function deleteLoadBalancer() {
-    loadBalancerService.removeLoadBalancer(
+  async function deleteLoadBalancer() {
+    await loadBalancerService.removeLoadBalancer(
       props.namespace,
       props.loadBalancerName
     );
+
+    navigation.loadBalancerList(props.cluster.name, props.namespace);
   }
 
   return (
