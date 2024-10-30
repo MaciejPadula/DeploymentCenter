@@ -2,10 +2,8 @@
 using DeploymentCenter.Deployments.Api.Shared;
 using DeploymentCenter.Deployments.Contract.Features;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 
 namespace DeploymentCenter.Deployments.Api.Features.GetDeploymentsList;
 

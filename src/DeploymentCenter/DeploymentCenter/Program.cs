@@ -47,6 +47,7 @@ app.UseCors(x => x
     .AllowCredentials());
 
 app.MapEndpoints();
+app.UseMiddlewares();
 
 app.UseHttpsRedirection();
 

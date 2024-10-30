@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DeploymentCenter.Deployments.Api.Features;
 
-internal class RestartDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsEndpointsInfoFactory())
+internal class ScaleDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
+    private record ScaleDeploymentRequest(string Namespace, string DeploymentName, int ReplicasCount);
+
     protected override Delegate Handler => async (
-        [FromQuery] string @namespace,
-        [FromQuery] string deploymentName,
+        [FromBody] ScaleDeploymentRequest request,
         IMediator mediator,
         CancellationToken cancellationToken) =>
     {
         await mediator.Send(
-            new RestartDeploymentCommand(@namespace, deploymentName),
+            new ScaleDeploymentCommand(
+                request.Namespace,
+                request.DeploymentName,
+                request.ReplicasCount),
             cancellationToken);
         return Results.Ok();
     };

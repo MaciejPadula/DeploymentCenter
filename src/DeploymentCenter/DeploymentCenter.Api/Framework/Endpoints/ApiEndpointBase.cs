@@ -4,7 +4,7 @@ namespace DeploymentCenter.Api.Framework.Endpoints;
 
 public abstract class ApiEndpointBase(IEndpointInfoFactory endpointInfoFactory) : IApiEndpoint
 {
-    protected abstract string EndpointName { get; }
+    protected virtual string EndpointName => GetType().Name.Replace("Endpoint", "");
 
     protected string EndpointPath => endpointInfoFactory.GetEndpointPath(EndpointName);
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
@@ -25,6 +26,16 @@ public static class RegisterMinimalApiEndpoints
         foreach (IApiEndpoint endpoint in endpoints)
         {
             endpoint.Map(app);
+        }
+    }
+
+    public static void UseMiddlewares(this WebApplication app)
+    {
+        var middlewares = app.Services.GetRequiredService<IEnumerable<IMiddleware>>();
+
+        foreach (IMiddleware middleware in middlewares)
+        {
+            app.Use(middleware.InvokeAsync);
         }
     }
 }

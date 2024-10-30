@@ -43,10 +43,21 @@ function LoadBalancerPageDataService(httpClient: HttpClient) {
     return response.ports;
   }
 
+  async function removeLoadBalancer(
+    namespace: string,
+    loadBalancerName: string
+  ) {
+    await httpClient.post(
+      `/${controller}/RemoveLoadBalancer?namespace=${namespace}&loadBalancerName=${loadBalancerName}`,
+      null
+    );
+  }
+
   return {
     getLoadBalancerDetails,
     getLoadBalancerIpAddresses,
     getLoadBalancerPorts,
+    removeLoadBalancer,
   };
 }
 

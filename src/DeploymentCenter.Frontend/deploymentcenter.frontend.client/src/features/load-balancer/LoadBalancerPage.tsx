@@ -12,10 +12,13 @@ import { SvcIcon } from "../../assets/icons";
 import { IpAddresses } from "./ip-addresses/IpAddresses";
 import { LoadBalancerPorts } from "./Ports/LoadBalancerPorts";
 import { configuration } from "../../shared/services/configuration-service";
+import { LoadBalancerToolbar } from "./toolbar/LoadBalancerToolbar";
 
 export function LoadBalancerPage() {
   const { loadBalancerName, namespace, clusterName } = useParams();
-  const cluster = configuration.value.clusters.find(c => c.name === clusterName);
+  const cluster = configuration.value.clusters.find(
+    (c) => c.name === clusterName
+  );
   const dataService = useLoadBalancerPageDataService(cluster);
 
   useEffect(() => {
@@ -65,6 +68,11 @@ export function LoadBalancerPage() {
 
   return (
     <div className="flex flex-col w-full p-2 gap-2">
+      <LoadBalancerToolbar
+        cluster={cluster}
+        namespace={namespace}
+        loadBalancerName={loadBalancerName}
+      />
       <ResourceSummary
         resourceSummaryKey={`loadbalancer-${namespace}-${loadBalancerName}`}
         resourceSummaryFactory={factory}

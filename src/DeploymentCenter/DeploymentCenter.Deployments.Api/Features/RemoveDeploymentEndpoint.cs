@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DeploymentCenter.Deployments.Api.Features;
 
-internal class RestartDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsEndpointsInfoFactory())
+internal class RemoveDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
     protected override Delegate Handler => async (
         [FromQuery] string @namespace,
@@ -16,7 +16,7 @@ internal class RestartDeploymentEndpoint() : ApiPostEndpointBase(new Deployments
         CancellationToken cancellationToken) =>
     {
         await mediator.Send(
-            new RestartDeploymentCommand(@namespace, deploymentName),
+            new RemoveDeploymentCommand(@namespace, deploymentName),
             cancellationToken);
         return Results.Ok();
     };
