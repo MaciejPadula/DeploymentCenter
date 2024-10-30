@@ -59,9 +59,13 @@ export function CreateLoadBalancer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (!cluster) {
+    navigation.mainPage();
+  }
+
   async function submit() {
     await formDatService.createLoadBalancer(currentValue);
-    navigation.mainPage();
+    navigation.loadBalancerPage(cluster!.name, currentValue.namespace, currentValue.name);
   }
 
   return (
