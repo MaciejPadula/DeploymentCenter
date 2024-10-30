@@ -17,6 +17,9 @@ export function useAppRouting() {
     cluster: string,
     namespace: string
   ) {
+    if (!cluster || !namespace || !currentLocation) {
+      return;
+    }
     navigate(createRedirectUrl(currentLocation, cluster, namespace));
     reloadPage();
   }
@@ -34,6 +37,9 @@ export function useAppRouting() {
     namespace: string,
     deploymentName: string
   ) {
+    if (!clusterName || !namespace || !deploymentName) {
+      return;
+    }
     navigate(`/${clusterName}/${namespace}/deployments/${deploymentName}`);
   }
 
@@ -42,22 +48,37 @@ export function useAppRouting() {
     namespace: string,
     loadBalancerName: string
   ) {
+    if (!clusterName || !namespace || !loadBalancerName) {
+      return;
+    }
     navigate(`/${clusterName}/${namespace}/load-balancers/${loadBalancerName}`);
   }
 
   function deploymentList(clusterName: string, namespace: string) {
+    if (!clusterName || !namespace) {
+      return;
+    }
     navigate(`/${clusterName}/${namespace}/deployments`);
   }
 
   function loadBalancerList(clusterName: string, namespace: string) {
+    if (!clusterName || !namespace) {
+      return;
+    }
     navigate(`/${clusterName}/${namespace}/load-balancers`);
   }
 
   function cronJobsList(clusterName: string, namespace: string) {
+    if (!clusterName || !namespace) {
+      return;
+    }
     navigate(`/${clusterName}/${namespace}/cron-jobs`);
   }
 
   function namespacesList(clusterName: string) {
+    if (!clusterName) {
+      return;
+    }
     navigate(`/${clusterName}/namespaces`);
   }
 
@@ -66,7 +87,7 @@ export function useAppRouting() {
   }
 
   function reloadPage() {
-    navigate(0);
+    window.location.reload();
   }
 
   return {

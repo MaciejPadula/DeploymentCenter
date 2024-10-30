@@ -19,6 +19,11 @@ internal class ExceptionHandlingMiddleware : IMiddleware
                 _ => (StatusCodes.Status500InternalServerError, string.Empty)
             };
 
+            if (string.IsNullOrEmpty(message.Message))
+            {
+                throw;
+            }
+
             context.Response.StatusCode = message.StatusCode;
             await context.Response.WriteAsJsonAsync(message.Message);
         }

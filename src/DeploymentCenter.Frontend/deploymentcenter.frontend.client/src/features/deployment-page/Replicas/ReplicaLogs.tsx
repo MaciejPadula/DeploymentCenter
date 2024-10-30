@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import useDeploymentPageDataService from "../deployment-page-data-service";
-import { LinearProgress } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import { Terminal } from "../../../shared/components/terminal/Terminal";
 import { Cluster } from "../../../shared/models/cluster";
 
-export function PodLogs(props: {
+export function ReplicaLogs(props: {
   namespace: string;
   podName: string;
   cluster: Cluster;
@@ -13,7 +13,7 @@ export function PodLogs(props: {
 
   const { error, data } = useQuery({
     queryKey: [
-      "podLogsLoader",
+      `podLogsLoader-${props.podName}`,
       props.podName,
       props.namespace,
       props.cluster.apiUrl,
@@ -30,7 +30,7 @@ export function PodLogs(props: {
   return (
     <div>
       {data === undefined ? (
-        <LinearProgress />
+        <Skeleton variant="rectangular" width="100%" height={200} />
       ) : (
         <Terminal name={props.podName} text={data} />
       )}

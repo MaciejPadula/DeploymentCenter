@@ -37,7 +37,8 @@ export function LoadBalancerPage() {
       SvcIcon,
       getLoadBalancerUrl(clusterName, namespace, loadBalancerName)
     );
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (
     loadBalancerName === undefined ||

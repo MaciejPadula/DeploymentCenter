@@ -41,7 +41,8 @@ export function DeploymentPage() {
       DeployIcon,
       getDeploymentUrl(clusterName, namespace, deploymentName)
     );
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (
     deploymentName === undefined ||
@@ -78,35 +79,27 @@ export function DeploymentPage() {
         namespace={namespace}
         deploymentName={deploymentName}
         cluster={cluster}
-        replicas={details?.allReplicas ?? 0}
+        replicas={details?.allReplicas ?? 1}
       />
       <ResourceSummary
         resourceSummaryKey={`deployment-${namespace}-${deploymentName}`}
         resourceSummaryFactory={factory}
       />
-      {details && (
-        <DeploymentStatistics
-          cluster={cluster}
-          deploymentName={deploymentName}
-          namespace={namespace}
-          alivePods={details?.aliveReplicas ?? 0}
-          deadPods={(details?.allReplicas ?? 0) - (details?.aliveReplicas ?? 0)}
-        />
-      )}
-      {details && (
-        <ReplicasList
-          cluster={cluster}
-          deploymentName={deploymentName}
-          namespace={namespace}
-        />
-      )}
-      {details && (
-        <ContainersList
-          cluster={cluster}
-          deploymentName={deploymentName}
-          namespace={namespace}
-        />
-      )}
+      <DeploymentStatistics
+        cluster={cluster}
+        deploymentName={deploymentName}
+        namespace={namespace}
+      />
+      <ReplicasList
+        cluster={cluster}
+        deploymentName={deploymentName}
+        namespace={namespace}
+      />
+      <ContainersList
+        cluster={cluster}
+        deploymentName={deploymentName}
+        namespace={namespace}
+      />
     </div>
   );
 }

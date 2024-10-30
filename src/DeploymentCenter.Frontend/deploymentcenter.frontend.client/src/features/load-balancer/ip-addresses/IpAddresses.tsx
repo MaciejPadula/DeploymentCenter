@@ -1,4 +1,4 @@
-import { LinearProgress, Paper } from "@mui/material";
+import { Paper, Skeleton } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import useLoadBalancerPageDataService from "../load-balancer-page-data-service";
 import { IpAddressRow } from "./IpAddressRow";
@@ -27,14 +27,17 @@ export function IpAddresses(props: {
 
   return (
     <>
-      {isLoading && <LinearProgress />}
-      {!isLoading && (
-        <Paper elevation={2} className="p-4">
-          {data.map((x) => (
-            <IpAddressRow key={x} ipAddress={x} />
-          ))}
-        </Paper>
-      )}
+      {
+        isLoading ? (
+          <Skeleton variant="rectangular" width="100%" height={70} />
+        ) : (
+          <Paper elevation={2} className="p-4">
+            {data.map((x) => (
+              <IpAddressRow key={x} ipAddress={x} />
+            ))}
+          </Paper>
+        )
+      }
     </>
   );
 }

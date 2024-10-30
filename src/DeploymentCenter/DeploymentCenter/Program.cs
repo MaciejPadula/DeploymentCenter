@@ -3,6 +3,8 @@ using DeploymentCenter.Deployments;
 using DeploymentCenter.Deployments.Api;
 using DeploymentCenter.Images;
 using DeploymentCenter.Infrastructure;
+using DeploymentCenter.Metrics;
+using DeploymentCenter.Metrics.Api;
 using DeploymentCenter.Namespaces;
 using DeploymentCenter.Namespaces.Api;
 using DeploymentCenter.Security;
@@ -31,6 +33,9 @@ builder.Services.RegisterNamespacesEndpoints();
 
 builder.Services.RegisterSecurityEndpoints();
 builder.Services.AddSecurityModule();
+
+builder.Services.RegisterMetricsEndpoints();
+builder.Services.AddMetricsModule();
 
 builder.Services.AddInfrastructureModule();
 builder.Services.AddSharedKernelModule();

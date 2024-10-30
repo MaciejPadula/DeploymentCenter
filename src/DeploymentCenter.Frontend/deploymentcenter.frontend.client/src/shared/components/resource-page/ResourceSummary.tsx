@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { ResourceSummaryFactory } from "./resource-summary-model";
 import {
   Icon,
-  LinearProgress,
   Paper,
+  Skeleton,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -20,7 +20,7 @@ export function ResourceSummary(props: {
     queryFn: props.resourceSummaryFactory,
     retry: 2,
   });
-  
+
   if (error) {
     if (error instanceof AxiosError && error.response?.status === 404) {
       return <NotFound />
@@ -31,7 +31,7 @@ export function ResourceSummary(props: {
   return (
     <>
       {data === undefined ? (
-        <LinearProgress />
+        <Skeleton variant="rectangular" width="100%" height={200} />
       ) : (
         <Paper className="flex flex-wrap w-full min-h-1" elevation={2}>
           <div className="w-full">

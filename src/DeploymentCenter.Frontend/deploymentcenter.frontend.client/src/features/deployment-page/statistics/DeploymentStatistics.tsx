@@ -1,4 +1,4 @@
-import { Paper, Typography } from "@mui/material";
+import { CircularProgress, Paper, Typography } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 import { LineChartBox } from "../../../shared/components/charts/line-chart/LineChartBox";
 import { useEffect, useMemo, useState } from "react";
@@ -16,16 +16,16 @@ import { Pod } from "../models/pod";
 
 const maxPointsOnChart = 10;
 
-export function DeploymentStatistics(props: {
+type Props = {
   cluster: Cluster;
   deploymentName: string;
   namespace: string;
-  alivePods: number;
-  deadPods: number;
-}) {
+};
+
+export function DeploymentStatistics(props: Props) {
   const dataService = useDeploymentPageDataService(props.cluster);
   const [metrics, setMetrics] = useState<DeploymentMetrics[]>([]);
-  const { data: pods } = useQuery<Pod[]>({ queryKey: ["podsLoader"] });
+  const { data: pods } = useQuery<Pod[]>({ queryKey: [`podsLoader-${props.deploymentName}-${props.namespace}`] });
   const { error, data: stats } = useQuery({
     queryKey: [
       "deploymentStatisticsLoader",
@@ -46,35 +46,29 @@ export function DeploymentStatistics(props: {
       return;
     }
 
-    setMetrics((old) =>
-      lastElements(
-        [
-          ...old,
-          {
-            cpuUsage: stats.cpuUsage * 100,
-            memoryUsage: Number.parseInt(
-              (stats.memoryUsage / 1024 / 1024).toString()
-            ),
-            timestampUtc: getNowFormatedTime(),
-          },
-        ],
-        maxPointsOnChart
-      )
-    );
+    setMetrics((old) => {
+      const newMetrics = [
+        ...old,
+        {
+          cpuUsage: stats.cpuUsage * 100,
+          memoryUsage: Math.round(stats.memoryUsage / 1024 / 1024),
+          timestampUtc: getNowFormatedTime(),
+        },
+      ];
+      return lastElements(newMetrics, maxPointsOnChart);
+    });
   }, [stats]);
 
   const pendingPods = useMemo(
-    () => pods?.filter((x) => x.status === "Pending")?.length ?? 0,
+    () => pods?.filter((x) => x.status === "Pending").length ?? 0,
     [pods]
   );
   const alivePods = useMemo(
-    () => pods?.filter((x) => x.status === "Running")?.length ?? 0,
+    () => pods?.filter((x) => x.status === "Running").length ?? 0,
     [pods]
   );
   const deadPods = useMemo(
-    () =>
-      pods?.filter((x) => x.status !== "Running" && x.status !== "Pending")
-        ?.length ?? 0,
+    () => pods?.filter((x) => x.status === "Succeeded").length ?? 0,
     [pods]
   );
 
@@ -107,7 +101,12 @@ export function DeploymentStatistics(props: {
       <Typography variant="h5">{"Pods Statistics"}</Typography>
       <div className="w-full flex flex-col 2xl:flex-row items-center justify-center">
         <div className="w-full">
-          <PieChart
+          {
+            !pods && <div className="flex items-center justify-center w-full">
+              <CircularProgress size={60} />
+            </div>
+          }
+          {pods && <PieChart
             series={[
               {
                 data: [
@@ -134,6 +133,7 @@ export function DeploymentStatistics(props: {
             ]}
             height={200}
           />
+          }
         </div>
         <div className="w-full">
           {metricsAvailable ? (
