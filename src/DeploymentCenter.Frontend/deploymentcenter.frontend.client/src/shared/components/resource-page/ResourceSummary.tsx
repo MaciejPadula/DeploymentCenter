@@ -15,13 +15,11 @@ export function ResourceSummary(props: {
   resourceSummaryKey: string;
   resourceSummaryFactory: ResourceSummaryFactory;
 }) {
-  const { isPending, error, data, isFetching } = useQuery({
+  const { error, data } = useQuery({
     queryKey: [props.resourceSummaryKey],
     queryFn: props.resourceSummaryFactory,
     retry: 2,
   });
-
-  const isLoading = isPending || isFetching || data == undefined;
   
   if (error) {
     if (error instanceof AxiosError && error.response?.status === 404) {
@@ -32,7 +30,7 @@ export function ResourceSummary(props: {
 
   return (
     <>
-      {isLoading ? (
+      {data === undefined ? (
         <LinearProgress />
       ) : (
         <Paper className="flex flex-wrap w-full min-h-1" elevation={2}>
