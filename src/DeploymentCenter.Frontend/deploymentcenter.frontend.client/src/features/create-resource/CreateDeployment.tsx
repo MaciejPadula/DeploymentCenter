@@ -73,9 +73,13 @@ export function CreateDeployment() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (!cluster) {
+    navigation.mainPage();
+  }
+
   async function submit() {
     await formDataService.createDeployment(currentValue);
-    navigation.mainPage();
+    navigation.deploymentPage(cluster!.name, currentValue.namespace, currentValue.name);
   }
 
   function reset() {
