@@ -149,7 +149,7 @@ export function DeploymentStatistics(props: Props) {
                 ],
               },
             ]}
-            height={200}
+            height={300}
           />
           }
         </div>
