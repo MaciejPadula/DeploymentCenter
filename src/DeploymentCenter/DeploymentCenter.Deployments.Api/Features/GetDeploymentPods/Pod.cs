@@ -3,5 +3,4 @@
 internal record Pod(
     string Name,
     string Status,
-    string Ip,
-    bool IsRunning);
+    string Ip);
