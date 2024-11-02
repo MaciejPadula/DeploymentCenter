@@ -115,7 +115,7 @@ internal class K8sDeploymentClient(
             .Where(x => x.Metadata.Name.StartsWith(deploymentName))
             .Select(x => new Pod(
                 x.Metadata.Name,
-                x.Status.Reason,
+                x.Status.Message,
                 x.Status.PodIP))
             .ToList() ?? [];
     }
