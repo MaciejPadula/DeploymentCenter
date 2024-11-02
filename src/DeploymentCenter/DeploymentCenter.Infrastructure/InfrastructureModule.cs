@@ -1,4 +1,4 @@
-﻿using DeploymentCenter.Deployments.Infrastructure;
+﻿using DeploymentCenter.Deployments.Shared;
 using DeploymentCenter.Infrastructure.Http;
 using DeploymentCenter.Infrastructure.K8s;
 using DeploymentCenter.Infrastructure.Security;
