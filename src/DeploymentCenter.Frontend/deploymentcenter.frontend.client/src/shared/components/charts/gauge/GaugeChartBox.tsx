@@ -4,6 +4,7 @@ type Props = {
   minValue?: number;
   value: number;
   maxValue?: number;
+  suffix?: string;
 }
 
 export function GargeChartBox(props: Props) {
@@ -19,7 +20,7 @@ export function GargeChartBox(props: Props) {
         height: 300
       }}
       text={
-        ({ value, valueMax }) => `${value} / ${valueMax}`
+        ({ value, valueMax }) => `${value} / ${valueMax} ${props.suffix ?? ''}`
       }
     />
   </div>

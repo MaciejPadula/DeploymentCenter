@@ -13,7 +13,7 @@ export function ReplicaLogs(props: {
 
   const { error, data } = useQuery({
     queryKey: [
-      `podLogsLoader-${props.podName}`,
+      `podLogsLoader`,
       props.podName,
       props.namespace,
       props.cluster.apiUrl,
