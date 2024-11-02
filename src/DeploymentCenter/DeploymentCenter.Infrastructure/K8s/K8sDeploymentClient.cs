@@ -111,14 +111,14 @@ internal class K8sDeploymentClient(
     public async Task<List<Pod>> GetPods(string @namespace, string deploymentName)
     {
         var pods = await _kubernetes.CoreV1.ListNamespacedPodAsync(@namespace);
-        return pods.Items
+        return pods?.Items?
             .Where(x => x.Metadata.Name.StartsWith(deploymentName))
             .Select(x => new Pod(
                 x.Metadata.Name,
                 x.Status.Phase,
                 x.Status.PodIP,
                 !x.Status.ContainerStatuses.Any(c => !c.Ready)))
-            .ToList();
+            .ToList() ?? [];
     }
 
     public async Task RestartDeployment(string @namespace, string deploymentName) =>
