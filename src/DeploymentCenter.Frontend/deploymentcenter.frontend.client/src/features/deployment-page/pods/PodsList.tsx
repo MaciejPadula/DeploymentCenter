@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useDeploymentPageDataService from "../deployment-page-data-service";
 import { Skeleton } from "@mui/material";
-import { ReplicaRow } from "./ReplicaRow";
+import { ReplicaRow } from "./PodRow";
 import { Cluster } from "../../../shared/models/cluster";
 
 export function ReplicasList(props: {

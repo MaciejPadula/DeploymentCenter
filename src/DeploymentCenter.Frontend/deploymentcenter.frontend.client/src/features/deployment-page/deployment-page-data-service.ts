@@ -101,6 +101,13 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     );
   }
 
+  async function removePod(namespace: string, podName: string) {
+    await httpClient.post(
+      `/${controller}/RemovePod?namespace=${namespace}&podName=${podName}`,
+      null
+    );
+  }
+
   return {
     getDeploymentDetails,
     getDeploymentPods,
@@ -110,6 +117,7 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     restartDeployment,
     removeDeployment,
     scaleDeployment,
+    removePod,
   };
 }
 

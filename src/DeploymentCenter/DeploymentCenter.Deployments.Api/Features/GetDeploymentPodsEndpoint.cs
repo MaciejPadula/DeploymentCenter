@@ -14,9 +14,7 @@ internal class GetDeploymentPodsEndpoint() : ApiGetEndpointBase(new DeploymentsE
         string Status,
         string Ip);
 
-
     private record GetDeploymentPodsResponse(List<Pod> Pods);
-
 
     protected override Delegate Handler => async (
         [FromQuery] string @namespace,

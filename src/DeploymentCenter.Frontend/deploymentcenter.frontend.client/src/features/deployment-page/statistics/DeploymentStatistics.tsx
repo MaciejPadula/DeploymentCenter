@@ -13,6 +13,7 @@ import { AxiosError } from "axios";
 import { Cluster } from "../../../shared/models/cluster";
 import { useQuery } from "@tanstack/react-query";
 import { Pod } from "../models/pod";
+import { createSummary } from "../details-factory";
 
 const maxPointsOnChart = 10;
 
@@ -25,7 +26,21 @@ type Props = {
 export function DeploymentStatistics(props: Props) {
   const dataService = useDeploymentPageDataService(props.cluster);
   const [metrics, setMetrics] = useState<DeploymentMetrics[]>([]);
-  const { data: pods } = useQuery<Pod[]>({ queryKey: [`podsLoader-${props.deploymentName}-${props.namespace}`] });
+  const { data: pods } = useQuery<Pod[]>({
+    queryKey: [`podsLoader-${props.deploymentName}-${props.namespace}`],
+    queryFn: async () =>
+      await dataService.getDeploymentPods(props.namespace, props.deploymentName),
+  });
+  const { data: deploymentDetails } = useQuery({
+    queryKey: [`deployment-${props.namespace}-${props.deploymentName}`],
+    queryFn: async () => {
+      const summary = await dataService.getDeploymentDetails(
+        props.namespace,
+        props.deploymentName
+      );
+      return createSummary(summary, props.cluster);
+    },
+  });
   const { error, data: stats } = useQuery({
     queryKey: [
       "deploymentStatisticsLoader",
@@ -59,6 +74,9 @@ export function DeploymentStatistics(props: Props) {
     });
   }, [stats]);
 
+  const deploymentReplicas = useMemo(() => {
+    return Number.parseInt(deploymentDetails?.properties.get("Replicas") ?? '0');
+  }, [deploymentDetails])
   const pendingPods = useMemo(
     () => pods?.filter((x) => x.status === "Pending").length ?? 0,
     [pods]
@@ -68,8 +86,8 @@ export function DeploymentStatistics(props: Props) {
     [pods]
   );
   const deadPods = useMemo(
-    () => pods?.filter((x) => x.status === "Succeeded").length ?? 0,
-    [pods]
+    () => pods?.filter((x) => x.status === "Succeeded").length ?? deploymentReplicas - pendingPods - alivePods,
+    [pods, deploymentReplicas, pendingPods, alivePods]
   );
 
   const metricsAvailable =
