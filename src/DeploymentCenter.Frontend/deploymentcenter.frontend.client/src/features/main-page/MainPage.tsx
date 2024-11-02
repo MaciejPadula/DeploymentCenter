@@ -7,7 +7,7 @@ import { ResourcesList } from "../../shared/components/resources-list/ResourcesL
 import { ResourceTypesGrid } from "./resource-types-grid/ResourceTypesGrid";
 import { Typography } from "@mui/material";
 import { useAppRouting } from "../../shared/hooks/navigation";
-import { ClusterStatistics } from "./ClusterStatistics";
+import { ClusterStatistics } from "../../shared/components/cluster-statistics/ClusterStatistics";
 
 export function MainPage() {
   const navigation = useAppRouting();
