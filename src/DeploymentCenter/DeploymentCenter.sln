@@ -74,9 +74,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Deployment
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Metrics", "Metrics", "{C57E72B5-24A2-463C-A5BB-824342683F7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Metrics", "DeploymentCenter.Metrics\DeploymentCenter.Metrics.csproj", "{E156FA41-AEC4-4328-807D-464C89A692C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Metrics", "DeploymentCenter.Metrics\DeploymentCenter.Metrics.csproj", "{E156FA41-AEC4-4328-807D-464C89A692C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Metrics.Api", "DeploymentCenter.Metrics.Api\DeploymentCenter.Metrics.Api.csproj", "{DEBA76E8-CC50-4E21-9554-F8F794C1A62F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Metrics.Api", "DeploymentCenter.Metrics.Api\DeploymentCenter.Metrics.Api.csproj", "{DEBA76E8-CC50-4E21-9554-F8F794C1A62F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Metrics.Tests", "DeploymentCenter.Metrics.Tests\DeploymentCenter.Metrics.Tests.csproj", "{493E194A-F3F6-45E7-AD43-12383E1A1134}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -188,6 +190,10 @@ Global
 		{DEBA76E8-CC50-4E21-9554-F8F794C1A62F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEBA76E8-CC50-4E21-9554-F8F794C1A62F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEBA76E8-CC50-4E21-9554-F8F794C1A62F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{493E194A-F3F6-45E7-AD43-12383E1A1134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{493E194A-F3F6-45E7-AD43-12383E1A1134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{493E194A-F3F6-45E7-AD43-12383E1A1134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{493E194A-F3F6-45E7-AD43-12383E1A1134}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -225,6 +231,7 @@ Global
 		{C57E72B5-24A2-463C-A5BB-824342683F7E} = {B238DB0E-9BBE-4CB9-9D3D-99084D449C1E}
 		{E156FA41-AEC4-4328-807D-464C89A692C8} = {C57E72B5-24A2-463C-A5BB-824342683F7E}
 		{DEBA76E8-CC50-4E21-9554-F8F794C1A62F} = {C57E72B5-24A2-463C-A5BB-824342683F7E}
+		{493E194A-F3F6-45E7-AD43-12383E1A1134} = {C57E72B5-24A2-463C-A5BB-824342683F7E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75BDC6F9-FD28-42A4-B4A7-18D80AE76B7C}
