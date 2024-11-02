@@ -12,6 +12,5 @@ internal static class PodExtensions
         new Pod(
             pod.Name,
             pod.Status,
-            pod.Ip,
-            pod.IsRunning);
+            pod.Ip);
 }
