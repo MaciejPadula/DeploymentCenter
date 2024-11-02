@@ -1,7 +1,7 @@
-﻿using DeploymentCenter.Deployments.Contract.Features;
-using DeploymentCenter.Deployments.Contract.Models;
-using DeploymentCenter.Deployments.Features;
-using DeploymentCenter.Deployments.Infrastructure;
+﻿using DeploymentCenter.Deployments.Features.GetDeploymentMetrics;
+using DeploymentCenter.Deployments.Features.GetDeploymentMetrics.Contract;
+using DeploymentCenter.Deployments.Shared;
+using DeploymentCenter.Deployments.Shared.Models;
 using FluentAssertions;
 using NSubstitute;
 

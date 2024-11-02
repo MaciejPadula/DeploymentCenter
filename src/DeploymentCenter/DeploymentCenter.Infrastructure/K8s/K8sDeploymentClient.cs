@@ -1,5 +1,5 @@
-﻿using DeploymentCenter.Deployments.Contract.Models;
-using DeploymentCenter.Deployments.Infrastructure;
+﻿using DeploymentCenter.Deployments.Shared;
+using DeploymentCenter.Deployments.Shared.Models;
 using Json.Patch;
 using k8s;
 using k8s.Autorest;
@@ -62,7 +62,7 @@ internal class K8sDeploymentClient(
             .ToList() ?? [];
     }
 
-    public async Task<List<Deployments.Infrastructure.ContainerMetrics>> GetDeploymentStatistics(string @namespace, string deploymentName)
+    public async Task<List<Deployments.Shared.Models.ContainerMetrics>> GetDeploymentStatistics(string @namespace, string deploymentName)
     {
         var deploy = await _kubernetes.AppsV1.ReadNamespacedDeploymentAsync(deploymentName, @namespace);
         if (deploy is null)

@@ -1,4 +1,4 @@
-﻿using DeploymentCenter.Deployments.Contract.Models;
+﻿using DeploymentCenter.Deployments.Shared.Models;
 using k8s.Models;
 
 namespace DeploymentCenter.Infrastructure.K8s;
@@ -8,7 +8,7 @@ internal interface IK8sDeploymentMapper
     V1Deployment Map(Deployment deployment);
     DeploymentBasicInfo MapBasicInfo(V1Deployment deployment);
     Container MapContainer(V1Container container);
-    IEnumerable<Deployments.Infrastructure.ContainerMetrics> MapMetrics(PodMetrics podMetrics);
+    IEnumerable<Deployments.Shared.Models.ContainerMetrics> MapMetrics(PodMetrics podMetrics);
 }
 
 internal class K8sDeploymentMapper : IK8sDeploymentMapper
@@ -84,10 +84,10 @@ internal class K8sDeploymentMapper : IK8sDeploymentMapper
                 .Select(x => new EnvironmentVariable(x.Name, x.Value, x.ValueFrom?.ConfigMapKeyRef?.Name))?
                 .ToList() ?? []);
 
-    public IEnumerable<Deployments.Infrastructure.ContainerMetrics> MapMetrics(PodMetrics podMetrics) =>
+    public IEnumerable<Deployments.Shared.Models.ContainerMetrics> MapMetrics(PodMetrics podMetrics) =>
         podMetrics.Containers
             .Select(c =>
-                new Deployments.Infrastructure.ContainerMetrics(
+                new Deployments.Shared.Models.ContainerMetrics(
                     c.Name,
                     podMetrics.Timestamp.GetValueOrDefault(),
                     c.Usage["cpu"],

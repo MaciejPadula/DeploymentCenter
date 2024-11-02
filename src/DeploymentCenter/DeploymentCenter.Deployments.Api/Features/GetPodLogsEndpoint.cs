@@ -1,23 +1,27 @@
 ﻿using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Deployments.Api.Core;
-using DeploymentCenter.Deployments.Features.RemoveDeployment.Contract;
+using DeploymentCenter.Deployments.Features.GetPodLogs.Contract;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeploymentCenter.Deployments.Api.Features;
 
-internal class RemoveDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsEndpointsInfoFactory())
+internal class GetPodLogsEndpoint() : ApiGetEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
+    private record GetPodLogsResponse(string LogText);
+
     protected override Delegate Handler => async (
         [FromQuery] string @namespace,
-        [FromQuery] string deploymentName,
+        [FromQuery] string podName,
         IMediator mediator,
         CancellationToken cancellationToken) =>
     {
-        await mediator.Send(
-            new RemoveDeploymentCommand(@namespace, deploymentName),
+        var result = await mediator.Send(
+            new GetPodLogsQuery(
+                @namespace,
+                podName),
             cancellationToken);
-        return Results.Ok();
+        return Results.Ok(new GetPodLogsResponse(result));
     };
 }

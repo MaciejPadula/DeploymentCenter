@@ -1,6 +1,6 @@
 ﻿using DeploymentCenter.Api.Framework.Endpoints;
-using DeploymentCenter.Deployments.Api.Shared;
-using DeploymentCenter.Deployments.Contract.Features;
+using DeploymentCenter.Deployments.Api.Core;
+using DeploymentCenter.Deployments.Features.ScaleDeployment.Contract;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
