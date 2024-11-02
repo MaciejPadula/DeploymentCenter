@@ -1,5 +1,4 @@
-﻿using DeploymentCenter.Security.Contract.Features;
-using DeploymentCenter.Security.Infrastructure;
+﻿using DeploymentCenter.Security.Features.SecurePassword.Contract;
 using MediatR;
 
 namespace DeploymentCenter.Security.Features.SecurePassword;

@@ -3,8 +3,8 @@ using DeploymentCenter.Infrastructure.Http;
 using DeploymentCenter.Infrastructure.K8s;
 using DeploymentCenter.Infrastructure.Security;
 using DeploymentCenter.Metrics.Features.Shared;
-using DeploymentCenter.Namespaces.Infrastructure;
-using DeploymentCenter.Security.Infrastructure;
+using DeploymentCenter.Namespaces.Features.Shared;
+using DeploymentCenter.Security.Features.SecurePassword;
 using DeploymentCenter.Services.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 

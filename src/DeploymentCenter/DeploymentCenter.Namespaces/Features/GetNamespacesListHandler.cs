@@ -1,5 +1,5 @@
-﻿using DeploymentCenter.Namespaces.Contract.Features;
-using DeploymentCenter.Namespaces.Infrastructure;
+﻿using DeploymentCenter.Namespaces.Features.Contract;
+using DeploymentCenter.Namespaces.Features.Shared;
 using MediatR;
 
 namespace DeploymentCenter.Namespaces.Features;

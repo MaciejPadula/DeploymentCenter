@@ -1,6 +1,6 @@
 ﻿using DeploymentCenter.Api.Framework;
 
-namespace DeploymentCenter.Namespaces.Api.Shared;
+namespace DeploymentCenter.Namespaces.Api.Core;
 
 internal class NamespaceEndpointInfoFactory : IEndpointInfoFactory
 {

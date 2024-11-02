@@ -1,5 +1,5 @@
 ﻿using DeploymentCenter.Infrastructure.Http;
-using DeploymentCenter.Security.Infrastructure;
+using DeploymentCenter.Security.Features.SecurePassword;
 using System.Text;
 
 namespace DeploymentCenter.Infrastructure.Security;

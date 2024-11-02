@@ -11,8 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DeploymentCenter.Security.Contract\DeploymentCenter.Security.Contract.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Security.Infrastructure\DeploymentCenter.Security.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
   </ItemGroup>
 

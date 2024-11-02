@@ -1,4 +1,4 @@
-﻿using DeploymentCenter.Namespaces.Infrastructure;
+﻿using DeploymentCenter.Namespaces.Features.Shared;
 using k8s;
 
 namespace DeploymentCenter.Infrastructure.K8s;
