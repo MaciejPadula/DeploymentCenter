@@ -1,4 +1,4 @@
-﻿namespace DeploymentCenter.Namespaces.Infrastructure;
+﻿namespace DeploymentCenter.Namespaces.Features.Shared;
 
 public interface INamespaceClient
 {

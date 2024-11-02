@@ -1,6 +1,6 @@
 ﻿using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Security.Api.Shared;
-using DeploymentCenter.Security.Contract.Features;
+using DeploymentCenter.Security.Features.SecurePassword.Contract;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
@@ -11,8 +11,6 @@ internal class SecurePasswordEndpoint() : ApiPostEndpointBase(new SecurityEndpoi
     private record SecurePasswordRequest(string PlainText);
 
     private record SecurePasswordResponse(string SecurePassword);
-
-    protected override string EndpointName => "SecurePassword";
 
     protected override Delegate Handler => async (
         IMediator mediator,

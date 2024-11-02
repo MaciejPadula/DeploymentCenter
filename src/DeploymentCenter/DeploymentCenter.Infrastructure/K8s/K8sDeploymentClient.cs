@@ -156,4 +156,7 @@ internal class K8sDeploymentClient(
 
     public async Task RemoveDeployment(string @namespace, string deploymentName) =>
         await _kubernetes.AppsV1.DeleteNamespacedDeploymentAsync(deploymentName, @namespace);
+
+    public async Task RemovePod(string @namespace, string podName) =>
+        await _kubernetes.CoreV1.DeleteNamespacedPodAsync(podName, @namespace);
 }

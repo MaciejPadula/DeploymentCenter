@@ -15,4 +15,5 @@ public interface IDeploymentClient
     Task RestartDeployment(string @namespace, string deploymentName);
     Task ScaleDeployment(string @namespace, string deploymentName, int replicas);
     Task RemoveDeployment(string @namespace, string deploymentName);
+    Task RemovePod(string @namespace, string podName);
 }

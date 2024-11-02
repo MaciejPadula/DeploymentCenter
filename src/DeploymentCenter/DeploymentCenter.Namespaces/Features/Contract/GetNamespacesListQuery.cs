@@ -1,5 +1,5 @@
 ﻿using MediatR;
 
-namespace DeploymentCenter.Namespaces.Contract.Features;
+namespace DeploymentCenter.Namespaces.Features.Contract;
 
 public readonly record struct GetNamespacesListQuery() : IRequest<List<string>>;

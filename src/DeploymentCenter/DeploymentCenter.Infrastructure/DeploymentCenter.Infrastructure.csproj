@@ -16,8 +16,8 @@
   <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.Deployments\DeploymentCenter.Deployments.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Metrics\DeploymentCenter.Metrics.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Namespaces.Infrastructure\DeploymentCenter.Namespaces.Infrastructure.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Security.Infrastructure\DeploymentCenter.Security.Infrastructure.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Namespaces\DeploymentCenter.Namespaces.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Security\DeploymentCenter.Security.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Services.Infrastructure\DeploymentCenter.Services.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
   </ItemGroup>

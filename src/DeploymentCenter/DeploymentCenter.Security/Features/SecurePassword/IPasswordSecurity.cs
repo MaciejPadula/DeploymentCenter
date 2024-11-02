@@ -1,4 +1,4 @@
-﻿namespace DeploymentCenter.Security.Infrastructure;
+﻿namespace DeploymentCenter.Security.Features.SecurePassword;
 
 public interface IPasswordSecurity
 {
