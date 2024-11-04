@@ -1,6 +1,6 @@
 ﻿using DeploymentCenter.Deployments.Core.Exceptions;
+using DeploymentCenter.Deployments.Core.Helpers;
 using DeploymentCenter.Deployments.Features.ScaleDeployment.Contract;
-using DeploymentCenter.Deployments.Shared;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features.ScaleDeployment;

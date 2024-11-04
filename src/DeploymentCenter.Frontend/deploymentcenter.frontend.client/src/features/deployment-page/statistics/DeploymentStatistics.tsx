@@ -14,6 +14,7 @@ import { Cluster } from "../../../shared/models/cluster";
 import { useQuery } from "@tanstack/react-query";
 import { Pod } from "../models/pod";
 import { createSummary } from "../details-factory";
+import useMetricsDataService from "../../../shared/services/metrics-service";
 
 const maxPointsOnChart = 10;
 
@@ -25,6 +26,7 @@ type Props = {
 
 export function DeploymentStatistics(props: Props) {
   const dataService = useDeploymentPageDataService(props.cluster);
+  const metricsService = useMetricsDataService(props.cluster);
   const [metrics, setMetrics] = useState<DeploymentMetrics[]>([]);
   const { data: pods } = useQuery<Pod[]>({
     queryKey: [`podsLoader-${props.deploymentName}-${props.namespace}`],
@@ -49,7 +51,7 @@ export function DeploymentStatistics(props: Props) {
       props.cluster.apiUrl,
     ],
     queryFn: async () =>
-      await dataService.getDeploymentMetrics(
+      await metricsService.getDeploymentMetrics(
         props.namespace,
         props.deploymentName
       ),

@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.Api\DeploymentCenter.Api.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Services.Contract\DeploymentCenter.Services.Contract.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Services\DeploymentCenter.Services.csproj" />
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
   </ItemGroup>
 

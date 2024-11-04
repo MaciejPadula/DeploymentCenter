@@ -1,7 +1,6 @@
 using DeploymentCenter.Api.Framework;
 using DeploymentCenter.Deployments;
 using DeploymentCenter.Deployments.Api;
-using DeploymentCenter.Images;
 using DeploymentCenter.Infrastructure;
 using DeploymentCenter.Metrics;
 using DeploymentCenter.Metrics.Api;
@@ -15,29 +14,30 @@ using DeploymentCenter.SharedKernel;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add api specific services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddImagesModule();
-
-builder.Services.AddDeploymentsModule();
+// Add presentation layer
 builder.Services.RegisterDeploymentsEndpoints();
-
-builder.Services.AddServicesModule();
 builder.Services.RegisterServicesEndpoints();
-
-builder.Services.AddNamespacesModule();
 builder.Services.RegisterNamespacesEndpoints();
-
 builder.Services.RegisterSecurityEndpoints();
-builder.Services.AddSecurityModule();
-
 builder.Services.RegisterMetricsEndpoints();
+
+// Add application layer
+builder.Services.AddDeploymentsModule();
+builder.Services.AddServicesModule();
+builder.Services.AddNamespacesModule();
+builder.Services.AddSecurityModule();
 builder.Services.AddMetricsModule();
 
-builder.Services.AddInfrastructureModule();
+// Add infrastructure layer
+builder.Services.AddInfrastructure();
+
+// Add libraries
 builder.Services.AddSharedKernelModule();
 
 var app = builder.Build();
@@ -51,6 +51,7 @@ app.UseCors(x => x
     .SetIsOriginAllowed(origin => true)
     .AllowCredentials());
 
+// Map presentation layer
 app.MapEndpoints();
 app.UseMiddlewares();
 

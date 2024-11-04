@@ -19,6 +19,11 @@ internal class GetClusterMetricsEndpoint() : ApiGetEndpointBase(new MetricsEndpo
     {
         var result = await mediator.Send(new GetClusterMetricsQuery());
 
+        if (result is null)
+        {
+            return Results.StatusCode(StatusCodes.Status501NotImplemented);
+        }
+
         var response = new GetClusterMetricsResponse(
             result.CpuUsage,
             result.MemoryUsage,

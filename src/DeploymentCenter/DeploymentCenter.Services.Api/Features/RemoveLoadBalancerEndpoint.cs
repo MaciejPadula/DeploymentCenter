@@ -1,6 +1,6 @@
 ﻿using DeploymentCenter.Api.Framework.Endpoints;
-using DeploymentCenter.Services.Api.Shared;
-using DeploymentCenter.Services.Contract.Features;
+using DeploymentCenter.Services.Api.Core;
+using DeploymentCenter.Services.Features.RemoveLoadBalancer.Contract;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

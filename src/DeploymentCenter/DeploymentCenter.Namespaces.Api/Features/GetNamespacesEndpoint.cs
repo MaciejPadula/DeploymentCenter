@@ -1,6 +1,6 @@
 ﻿using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Namespaces.Api.Core;
-using DeploymentCenter.Namespaces.Features.Contract;
+using DeploymentCenter.Namespaces.Features.GetNamespacesList.Contract;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
@@ -8,10 +8,9 @@ namespace DeploymentCenter.Namespaces.Api.Features;
 
 internal class GetNamespacesEndpoint() : ApiGetEndpointBase(new NamespaceEndpointInfoFactory())
 {
-    internal readonly record struct Namespace(string Name);
+    private readonly record struct Namespace(string Name);
 
-    internal record GetNamespacesResponse(List<Namespace> Namespaces);
-
+    private record GetNamespacesResponse(List<Namespace> Namespaces);
 
     protected override Delegate Handler => async (
         IMediator mediator,

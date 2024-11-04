@@ -1,5 +1,4 @@
 ﻿using DeploymentCenter.Deployments.Features.RestartDeployment.Contract;
-using DeploymentCenter.Deployments.Shared;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features.RestartDeployment;
