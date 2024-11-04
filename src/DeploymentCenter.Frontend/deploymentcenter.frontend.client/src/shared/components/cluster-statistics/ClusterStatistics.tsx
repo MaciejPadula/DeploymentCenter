@@ -1,6 +1,6 @@
 import { Skeleton, Typography } from "@mui/material";
 import { GargeChartBox } from "../charts/gauge/GaugeChartBox";
-import useMetricsDataService from "./metrics-service";
+import useMetricsDataService from "../../services/metrics-service";
 import { configuration } from "../../services/configuration-service";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";

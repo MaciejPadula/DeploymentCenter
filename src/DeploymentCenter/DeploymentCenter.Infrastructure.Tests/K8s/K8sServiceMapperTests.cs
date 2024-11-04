@@ -1,5 +1,5 @@
-﻿using DeploymentCenter.Infrastructure.K8s;
-using DeploymentCenter.Services.Contract.Models;
+﻿using DeploymentCenter.Infrastructure.K8s.Mappers;
+using DeploymentCenter.Services.Core.Models;
 using FluentAssertions;
 using k8s.Models;
 

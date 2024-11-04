@@ -1,5 +1,5 @@
 ﻿using DeploymentCenter.Api.Framework.Endpoints;
-using DeploymentCenter.Security.Api.Shared;
+using DeploymentCenter.Security.Api.Core;
 using DeploymentCenter.Security.Features.SecurePassword.Contract;
 using MediatR;
 using Microsoft.AspNetCore.Http;

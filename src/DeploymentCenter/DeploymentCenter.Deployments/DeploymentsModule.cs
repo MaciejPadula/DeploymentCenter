@@ -1,4 +1,4 @@
-﻿using DeploymentCenter.Deployments.Shared;
+﻿using DeploymentCenter.Deployments.Core.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DeploymentCenter.Deployments;

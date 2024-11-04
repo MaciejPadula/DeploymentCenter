@@ -1,6 +1,5 @@
-﻿using DeploymentCenter.Deployments.Features.GetDeploymentsList.Contract;
-using DeploymentCenter.Deployments.Shared;
-using DeploymentCenter.Deployments.Shared.Models;
+﻿using DeploymentCenter.Deployments.Core.Models;
+using DeploymentCenter.Deployments.Features.GetDeploymentsList.Contract;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features.GetDeploymentsList;

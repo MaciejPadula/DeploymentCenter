@@ -58,20 +58,6 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     return response.logText;
   }
 
-  interface GetDeploymentMetricsResponse {
-    cpuUsage: number;
-    memoryUsage: number;
-  }
-
-  async function getDeploymentMetrics(
-    namespace: string,
-    deploymentName: string
-  ): Promise<GetDeploymentMetricsResponse> {
-    return await httpClient.get<GetDeploymentMetricsResponse>(
-      `/${controller}/GetDeploymentMetrics?namespace=${namespace}&deploymentName=${deploymentName}`
-    );
-  }
-
   async function restartDeployment(namespace: string, deploymentName: string) {
     await httpClient.post(
       `/${controller}/RestartDeployment?namespace=${namespace}&deploymentName=${deploymentName}`,
@@ -113,7 +99,6 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     getDeploymentPods,
     getDeploymentContainers,
     getPodLogs,
-    getDeploymentMetrics,
     restartDeployment,
     removeDeployment,
     scaleDeployment,

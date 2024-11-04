@@ -1,4 +1,4 @@
-﻿using DeploymentCenter.Deployments.Shared.Models;
+﻿using DeploymentCenter.Deployments.Core.Models;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features.GetDeploymentsList.Contract;

@@ -1,5 +1,4 @@
 ﻿using DeploymentCenter.Deployments.Features.RemoveDeployment.Contract;
-using DeploymentCenter.Deployments.Shared;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features.RemoveDeployment;

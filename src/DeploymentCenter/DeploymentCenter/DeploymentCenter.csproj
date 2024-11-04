@@ -15,8 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.Deployments.Api\DeploymentCenter.Deployments.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Deployments\DeploymentCenter.Deployments.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Images.Api\DeploymentCenter.Images.Api.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Images\DeploymentCenter.Images.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Infrastructure\DeploymentCenter.Infrastructure.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Metrics.Api\DeploymentCenter.Metrics.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Metrics\DeploymentCenter.Metrics.csproj" />
