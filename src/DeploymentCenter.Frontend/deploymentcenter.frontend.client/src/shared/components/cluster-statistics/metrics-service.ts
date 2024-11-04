@@ -1,5 +1,5 @@
-import { HttpClient } from "../../shared/services/http-client";
-import { Cluster } from "../../shared/models/cluster";
+import { HttpClient } from "../../services/http-client";
+import { Cluster } from "../../models/cluster";
 
 const controller = "api/Metrics";
 

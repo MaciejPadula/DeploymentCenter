@@ -7,7 +7,7 @@ import {
   ListItemButton,
   TextField,
 } from "@mui/material";
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { Cluster } from "../../shared/models/cluster";
 import { InputVariant } from "../../shared/helpers/material-config";
 import { addCluster } from "../../shared/services/configuration-service";
@@ -18,7 +18,14 @@ export function AddClusterDialog() {
   const [clusterName, setClusterName] = useState("");
   const [clusterApiUrl, setClusterApiUrl] = useState("");
   const [kubeconfig, setKubeconfig] = useState("");
-  const [loading, setLoading] = useState(false);
+
+  const cantLoad = useMemo(
+    () =>
+      clusterName.length === 0 ||
+      clusterApiUrl.length === 0 ||
+      kubeconfig.length === 0,
+    [clusterName, clusterApiUrl, kubeconfig]
+  );
 
   const clustersDataService = useClustersDataService(clusterApiUrl);
 
@@ -26,10 +33,8 @@ export function AddClusterDialog() {
     if (!clustersDataService) {
       return;
     }
-    setLoading(true);
     const result = await clustersDataService.securePassword(plainKubeconfig);
     setKubeconfig(result);
-    setLoading(false);
   }
 
   function handleClickOpen() {
@@ -83,7 +88,7 @@ export function AddClusterDialog() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button variant="contained" onClick={handleSave} disabled={loading}>
+          <Button variant="contained" onClick={handleSave} disabled={cantLoad}>
             Save
           </Button>
         </DialogActions>
