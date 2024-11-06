@@ -16,16 +16,24 @@ function SelectNamespaceDataService(httpClient: HttpClient) {
     return response.namespaces;
   }
 
+  async function createNamespace(namespace: string) {
+    await httpClient.post(
+      `/${controller}/CreateNamespace?namespace=${namespace}`,
+      null
+    );
+  }
+
   return {
     getNamespaces,
+    createNamespace,
   };
 }
 
-export function useSelectNamespaceDataService(
-  cluster: Cluster | undefined
-) {
+export function useSelectNamespaceDataService(cluster: Cluster | undefined) {
   if (!cluster) {
     throw new Error("Cluster is required");
   }
-  return SelectNamespaceDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
+  return SelectNamespaceDataService(
+    new HttpClient(cluster.apiUrl, cluster.kubeconfig)
+  );
 }
