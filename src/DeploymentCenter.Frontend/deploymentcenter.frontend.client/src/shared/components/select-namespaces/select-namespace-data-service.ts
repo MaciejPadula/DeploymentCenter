@@ -23,9 +23,14 @@ function SelectNamespaceDataService(httpClient: HttpClient) {
     );
   }
 
+  async function removeNamespace(namespace: string) {
+    await httpClient.post(`/${controller}/RemoveNamespace?namespace=${namespace}`, null);
+  }
+
   return {
     getNamespaces,
     createNamespace,
+    removeNamespace,
   };
 }
 

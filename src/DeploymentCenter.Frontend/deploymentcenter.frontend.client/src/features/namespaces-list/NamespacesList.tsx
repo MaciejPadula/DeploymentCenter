@@ -4,10 +4,12 @@ import { useSelectNamespaceDataService } from "../../shared/components/select-na
 import { ResourceRowModel, ResourcesFactory } from "../../shared/components/resources-list/resource-row-model";
 import { ResourcesList } from "../../shared/components/resources-list/ResourcesList";
 import { NamespaceIcon } from "../../assets/icons";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from "@mui/material";
 import { useMemo, useState } from "react";
 import { InputVariant } from "../../shared/helpers/material-config";
 import { useQuery } from "@tanstack/react-query";
+import { DeleteResource } from "../../shared/components/delete-resource/DeleteResource";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export function NamespacesList() {
   const [open, setOpen] = useState<boolean>(false);
@@ -27,6 +29,15 @@ export function NamespacesList() {
         name: x.name,
         namespace: '',
         icon: NamespaceIcon,
+        action:
+          <DeleteResource
+            resourceName={x.name}
+            onDelete={() => removeNamespace(x.name)}
+          >
+            <IconButton>
+              <DeleteIcon className="text-red-700" />
+            </IconButton>
+          </DeleteResource>
       } as ResourceRowModel)
     );
   };
@@ -35,6 +46,11 @@ export function NamespacesList() {
     queryKey: [`NamespacesLoader_${clusterName}`],
     queryFn: factory
   });
+
+  async function removeNamespace(name: string) {
+    await dataService.removeNamespace(name);
+    await refetch();
+  }
 
   const disabled = useMemo(() => {
     return namespaceName.length === 0;

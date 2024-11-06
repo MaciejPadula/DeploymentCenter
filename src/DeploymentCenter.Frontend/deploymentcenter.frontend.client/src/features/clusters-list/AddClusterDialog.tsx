@@ -19,7 +19,7 @@ export function AddClusterDialog() {
   const [clusterApiUrl, setClusterApiUrl] = useState("");
   const [kubeconfig, setKubeconfig] = useState("");
 
-  const cantLoad = useMemo(
+  const buttonDisabled = useMemo(
     () =>
       clusterName.length === 0 ||
       clusterApiUrl.length === 0 ||
@@ -88,7 +88,7 @@ export function AddClusterDialog() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button variant="contained" onClick={handleSave} disabled={cantLoad}>
+          <Button variant="contained" onClick={handleSave} disabled={buttonDisabled}>
             Save
           </Button>
         </DialogActions>

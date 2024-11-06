@@ -55,8 +55,6 @@ export function SetupLoadBalancer(props: {
     props.updater((data) => (data.ports = ports));
   }
 
-  console.log("SetupLoadBalancer");
-
   return (
     <>
       <Grid container spacing={2}>
