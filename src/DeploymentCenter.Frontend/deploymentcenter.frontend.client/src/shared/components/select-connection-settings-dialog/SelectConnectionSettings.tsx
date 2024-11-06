@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { SelectNamespace } from "../select-namespaces/SelectNamespace";
 import { useLocation } from "react-router-dom";
 import { SelectClusters } from "../select-clusters/SelectClusters";
@@ -18,7 +18,11 @@ import {
 import { useAppRouting } from "../../hooks/navigation";
 import { Cluster } from "../../models/cluster";
 
-export function SelectNamespaceDialog(props: { onClose?: () => void }) {
+type Props = {
+  onClose?: () => void;
+};
+
+export function SelectNamespaceDialog(props: Props) {
   const navigation = useAppRouting();
   const location = useLocation();
   const [namespaceControl, setNamespaceControl] = useState(
@@ -29,6 +33,8 @@ export function SelectNamespaceDialog(props: { onClose?: () => void }) {
   );
   const [open, setOpen] = useState<boolean>(false);
   const [cluster, setCluster] = useState<Cluster | null>(null);
+
+  const validForm = useMemo(() => !!namespaceControl && !!clusterControl, [clusterControl, namespaceControl]);
 
   useEffect(() => {
     const cluster = configuration.value.clusters.find(
@@ -90,12 +96,13 @@ export function SelectNamespaceDialog(props: { onClose?: () => void }) {
               defaultNamespace={selectedNamespace.value}
               cluster={cluster}
               onNamespaceChanged={setNamespaceControl}
+              onNamespacesEdit={handleClose}
             />
           )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button variant="contained" onClick={handleSave}>
+          <Button variant="contained" onClick={handleSave} disabled={!validForm}>
             Save
           </Button>
         </DialogActions>

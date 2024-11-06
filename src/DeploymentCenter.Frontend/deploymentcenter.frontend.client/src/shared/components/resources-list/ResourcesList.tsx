@@ -31,16 +31,12 @@ export function ResourcesList(props: Props) {
     <div className="w-full">
       {(props.showIfEmpty !== false ||
         (data !== undefined && data.length > 0)) && (
-        <div className="flex flex-row p-4">
-          <Typography variant="h5">{props.resourceText}</Typography>
-        </div>
-      )}
+          <div className="flex flex-row p-4">
+            <Typography variant="h5">{props.resourceText}</Typography>
+          </div>
+        )}
 
       {isLoading && <LinearProgress />}
-
-      {!isLoading && props.showIfEmpty !== false && data.length === 0 && (
-        <NoElementsToDisplay />
-      )}
 
       {props.setupResource && (
         <Button
@@ -49,6 +45,10 @@ export function ResourcesList(props: Props) {
         >
           {props.setupResource.title}
         </Button>
+      )}
+
+      {!isLoading && props.showIfEmpty !== false && data.length === 0 && (
+        <NoElementsToDisplay />
       )}
 
       {!isLoading && (props.showIfEmpty !== false || data.length > 0) && (

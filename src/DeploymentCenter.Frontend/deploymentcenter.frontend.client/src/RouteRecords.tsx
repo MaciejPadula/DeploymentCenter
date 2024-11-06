@@ -9,6 +9,7 @@ import { NotFound } from "./shared/components/error/not-found/NotFound";
 import { ClustersList } from "./features/clusters-list/ClustersList";
 import { CreateDeployment } from "./features/create-resource/CreateDeployment";
 import { CreateLoadBalancer } from "./features/create-resource/CreateLoadBalancer";
+import { NamespacesList } from "./features/namespaces-list/NamespacesList";
 
 export function RouteRecords() {
   return (
@@ -21,15 +22,6 @@ export function RouteRecords() {
           <Route path="setup-load-balancer" element={<CreateLoadBalancer />} />
 
           <Route path="clusters-configuration" element={<ClustersList />} />
-
-          <Route
-            path="/:clusterName/:namespace/cron-jobs"
-            element={<div>Cron Jobs</div>}
-          />
-          <Route
-            path="/:clusterName/:namespace/cron-jobs/:cronJobName"
-            element={<div>Cron Jobs Details</div>}
-          />
 
           <Route
             path="/:clusterName/:namespace/deployments"
@@ -47,6 +39,10 @@ export function RouteRecords() {
           <Route
             path="/:clusterName/:namespace/load-balancers/:loadBalancerName"
             element={<LoadBalancerPage />}
+          />
+
+          <Route path="/:clusterName/namespaces"
+            element={<NamespacesList />}
           />
 
           <Route path="*" element={<NotFound />} />

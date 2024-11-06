@@ -5,5 +5,5 @@ export interface ResourceRowModel {
   name: string;
   namespace: string;
   icon: string;
-  clickHandler: () => void;
+  clickHandler?: () => void;
 }
