@@ -31,4 +31,10 @@ internal class K8sNamespaceClient(IKubernetesClientFactory kubernetesClientFacto
             .Select(x => x.Metadata.Name)
             .ToList();
     }
+
+    public async Task RemoveNamespace(string name)
+    {
+        using var client = kubernetesClientFactory.GetClient();
+        await client.CoreV1.DeleteNamespaceAsync(name);
+    }
 }

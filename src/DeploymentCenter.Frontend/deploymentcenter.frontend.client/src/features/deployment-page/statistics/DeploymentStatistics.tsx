@@ -92,9 +92,8 @@ export function DeploymentStatistics(props: Props) {
     [pods, deploymentReplicas, pendingPods, alivePods]
   );
 
-  const metricsAvailable =
-    error === undefined ||
-    !(error instanceof AxiosError && error?.response?.status === 501);
+  const metricsAvailable = useMemo(() => error === undefined ||
+  !(error instanceof AxiosError && error?.response?.status === 501), [error]);
 
   const xAxisData: XAxisData<string> = useMemo(() => {
     return {
@@ -116,6 +115,31 @@ export function DeploymentStatistics(props: Props) {
     };
   }, [metrics]);
 
+  const podsChart = useMemo(() => [
+    {
+      data: [
+        {
+          id: 0,
+          value: pendingPods,
+          label: "Pending Pods",
+          color: "orange",
+        },
+        {
+          id: 1,
+          value: alivePods,
+          label: "Active Pods",
+          color: "green",
+        },
+        {
+          id: 2,
+          value: deadPods,
+          label: "Dead Pods",
+          color: "red",
+        },
+      ],
+    },
+  ], [alivePods, deadPods, pendingPods]);
+
   return (
     <Paper className="flex flex-wrap w-full p-4 flex-col" elevation={2}>
       <Typography variant="h5">{"Pods Statistics"}</Typography>
@@ -127,30 +151,7 @@ export function DeploymentStatistics(props: Props) {
             </div>
           }
           {pods && <PieChart
-            series={[
-              {
-                data: [
-                  {
-                    id: 0,
-                    value: pendingPods,
-                    label: "Pending Pods",
-                    color: "orange",
-                  },
-                  {
-                    id: 1,
-                    value: alivePods,
-                    label: "Active Pods",
-                    color: "green",
-                  },
-                  {
-                    id: 2,
-                    value: deadPods,
-                    label: "Dead Pods",
-                    color: "red",
-                  },
-                ],
-              },
-            ]}
+            series={podsChart}
             height={300}
           />
           }

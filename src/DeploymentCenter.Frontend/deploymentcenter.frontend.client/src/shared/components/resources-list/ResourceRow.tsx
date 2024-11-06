@@ -15,7 +15,7 @@ export function ResourceRow(props: { row: ResourceRowModel }) {
   }
 
   return (
-    <ListItem divider={true}>
+    <ListItem divider={true} secondaryAction={props.row.action}>
       <ListItemButton onClick={() => handleClick()}>
         <ListItemIcon>
           <Icon className="!w-10 !h-10">
