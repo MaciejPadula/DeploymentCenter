@@ -14,6 +14,10 @@ export function ResourceRow(props: { row: ResourceRowModel }) {
     }
   }
 
+  const secondaryText = props.row.clusterName && props.row.namespace
+    ? `/${props.row.clusterName}/${props.row.namespace}`
+    : '';
+
   return (
     <ListItem divider={true} secondaryAction={props.row.action}>
       <ListItemButton onClick={() => handleClick()}>
@@ -22,7 +26,7 @@ export function ResourceRow(props: { row: ResourceRowModel }) {
             <img className="w-full h-full" src={props.row.icon} />
           </Icon>
         </ListItemIcon>
-        <ListItemText primary={props.row.name} secondary={`/${props.row.clusterName}/${props.row.namespace}`} />
+        <ListItemText primary={props.row.name} secondary={secondaryText} />
       </ListItemButton>
     </ListItem>
   );
