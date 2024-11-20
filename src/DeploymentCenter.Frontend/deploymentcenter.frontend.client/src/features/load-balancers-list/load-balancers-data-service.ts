@@ -25,7 +25,7 @@ export default function useLoadBalancersDataService(
   cluster: Cluster | undefined
 ) {
   if (!cluster) {
-    throw new Error("Cluster is required");
+    return null;
   }
   return loadBalancersDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
 }

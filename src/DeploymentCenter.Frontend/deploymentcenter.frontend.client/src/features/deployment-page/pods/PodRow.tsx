@@ -37,7 +37,7 @@ export function ReplicaRow(props: {
   }
 
   async function removePod() {
-    await dataService.removePod(props.namespace, props.pod.name);
+    await dataService?.removePod(props.namespace, props.pod.name);
   }
 
   return (

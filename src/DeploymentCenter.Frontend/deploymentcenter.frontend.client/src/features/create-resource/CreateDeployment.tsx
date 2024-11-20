@@ -78,7 +78,7 @@ export function CreateDeployment() {
   }
 
   async function submit() {
-    await formDataService.createDeployment(currentValue);
+    await formDataService?.createDeployment(currentValue);
     navigation.deploymentPage(cluster!.name, currentValue.namespace, currentValue.name);
   }
 

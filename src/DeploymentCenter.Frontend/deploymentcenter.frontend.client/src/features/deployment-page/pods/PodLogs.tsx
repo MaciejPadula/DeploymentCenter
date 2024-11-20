@@ -3,6 +3,7 @@ import useDeploymentPageDataService from "../deployment-page-data-service";
 import { Skeleton } from "@mui/material";
 import { Terminal } from "../../../shared/components/terminal/Terminal";
 import { Cluster } from "../../../shared/models/cluster";
+import { UnknownError } from "../../../shared/components/error/unknown-error/UnknownError";
 
 export function ReplicaLogs(props: {
   namespace: string;
@@ -19,12 +20,12 @@ export function ReplicaLogs(props: {
       props.cluster.apiUrl,
     ],
     queryFn: async () =>
-      await dataService.getPodLogs(props.namespace, props.podName),
+      await dataService?.getPodLogs(props.namespace, props.podName),
     refetchInterval: 1000,
   });
 
   if (error) {
-    <div>Error</div>;
+    return <UnknownError />;
   }
 
   return (

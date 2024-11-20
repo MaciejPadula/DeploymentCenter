@@ -12,6 +12,7 @@ import { ValidationResult } from "../../../shared/models/validation-result";
 import { ContainersDialog } from "./ContainersDialog";
 import { ChipListControl } from "../../../shared/components/chip-list-control/ChipListControl";
 import { PlusMinusInput } from "../../../shared/components/plus-minus-input/PlusMinusInput";
+import { NotFound } from "../../../shared/components/error/not-found/NotFound";
 
 export function SetupDeployment(props: {
   value: DeploymentData;
@@ -26,7 +27,7 @@ export function SetupDeployment(props: {
   const cluster = selectedCluster.value;
 
   if (cluster === undefined) {
-    return <div>Error</div>;
+    return <NotFound />;
   }
 
   function isError(result: ValidationResult | undefined) {

@@ -21,16 +21,16 @@ export function DeploymentToolbar(props: Props) {
   const { refetch, data } = useQuery({
     queryKey: [`deployment-${props.namespace}-${props.deploymentName}`],
     queryFn: async () => {
-      const summary = await deploymentService.getDeploymentDetails(
+      const summary = await deploymentService?.getDeploymentDetails(
         props.namespace,
         props.deploymentName
       );
-      return createSummary(summary, props.cluster);
+      return !summary ? null : createSummary(summary, props.cluster);
     },
   });
 
   async function deleteDeployment() {
-    await deploymentService.removeDeployment(
+    await deploymentService?.removeDeployment(
       props.namespace,
       props.deploymentName
     );
@@ -38,14 +38,14 @@ export function DeploymentToolbar(props: Props) {
   }
 
   async function restartDeployment() {
-    await deploymentService.restartDeployment(
+    await deploymentService?.restartDeployment(
       props.namespace,
       props.deploymentName
     );
   }
 
   async function onReplicasChanged(value: number) {
-    await deploymentService.scaleDeployment(
+    await deploymentService?.scaleDeployment(
       props.namespace,
       props.deploymentName,
       value

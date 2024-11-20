@@ -3,6 +3,7 @@ import useDeploymentPageDataService from "../deployment-page-data-service";
 import { Skeleton } from "@mui/material";
 import { ReplicaRow } from "./PodRow";
 import { Cluster } from "../../../shared/models/cluster";
+import { UnknownError } from "../../../shared/components/error/unknown-error/UnknownError";
 
 export function ReplicasList(props: {
   cluster: Cluster;
@@ -13,7 +14,7 @@ export function ReplicasList(props: {
   const { error, data } = useQuery({
     queryKey: [`podsLoader-${props.deploymentName}-${props.namespace}`],
     queryFn: async () =>
-      await dataService.getDeploymentPods(
+      await dataService?.getDeploymentPods(
         props.namespace,
         props.deploymentName
       ),
@@ -21,7 +22,7 @@ export function ReplicasList(props: {
   });
 
   if (error) {
-    <div>Error</div>;
+    return <UnknownError />;
   }
 
   return (

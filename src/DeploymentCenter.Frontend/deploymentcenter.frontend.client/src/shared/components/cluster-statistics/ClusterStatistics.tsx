@@ -30,7 +30,7 @@ export function ClusterStatistics() {
   const { data: metrics } = useQuery({
     queryKey: ["clusterMetrics"],
     queryFn: async () => {
-      return await dataService.getClusterMetrics();
+      return await dataService?.getClusterMetrics();
     },
     refetchInterval: 5000,
   });
@@ -46,6 +46,10 @@ export function ClusterStatistics() {
       maxValue: (metrics?.maxMemoryUsage ?? 0) / divider,
     };
   }, [metrics]);
+
+  if (!dataService || !cluster) {
+    return <></>;
+  }
 
   return (
     <div className="p-4">

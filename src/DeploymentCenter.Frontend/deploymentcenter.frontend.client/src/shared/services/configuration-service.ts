@@ -9,14 +9,12 @@ export interface ConfigurationData {
   clusters: Cluster[];
 }
 
-
 const configurationKey = "configuration";
 const defaultConfiguration: ConfigurationData = {
   cluster: "",
   clusters: [],
   namespace: "default"
 };
-
 
 const configuration = signal<ConfigurationData>(getFromLocalStorage(configurationKey, defaultConfiguration));
 const selectedCluster = computed(() => configuration.value.clusters.find(c => c.name === configuration.value.cluster));

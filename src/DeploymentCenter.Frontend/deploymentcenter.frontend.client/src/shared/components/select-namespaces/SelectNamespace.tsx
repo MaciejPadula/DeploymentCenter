@@ -13,6 +13,7 @@ import { InputVariant } from "../../helpers/material-config";
 import { Cluster } from "../../models/cluster";
 import Edit from "@mui/icons-material/Edit";
 import { useAppRouting } from "../../hooks/navigation";
+import { UnknownError } from "../error/unknown-error/UnknownError";
 
 type Props = {
   defaultNamespace: string;
@@ -28,7 +29,7 @@ export function SelectNamespace(props: Props) {
   const dataService = useSelectNamespaceDataService(props.cluster);
   const { isPending, error, data, isFetching, refetch } = useQuery({
     queryKey: ["namespaceLoader", props.cluster.name],
-    queryFn: async () => await dataService.getNamespaces(),
+    queryFn: async () => await dataService?.getNamespaces(),
   });
   const [namespace, setNamespace] = useState<string>(props.defaultNamespace);
 
@@ -49,7 +50,7 @@ export function SelectNamespace(props: Props) {
   }, [data, namespaceExists, props]);
 
   if (error) {
-    return <div>Error</div>;
+    return <UnknownError />;
   }
 
   function onNamespaceEdit() {

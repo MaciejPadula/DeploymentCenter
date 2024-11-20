@@ -8,6 +8,7 @@ import useLoadBalancersDataService from "./load-balancers-data-service";
 import { SvcIcon } from "../../assets/icons";
 import { useAppRouting } from "../../shared/hooks/navigation";
 import { configuration } from "../../shared/services/configuration-service";
+import { NotFound } from "../../shared/components/error/not-found/NotFound";
 
 export function LoadBalancersList() {
   const navigation = useAppRouting();
@@ -18,11 +19,12 @@ export function LoadBalancersList() {
   const dataService = useLoadBalancersDataService(cluster);
 
   if (
+    !dataService ||
     namespace === undefined ||
     clusterName === undefined ||
     cluster === undefined
   ) {
-    return <div>Error</div>;
+    return <NotFound />;
   }
 
   const factory: ResourcesFactory = async () => {

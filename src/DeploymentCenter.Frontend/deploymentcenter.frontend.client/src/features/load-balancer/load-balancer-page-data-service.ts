@@ -63,7 +63,7 @@ function LoadBalancerPageDataService(httpClient: HttpClient) {
 
 export default function useLoadBalancerPageDataService(cluster: Cluster | undefined) {
   if (!cluster) {
-    throw new Error("Cluster is required");
+    return null;
   }
   return LoadBalancerPageDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
 }

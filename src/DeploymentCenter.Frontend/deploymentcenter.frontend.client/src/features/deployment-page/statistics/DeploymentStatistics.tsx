@@ -12,7 +12,6 @@ import StatisticsNotAvailable from "./StatisticsNotAvailable";
 import { AxiosError } from "axios";
 import { Cluster } from "../../../shared/models/cluster";
 import { useQuery } from "@tanstack/react-query";
-import { Pod } from "../models/pod";
 import { createSummary } from "../details-factory";
 import useMetricsDataService from "../../../shared/services/metrics-service";
 
@@ -28,19 +27,23 @@ export function DeploymentStatistics(props: Props) {
   const dataService = useDeploymentPageDataService(props.cluster);
   const metricsService = useMetricsDataService(props.cluster);
   const [metrics, setMetrics] = useState<DeploymentMetrics[]>([]);
-  const { data: pods } = useQuery<Pod[]>({
+  const { data: pods } = useQuery({
     queryKey: [`podsLoader-${props.deploymentName}-${props.namespace}`],
     queryFn: async () =>
-      await dataService.getDeploymentPods(props.namespace, props.deploymentName),
+      await dataService?.getDeploymentPods(
+        props.namespace,
+        props.deploymentName
+      ),
+    refetchInterval: 2000,
   });
   const { data: deploymentDetails } = useQuery({
     queryKey: [`deployment-${props.namespace}-${props.deploymentName}`],
     queryFn: async () => {
-      const summary = await dataService.getDeploymentDetails(
+      const summary = await dataService?.getDeploymentDetails(
         props.namespace,
         props.deploymentName
       );
-      return createSummary(summary, props.cluster);
+      return !summary ? null : createSummary(summary, props.cluster);
     },
   });
   const { error, data: stats } = useQuery({
@@ -51,7 +54,7 @@ export function DeploymentStatistics(props: Props) {
       props.cluster.apiUrl,
     ],
     queryFn: async () =>
-      await metricsService.getDeploymentMetrics(
+      await metricsService?.getDeploymentMetrics(
         props.namespace,
         props.deploymentName
       ),

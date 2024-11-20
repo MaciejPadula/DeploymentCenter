@@ -22,7 +22,7 @@ function DeploymentsDataService(httpClient: HttpClient) {
 
 export default function useDeploymentsDataService(cluster: Cluster | undefined) {
   if (!cluster) {
-    throw new Error("Cluster is required");
+    return null;
   }
   return DeploymentsDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
 }

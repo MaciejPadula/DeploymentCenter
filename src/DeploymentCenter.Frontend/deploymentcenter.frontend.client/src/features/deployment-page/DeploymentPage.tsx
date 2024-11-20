@@ -14,6 +14,7 @@ import { DeploymentStatistics } from "./statistics/DeploymentStatistics";
 import { configuration } from "../../shared/services/configuration-service";
 import { DeploymentToolbar } from "./toolbar/DeploymentToolbar";
 import { createSummary } from "./details-factory";
+import { NotFound } from "../../shared/components/error/not-found/NotFound";
 
 export function DeploymentPage() {
   const { deploymentName, namespace, clusterName } = useParams();
@@ -24,6 +25,7 @@ export function DeploymentPage() {
 
   useEffect(() => {
     if (
+      !dataService ||
       deploymentName === undefined ||
       namespace === undefined ||
       clusterName === undefined ||
@@ -43,12 +45,13 @@ export function DeploymentPage() {
   }, []);
 
   if (
+    !dataService ||
     deploymentName === undefined ||
     namespace === undefined ||
     clusterName === undefined ||
     cluster === undefined
   ) {
-    return <div>Error</div>;
+    return <NotFound />;
   }
 
   const factory: ResourceSummaryFactory = async () => {

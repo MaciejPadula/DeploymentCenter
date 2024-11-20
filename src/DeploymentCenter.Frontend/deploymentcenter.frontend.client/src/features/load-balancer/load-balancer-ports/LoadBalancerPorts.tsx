@@ -3,6 +3,7 @@ import useLoadBalancerPageDataService from "../load-balancer-page-data-service";
 import { Paper, Skeleton } from "@mui/material";
 import { LoadBalancerPortRow } from "./LoadBalancerPortRow";
 import { Cluster } from "../../../shared/models/cluster";
+import { UnknownError } from "../../../shared/components/error/unknown-error/UnknownError";
 
 export function LoadBalancerPorts(props: {
   cluster: Cluster;
@@ -13,7 +14,7 @@ export function LoadBalancerPorts(props: {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["loadBalancerPortsLoader"],
     queryFn: async () =>
-      await dataService.getLoadBalancerPorts(
+      await dataService?.getLoadBalancerPorts(
         props.namespace,
         props.loadBalancerName
       ),
@@ -22,7 +23,7 @@ export function LoadBalancerPorts(props: {
   const isLoading = isPending || isFetching || data == undefined;
 
   if (error) {
-    <div>Error</div>;
+    return <UnknownError />;
   }
 
   return (

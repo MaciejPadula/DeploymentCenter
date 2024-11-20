@@ -3,6 +3,7 @@ import { Skeleton } from "@mui/material";
 import { ContainerRow } from "./ContainerRow";
 import useDeploymentPageDataService from "../deployment-page-data-service";
 import { Cluster } from "../../../shared/models/cluster";
+import { UnknownError } from "../../../shared/components/error/unknown-error/UnknownError";
 
 export function ContainersList(props: {
   cluster: Cluster;
@@ -13,7 +14,7 @@ export function ContainersList(props: {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["containersLoader"],
     queryFn: async () =>
-      await dataService.getDeploymentContainers(
+      await dataService?.getDeploymentContainers(
         props.namespace,
         props.deploymentName
       ),
@@ -22,7 +23,7 @@ export function ContainersList(props: {
   const isLoading = isPending || isFetching || data == undefined;
 
   if (error) {
-    <div>Error</div>;
+    return <UnknownError />;
   }
 
   return (
