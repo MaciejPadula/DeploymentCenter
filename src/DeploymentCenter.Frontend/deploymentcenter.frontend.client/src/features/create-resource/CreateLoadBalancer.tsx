@@ -64,7 +64,7 @@ export function CreateLoadBalancer() {
   }
 
   async function submit() {
-    await formDatService.createLoadBalancer(currentValue);
+    await formDatService?.createLoadBalancer(currentValue);
     navigation.loadBalancerPage(cluster!.name, currentValue.namespace, currentValue.name);
   }
 

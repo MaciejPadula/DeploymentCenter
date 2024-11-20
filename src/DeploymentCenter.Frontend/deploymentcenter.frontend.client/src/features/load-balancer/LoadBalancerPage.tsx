@@ -13,6 +13,7 @@ import { IpAddresses } from "./ip-addresses/IpAddresses";
 import { LoadBalancerPorts } from "./load-balancer-ports/LoadBalancerPorts";
 import { configuration } from "../../shared/services/configuration-service";
 import { LoadBalancerToolbar } from "./toolbar/LoadBalancerToolbar";
+import { NotFound } from "../../shared/components/error/not-found/NotFound";
 
 export function LoadBalancerPage() {
   const { loadBalancerName, namespace, clusterName } = useParams();
@@ -41,16 +42,17 @@ export function LoadBalancerPage() {
   }, []);
 
   if (
+    !dataService ||
     loadBalancerName === undefined ||
     clusterName === undefined ||
     cluster === undefined ||
     namespace === undefined
   ) {
-    return <div>Error</div>;
+    return <NotFound />;
   }
 
   const factory: ResourceSummaryFactory = async () => {
-    const summary = await dataService.getLoadBalancerDetails(
+    const summary = await dataService?.getLoadBalancerDetails(
       namespace,
       loadBalancerName ?? ""
     );

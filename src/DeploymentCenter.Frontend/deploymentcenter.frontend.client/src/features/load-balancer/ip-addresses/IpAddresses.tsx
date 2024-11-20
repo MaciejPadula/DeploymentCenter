@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useLoadBalancerPageDataService from "../load-balancer-page-data-service";
 import { IpAddressRow } from "./IpAddressRow";
 import { Cluster } from "../../../shared/models/cluster";
+import { UnknownError } from "../../../shared/components/error/unknown-error/UnknownError";
 
 export function IpAddresses(props: {
   cluster: Cluster;
@@ -13,7 +14,7 @@ export function IpAddresses(props: {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["podsLoader"],
     queryFn: async () =>
-      await dataService.getLoadBalancerIpAddresses(
+      await dataService?.getLoadBalancerIpAddresses(
         props.namespace,
         props.loadBalancerName
       ),
@@ -22,7 +23,7 @@ export function IpAddresses(props: {
   const isLoading = isPending || isFetching || data == undefined;
 
   if (error) {
-    <div>Error</div>;
+    return <UnknownError />;
   }
 
   return (

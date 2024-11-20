@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { DeployIcon } from "../../assets/icons";
 import { configuration } from "../../shared/services/configuration-service";
 import { useAppRouting } from "../../shared/hooks/navigation";
+import { NotFound } from "../../shared/components/error/not-found/NotFound";
 
 export function DeploymentsList() {
   const navigation = useAppRouting();
@@ -18,11 +19,12 @@ export function DeploymentsList() {
   const dataService = useDeploymentsDataService(cluster);
 
   if (
+    !dataService ||
     namespace === undefined ||
     clusterName === undefined ||
     cluster === undefined
   ) {
-    return <div>Error</div>;
+    return <NotFound />;
   }
 
   const factory: ResourcesFactory = async () => {

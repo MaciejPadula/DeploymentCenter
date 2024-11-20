@@ -36,7 +36,7 @@ function SelectNamespaceDataService(httpClient: HttpClient) {
 
 export function useSelectNamespaceDataService(cluster: Cluster | undefined) {
   if (!cluster) {
-    throw new Error("Cluster is required");
+    return null;
   }
   return SelectNamespaceDataService(
     new HttpClient(cluster.apiUrl, cluster.kubeconfig)

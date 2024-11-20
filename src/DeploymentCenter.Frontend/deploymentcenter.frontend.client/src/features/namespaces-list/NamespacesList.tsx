@@ -10,6 +10,7 @@ import { InputVariant } from "../../shared/helpers/material-config";
 import { useQuery } from "@tanstack/react-query";
 import { DeleteResource } from "../../shared/components/delete-resource/DeleteResource";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { NotFound } from "../../shared/components/error/not-found/NotFound";
 
 export function NamespacesList() {
   const [open, setOpen] = useState<boolean>(false);
@@ -21,8 +22,8 @@ export function NamespacesList() {
   const dataService = useSelectNamespaceDataService(cluster);
 
   const factory: ResourcesFactory = async () => {
-    const response = await dataService.getNamespaces();
-    return response.map(
+    const response = await dataService?.getNamespaces();
+    return response?.map(
       (x) =>
       ({
         name: x.name,
@@ -37,7 +38,7 @@ export function NamespacesList() {
             </IconButton>
           </DeleteResource>
       } as ResourceRowModel)
-    );
+    ) ?? [];
   };
 
   const { refetch } = useQuery({
@@ -46,7 +47,7 @@ export function NamespacesList() {
   });
 
   async function removeNamespace(name: string) {
-    await dataService.removeNamespace(name);
+    await dataService?.removeNamespace(name);
     await refetch();
   }
 
@@ -55,14 +56,15 @@ export function NamespacesList() {
   }, [namespaceName]);
 
   if (
+    !dataService ||
     clusterName === undefined ||
     cluster === undefined
   ) {
-    return <div>Error</div>;
+    return <NotFound />;
   }
 
   async function createNamespace() {
-    await dataService.createNamespace(namespaceName);
+    await dataService?.createNamespace(namespaceName);
     await refetch();
   }
 

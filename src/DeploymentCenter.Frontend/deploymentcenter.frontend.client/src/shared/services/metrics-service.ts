@@ -38,7 +38,7 @@ export default function useMetricsDataService(
   cluster: Cluster | undefined
 ) {
   if (!cluster) {
-    throw new Error("Cluster is required");
+    return null;
   }
   return metricsDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
 }

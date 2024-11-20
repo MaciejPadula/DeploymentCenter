@@ -110,7 +110,7 @@ export default function useDeploymentPageDataService(
   cluster: Cluster | undefined
 ) {
   if (cluster == undefined) {
-    throw new Error("Cluster is undefined");
+    return null;
   }
   return DeploymentPageDataService(
     new HttpClient(cluster.apiUrl, cluster.kubeconfig)

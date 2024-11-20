@@ -22,7 +22,7 @@ export default function useApplicationFormDataService(
   cluster: Cluster | undefined
 ) {
   if (!cluster) {
-    throw new Error("Cluster is required");
+    return null;
   }
   return ApplicationFormDataService(
     new HttpClient(cluster.apiUrl, cluster.kubeconfig)

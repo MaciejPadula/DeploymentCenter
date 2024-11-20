@@ -13,6 +13,7 @@ import { Unstable_Grid2 as Grid, TextField } from "@mui/material";
 import { ChipListControl } from "../../../shared/components/chip-list-control/ChipListControl";
 import { PortDialog } from "./PortDialog";
 import { ExternalIpDialog } from "./ExternalIpDialog";
+import { NotFound } from "../../../shared/components/error/not-found/NotFound";
 
 export function SetupLoadBalancer(props: {
   value: LoadBalancerData;
@@ -22,7 +23,7 @@ export function SetupLoadBalancer(props: {
   const cluster = selectedCluster.value;
 
   if (cluster === undefined) {
-    return <div>Error</div>;
+    return <NotFound />;
   }
 
   const applicationNameError = props.validationResults.get("applicationName");

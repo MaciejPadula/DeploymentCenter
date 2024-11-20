@@ -25,7 +25,7 @@ function ClustersDataService(httpClient: HttpClient) {
 
 export default function useClustersDataService(apiUrl: string | undefined) {
   if (!apiUrl) {
-    return;
+    return null;
   }
   return ClustersDataService(new HttpClient(apiUrl, null));
 }
