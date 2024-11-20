@@ -25,9 +25,7 @@ export function NamespacesList() {
     return response.map(
       (x) =>
       ({
-        clusterName: clusterName,
         name: x.name,
-        namespace: '',
         icon: NamespaceIcon,
         action:
           <DeleteResource

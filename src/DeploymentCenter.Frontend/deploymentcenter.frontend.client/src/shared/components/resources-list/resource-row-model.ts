@@ -3,9 +3,9 @@ import { ReactElement } from "react";
 export type ResourcesFactory = () => Promise<ResourceRowModel[]>;
 
 export interface ResourceRowModel {
-  clusterName: string;
+  clusterName?: string;
   name: string;
-  namespace: string;
+  namespace?: string;
   icon: string;
   clickHandler?: () => void;
   action?: ReactElement;
