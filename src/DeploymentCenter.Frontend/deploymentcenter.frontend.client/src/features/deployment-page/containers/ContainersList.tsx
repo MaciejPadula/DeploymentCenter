@@ -12,9 +12,9 @@ export function ContainersList(props: {
 }) {
   const dataService = useDeploymentPageDataService(props.cluster);
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ["containersLoader"],
+    queryKey: [`containersLoader-${props.deploymentName}-${props.namespace}`],
     queryFn: async () =>
-      await dataService?.getDeploymentContainers(
+      await dataService.getDeploymentContainers(
         props.namespace,
         props.deploymentName
       ),

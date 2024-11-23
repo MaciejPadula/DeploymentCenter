@@ -1,5 +1,3 @@
-import { useParams } from "react-router-dom";
-import { configuration } from "../../shared/services/configuration-service";
 import { useSelectNamespaceDataService } from "../../shared/components/select-namespaces/select-namespace-data-service";
 import { ResourceRowModel, ResourcesFactory } from "../../shared/components/resources-list/resource-row-model";
 import { ResourcesList } from "../../shared/components/resources-list/ResourcesList";
@@ -10,16 +8,21 @@ import { InputVariant } from "../../shared/helpers/material-config";
 import { useQuery } from "@tanstack/react-query";
 import { DeleteResource } from "../../shared/components/delete-resource/DeleteResource";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { NotFound } from "../../shared/components/error/not-found/NotFound";
+import { Cluster } from "../../shared/models/cluster";
+import { setSelectedNamespace } from "../../shared/services/configuration-service";
 
-export function NamespacesList() {
+type Props = {
+  cluster: Cluster;
+}
+
+export function NamespacesList(props: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const [namespaceName, setNamespaceName] = useState<string>('');
-  const { clusterName } = useParams();
-  const cluster = configuration.value.clusters.find(
-    (c) => c.name === clusterName
-  );
-  const dataService = useSelectNamespaceDataService(cluster);
+  const dataService = useSelectNamespaceDataService(props.cluster);
+
+  function setNamespace(namespace: string) {
+    setSelectedNamespace(namespace);
+  }
 
   const factory: ResourcesFactory = async () => {
     const response = await dataService?.getNamespaces();
@@ -28,6 +31,7 @@ export function NamespacesList() {
       ({
         name: x.name,
         icon: NamespaceIcon,
+        clickHandler: () => setNamespace(x.name),
         action:
           <DeleteResource
             resourceName={x.name}
@@ -42,7 +46,7 @@ export function NamespacesList() {
   };
 
   const { refetch } = useQuery({
-    queryKey: [`NamespacesLoader_${clusterName}`],
+    queryKey: [`NamespacesLoader_${props.cluster.name}`],
     queryFn: factory
   });
 
@@ -55,16 +59,8 @@ export function NamespacesList() {
     return namespaceName.length === 0;
   }, [namespaceName]);
 
-  if (
-    !dataService ||
-    clusterName === undefined ||
-    cluster === undefined
-  ) {
-    return <NotFound />;
-  }
-
   async function createNamespace() {
-    await dataService?.createNamespace(namespaceName);
+    await dataService.createNamespace(namespaceName);
     await refetch();
   }
 
@@ -83,7 +79,7 @@ export function NamespacesList() {
 
   return <>
     <ResourcesList
-      resourceKey={`NamespacesLoader_${clusterName}`}
+      resourceKey={`Namespaces-${props.cluster.name}`}
       resourceText="Namespaces"
       resourcesFactory={factory}
       setupResource={{

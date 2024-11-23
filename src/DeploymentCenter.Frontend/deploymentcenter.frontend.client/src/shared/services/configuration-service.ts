@@ -38,6 +38,12 @@ function setClusterAndNamespace(clusterName: string, namespace: string) {
   });
 }
 
+function setSelectedNamespace(namespace: string) {
+  updateConfiguration(c => {
+    c.namespace = namespace;
+  });
+}
+
 function addCluster(cluster: Cluster) {
   updateConfiguration(c => {
     c.clusters.push(cluster);
@@ -56,6 +62,7 @@ export {
   selectedClusterApiUrl,
   selectedNamespace,
   setClusterAndNamespace,
+  setSelectedNamespace,
   addCluster,
   deleteCluster
 }

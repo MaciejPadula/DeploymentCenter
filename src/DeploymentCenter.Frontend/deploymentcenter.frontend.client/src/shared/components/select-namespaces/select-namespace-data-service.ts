@@ -34,10 +34,7 @@ function SelectNamespaceDataService(httpClient: HttpClient) {
   };
 }
 
-export function useSelectNamespaceDataService(cluster: Cluster | undefined) {
-  if (!cluster) {
-    return null;
-  }
+export function useSelectNamespaceDataService(cluster: Cluster) {
   return SelectNamespaceDataService(
     new HttpClient(cluster.apiUrl, cluster.kubeconfig)
   );

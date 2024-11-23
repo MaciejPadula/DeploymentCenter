@@ -18,12 +18,7 @@ function ApplicationFormDataService(httpClient: HttpClient) {
   };
 }
 
-export default function useApplicationFormDataService(
-  cluster: Cluster | undefined
-) {
-  if (!cluster) {
-    return null;
-  }
+export default function useApplicationFormDataService(cluster: Cluster) {
   return ApplicationFormDataService(
     new HttpClient(cluster.apiUrl, cluster.kubeconfig)
   );

@@ -14,7 +14,7 @@ export function ReplicasList(props: {
   const { error, data } = useQuery({
     queryKey: [`podsLoader-${props.deploymentName}-${props.namespace}`],
     queryFn: async () =>
-      await dataService?.getDeploymentPods(
+      await dataService.getDeploymentPods(
         props.namespace,
         props.deploymentName
       ),

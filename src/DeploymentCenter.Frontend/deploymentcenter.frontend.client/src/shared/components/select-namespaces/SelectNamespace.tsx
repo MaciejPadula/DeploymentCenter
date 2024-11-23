@@ -29,7 +29,7 @@ export function SelectNamespace(props: Props) {
   const dataService = useSelectNamespaceDataService(props.cluster);
   const { isPending, error, data, isFetching, refetch } = useQuery({
     queryKey: ["namespaceLoader", props.cluster.name],
-    queryFn: async () => await dataService?.getNamespaces(),
+    queryFn: async () => await dataService.getNamespaces(),
   });
   const [namespace, setNamespace] = useState<string>(props.defaultNamespace);
 

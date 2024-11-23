@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useFormService } from "../../libs/forms/form-service";
 import { CreateResourceForm } from "../../shared/components/create-resource-form/CreateResourceForm";
 import { useAppRouting } from "../../shared/hooks/navigation";
-import { selectedCluster } from "../../shared/services/configuration-service";
 import useApplicationFormDataService from "./form-data-service";
 import { SetupLoadBalancer } from "./setup-load-balancer/SetupLoadBalancer";
 import {
@@ -13,11 +12,15 @@ import { ValidatorBuilder } from "../../libs/forms/validator-builder";
 import { requiredValidator } from "../../shared/validators/required-validator";
 import { kubernetesNameValidator } from "./validators/kubernetes-name-validator";
 import { textValidator } from "../../shared/validators/text-validator";
+import { Cluster } from "../../shared/models/cluster";
 
-export function CreateLoadBalancer() {
+type Props = {
+  cluster: Cluster;
+};
+
+export function CreateLoadBalancer(props: Props) {
   const storageKey = "loadBalancerData";
-  const cluster = selectedCluster.value;
-  const formDatService = useApplicationFormDataService(cluster);
+  const formDatService = useApplicationFormDataService(props.cluster);
   const navigation = useAppRouting();
   const {
     currentValue,
@@ -59,13 +62,9 @@ export function CreateLoadBalancer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!cluster) {
-    navigation.mainPage();
-  }
-
   async function submit() {
     await formDatService?.createLoadBalancer(currentValue);
-    navigation.loadBalancerPage(cluster!.name, currentValue.namespace, currentValue.name);
+    navigation.loadBalancerPage(props.cluster.name, currentValue.namespace, currentValue.name);
   }
 
   return (
@@ -77,6 +76,7 @@ export function CreateLoadBalancer() {
       resetForm={resetData}
     >
       <SetupLoadBalancer
+        cluster={props.cluster}
         value={currentValue}
         updater={updateData}
         validationResults={validationResult}

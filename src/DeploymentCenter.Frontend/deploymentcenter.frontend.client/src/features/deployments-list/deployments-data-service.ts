@@ -20,9 +20,6 @@ function DeploymentsDataService(httpClient: HttpClient) {
   };
 }
 
-export default function useDeploymentsDataService(cluster: Cluster | undefined) {
-  if (!cluster) {
-    return null;
-  }
+export default function useDeploymentsDataService(cluster: Cluster) {
   return DeploymentsDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
 }

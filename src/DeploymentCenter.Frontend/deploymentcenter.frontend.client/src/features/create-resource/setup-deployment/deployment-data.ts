@@ -5,7 +5,7 @@ export interface DeploymentData extends FormGroup {
   namespace: string;
   name: string;
   applicationName: string;
-  replicas: number;
+  replicas: number | undefined;
   containers: Container[];
 }
 
@@ -14,7 +14,7 @@ export function getEmptyDeploymentData(): DeploymentData {
     namespace: "",
     name: "",
     applicationName: "",
-    replicas: 0,
+    replicas: undefined,
     containers: [],
   };
 }

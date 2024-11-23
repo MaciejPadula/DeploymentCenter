@@ -12,8 +12,9 @@ import { useEffect, useState } from "react";
 
 type Props = {
   label: string;
-  defaultValue: number;
-  onChange: (value: number) => void;
+  defaultValue: number | undefined;
+  onChange: (value: number | undefined) => void;
+  onBlur?: () => void;
   error?: boolean;
   helperText?: string;
   className?: string;
@@ -22,7 +23,9 @@ type Props = {
 };
 
 export function PlusMinusInput(props: Props) {
-  const [value, setValue] = useState<number>(props.defaultValue);
+  const [value, setValue] = useState<number | undefined>(props.defaultValue);
+
+  const safeValue = value ?? 0;
 
   useEffect(() => {
     if (value !== props.defaultValue) {
@@ -37,17 +40,17 @@ export function PlusMinusInput(props: Props) {
   }
 
   function handleMinus() {
-    if (props.min !== undefined && value <= props.min) {
+    if (props.min !== undefined && safeValue <= props.min) {
       return;
     }
-    setValue(value - 1);
+    setValue(safeValue - 1);
   }
 
   function handlePlus() {
-    if (props.max !== undefined && value >= props.max) {
+    if (props.max !== undefined && safeValue >= props.max) {
       return;
     }
-    setValue(value + 1);
+    setValue(safeValue + 1);
   }
 
   return (
@@ -55,10 +58,9 @@ export function PlusMinusInput(props: Props) {
       <FormControl variant={InputVariant} className={props.className} error={props.error}>
         <InputLabel>{props.label}</InputLabel>
         <Input
-          // defaultValue={props.defaultValue}
           value={value}
+          onBlur={() => props.onBlur ? props.onBlur() : null}
           onChange={handleChange}
-          // onBlur={handleBlur}
           startAdornment={
             <IconButton onClick={() => handleMinus()}>
               <RemoveCircleOutlineOutlinedIcon />

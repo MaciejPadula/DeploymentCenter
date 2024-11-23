@@ -10,6 +10,7 @@ import { ClustersList } from "./features/clusters-list/ClustersList";
 import { CreateDeployment } from "./features/create-resource/CreateDeployment";
 import { CreateLoadBalancer } from "./features/create-resource/CreateLoadBalancer";
 import { NamespacesList } from "./features/namespaces-list/NamespacesList";
+import { ClusterFromUrlGuard } from "./shared/guards/ClusterFromUrlGuard";
 
 export function RouteRecords() {
   return (
@@ -18,31 +19,31 @@ export function RouteRecords() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<MainPage />} />
 
-          <Route path="setup-deployment" element={<CreateDeployment />} />
-          <Route path="setup-load-balancer" element={<CreateLoadBalancer />} />
+          <Route path="/:clusterName/setup-deployment" element={<ClusterFromUrlGuard factory={c => <CreateDeployment cluster={c} />} />} />
+          <Route path="/:clusterName/setup-load-balancer" element={<ClusterFromUrlGuard factory={c => <CreateLoadBalancer cluster={c} />} />} />
 
           <Route path="clusters-configuration" element={<ClustersList />} />
 
           <Route
             path="/:clusterName/:namespace/deployments"
-            element={<DeploymentsList />}
+            element={<ClusterFromUrlGuard factory={c => <DeploymentsList cluster={c} />} />}
           />
           <Route
             path="/:clusterName/:namespace/deployments/:deploymentName"
-            element={<DeploymentPage />}
+            element={<ClusterFromUrlGuard factory={c => <DeploymentPage cluster={c} />} />}
           />
 
           <Route
             path="/:clusterName/:namespace/load-balancers"
-            element={<LoadBalancersList />}
+            element={<ClusterFromUrlGuard factory={c => <LoadBalancersList cluster={c} />} />}
           />
           <Route
             path="/:clusterName/:namespace/load-balancers/:loadBalancerName"
-            element={<LoadBalancerPage />}
+            element={<ClusterFromUrlGuard factory={c => <LoadBalancerPage cluster={c} />} />}
           />
 
           <Route path="/:clusterName/namespaces"
-            element={<NamespacesList />}
+            element={<ClusterFromUrlGuard factory={c => <NamespacesList cluster={c} />} />}
           />
 
           <Route path="*" element={<NotFound />} />

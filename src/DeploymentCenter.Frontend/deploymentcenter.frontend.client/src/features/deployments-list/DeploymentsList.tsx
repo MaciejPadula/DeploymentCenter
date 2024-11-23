@@ -6,24 +6,20 @@ import {
 } from "../../shared/components/resources-list/resource-row-model";
 import { useParams } from "react-router-dom";
 import { DeployIcon } from "../../assets/icons";
-import { configuration } from "../../shared/services/configuration-service";
 import { useAppRouting } from "../../shared/hooks/navigation";
 import { NotFound } from "../../shared/components/error/not-found/NotFound";
+import { Cluster } from "../../shared/models/cluster";
 
-export function DeploymentsList() {
+type Props = {
+  cluster: Cluster;
+};
+
+export function DeploymentsList(props: Props) {
   const navigation = useAppRouting();
-  const { namespace, clusterName } = useParams();
-  const cluster = configuration.value.clusters.find(
-    (c) => c.name === clusterName
-  );
-  const dataService = useDeploymentsDataService(cluster);
+  const { namespace } = useParams();
+  const dataService = useDeploymentsDataService(props.cluster);
 
-  if (
-    !dataService ||
-    namespace === undefined ||
-    clusterName === undefined ||
-    cluster === undefined
-  ) {
+  if (namespace === undefined) {
     return <NotFound />;
   }
 
@@ -31,25 +27,25 @@ export function DeploymentsList() {
     const response = await dataService.getDeployments(namespace);
     return response.map(
       (x) =>
-        ({
-          clusterName: clusterName,
-          name: x.name,
-          namespace: namespace,
-          icon: DeployIcon,
-          clickHandler: () =>
-            navigation.deploymentPage(clusterName, namespace, x.name),
-        } as ResourceRowModel)
+      ({
+        clusterName: props.cluster.name,
+        name: x.name,
+        namespace: namespace,
+        icon: DeployIcon,
+        clickHandler: () =>
+          navigation.deploymentPage(props.cluster.name, namespace, x.name),
+      } as ResourceRowModel)
     );
   };
 
   return (
     <ResourcesList
-      resourceKey="DeploymentsLoader"
+      resourceKey={`DeploymentsLoader-${props.cluster.name}-${namespace}`}
       resourceText="Deployments"
       resourcesFactory={factory}
       setupResource={{
         title: "Setup new deployment",
-        clickHandler: () => navigation.setupDeployment(),
+        clickHandler: () => navigation.setupDeployment(props.cluster.name),
       }}
     />
   );

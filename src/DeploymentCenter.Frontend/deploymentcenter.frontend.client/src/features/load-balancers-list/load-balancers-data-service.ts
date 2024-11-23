@@ -21,11 +21,8 @@ function loadBalancersDataService(httpClient: HttpClient) {
   };
 }
 
-export default function useLoadBalancersDataService(
-  cluster: Cluster | undefined
-) {
-  if (!cluster) {
-    return null;
-  }
-  return loadBalancersDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
+export default function useLoadBalancersDataService(cluster: Cluster) {
+  return loadBalancersDataService(
+    new HttpClient(cluster.apiUrl, cluster.kubeconfig)
+  );
 }

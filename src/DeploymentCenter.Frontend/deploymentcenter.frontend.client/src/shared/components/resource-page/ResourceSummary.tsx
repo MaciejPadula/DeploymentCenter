@@ -8,12 +8,15 @@ import {
   Typography,
 } from "@mui/material";
 import { LoadingError } from "../error/loading-error/LoadingError";
-import { AxiosError } from "axios";
+import axios from "axios";
 import { NotFound } from "../error/not-found/NotFound";
+import { useEffect } from "react";
 
 export function ResourceSummary(props: {
   resourceSummaryKey: string;
   resourceSummaryFactory: ResourceSummaryFactory;
+  onPageLoaded?: () => void;
+  onPageError?: () => void;
 }) {
   const { error, data } = useQuery({
     queryKey: [props.resourceSummaryKey],
@@ -21,8 +24,22 @@ export function ResourceSummary(props: {
     retry: 2,
   });
 
+  useEffect(() => {
+    if (data && !error) {
+      if (props.onPageLoaded) {
+        props.onPageLoaded();
+      }
+    }
+
+    if (error) {
+      if (props.onPageError) {
+        props.onPageError();
+      }
+    }
+  }, [error, data, props]);
+
   if (error) {
-    if (error instanceof AxiosError && error.response?.status === 404) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
       return <NotFound />
     }
     return <LoadingError />;

@@ -5,53 +5,61 @@ import {
   Container,
   getDefaultContainer,
 } from "../../deployment-page/models/container";
-import { selectedCluster } from "../../../shared/services/configuration-service";
 import { DeploymentData } from "./deployment-data";
 import { UpdaterFunction } from "../../../shared/helpers/function-helpers";
 import { ValidationResult } from "../../../shared/models/validation-result";
 import { ContainersDialog } from "./ContainersDialog";
 import { ChipListControl } from "../../../shared/components/chip-list-control/ChipListControl";
 import { PlusMinusInput } from "../../../shared/components/plus-minus-input/PlusMinusInput";
-import { NotFound } from "../../../shared/components/error/not-found/NotFound";
+import { Cluster } from "../../../shared/models/cluster";
+import { useState } from "react";
 
-export function SetupDeployment(props: {
+type Props = {
+  cluster: Cluster;
   value: DeploymentData;
   updater: UpdaterFunction<DeploymentData>;
   validationResults: Map<string, ValidationResult>;
-}) {
+};
+
+export function SetupDeployment(props: Props) {
   const applicationNameError = props.validationResults.get("applicationName");
+  const [appNameTouched, setAppNameTouched] = useState(false);
   const namespaceError = props.validationResults.get("namespace");
+  const [namespaceTouched, setNamespaceTouched] = useState(false);
   const nameError = props.validationResults.get("name");
+  const [deploymentNameTouched, setDeploymentNameTouched] = useState(false);
   const replicasError = props.validationResults.get("replicas");
+  const [replicasTouched, setReplicasTouched] = useState(false);
   const containersError = props.validationResults.get("containers");
-  const cluster = selectedCluster.value;
-
-  if (cluster === undefined) {
-    return <NotFound />;
-  }
-
+  const [containersTouched, setContainersTouched] = useState(false);
+ 
   function isError(result: ValidationResult | undefined) {
     return result?.isValid === false;
   }
 
   function setApplicationName(name: string) {
     props.updater((data) => (data.applicationName = name));
+    setAppNameTouched(true);
   }
 
   function setNamespace(namespace: string) {
     props.updater((data) => (data.namespace = namespace));
+    setNamespaceTouched(true);
   }
 
   function setDeploymentName(name: string) {
     props.updater((data) => (data.name = name));
+    setDeploymentNameTouched(true);
   }
 
-  function setReplicas(replicas: number) {
+  function setReplicas(replicas: number | undefined) {
     props.updater((data) => (data.replicas = replicas));
+    setReplicasTouched(true);
   }
 
   function setContainers(containers: Container[]) {
     props.updater((data) => (data.containers = containers));
+    setContainersTouched(true);
   }
 
   return (
@@ -64,18 +72,18 @@ export function SetupDeployment(props: {
             label="Application Name"
             defaultValue={props.value.applicationName}
             onBlur={(e) => setApplicationName(e.target.value)}
-            error={isError(applicationNameError)}
-            helperText={applicationNameError?.message}
+            error={appNameTouched && isError(applicationNameError)}
+            helperText={appNameTouched ? applicationNameError?.message : undefined}
           />
         </Grid>
 
         <Grid sm={4} xs={12}>
           <SelectNamespace
             defaultNamespace={props.value.namespace}
-            cluster={cluster}
+            cluster={props.cluster}
             onNamespaceChanged={setNamespace}
-            error={isError(namespaceError)}
-            helperText={namespaceError?.message}
+            error={namespaceTouched && isError(namespaceError)}
+            helperText={namespaceTouched ? namespaceError?.message : undefined}
           />
         </Grid>
 
@@ -86,8 +94,8 @@ export function SetupDeployment(props: {
             label="Deployment Name"
             defaultValue={props.value.name}
             onBlur={(e) => setDeploymentName(e.target.value)}
-            error={isError(nameError)}
-            helperText={nameError?.message}
+            error={deploymentNameTouched && isError(nameError)}
+            helperText={deploymentNameTouched ? nameError?.message : undefined}
           />
         </Grid>
 
@@ -95,10 +103,11 @@ export function SetupDeployment(props: {
           <PlusMinusInput
             className="w-full"
             label="Replicas"
-            defaultValue={props.value.replicas ?? 0}
+            defaultValue={props.value.replicas}
             onChange={(e) => setReplicas(e)}
-            error={isError(replicasError)}
-            helperText={replicasError?.message}
+            onBlur={() => setReplicasTouched(true)}
+            error={replicasTouched && isError(replicasError)}
+            helperText={replicasTouched ? replicasError?.message : undefined}
             min={0}
           />
         </Grid>
@@ -113,8 +122,8 @@ export function SetupDeployment(props: {
         }
         getEmptyValue={getDefaultContainer}
         onChange={setContainers}
-        error={isError(containersError)}
-        helperText={containersError?.message}
+        error={containersTouched && isError(containersError)}
+        helperText={containersTouched ? containersError?.message : undefined}
         dialogContentFactory={(value, setValue) => (
           <ContainersDialog container={value} onContainerChange={setValue} />
         )}
