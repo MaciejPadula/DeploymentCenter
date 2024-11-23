@@ -66,7 +66,7 @@ export function CreateDeployment(props: Props) {
       new ValidatorBuilder<DeploymentData>()
         .withValidation((data) => requiredValidator(data.replicas))
         .withValidation((data) => numberValidator(data.replicas))
-        .withValidation((data) => greaterThanValidator(data.replicas, 0))
+        .withValidation((data) => greaterThanValidator(data.replicas ?? 0, 0))
         .build()
     );
 
@@ -95,6 +95,7 @@ export function CreateDeployment(props: Props) {
       resetForm={reset}
     >
       <SetupDeployment
+        cluster={props.cluster}
         value={currentValue}
         updater={updateData}
         validationResults={validationResult}

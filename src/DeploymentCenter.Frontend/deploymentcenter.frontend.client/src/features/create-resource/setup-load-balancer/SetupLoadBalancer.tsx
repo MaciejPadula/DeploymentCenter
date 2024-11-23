@@ -1,7 +1,6 @@
 import { SelectNamespace } from "../../../shared/components/select-namespaces/SelectNamespace";
 import { InputVariant } from "../../../shared/helpers/material-config";
 import { ValidationResult } from "../../../shared/models/validation-result";
-import { selectedCluster } from "../../../shared/services/configuration-service";
 import { UpdaterFunction } from "../../../shared/helpers/function-helpers";
 import {
   getDefaultIpAddress,
@@ -13,24 +12,27 @@ import { Unstable_Grid2 as Grid, TextField } from "@mui/material";
 import { ChipListControl } from "../../../shared/components/chip-list-control/ChipListControl";
 import { PortDialog } from "./PortDialog";
 import { ExternalIpDialog } from "./ExternalIpDialog";
-import { NotFound } from "../../../shared/components/error/not-found/NotFound";
+import { Cluster } from "../../../shared/models/cluster";
+import { useState } from "react";
 
-export function SetupLoadBalancer(props: {
+type Props = {
+  cluster: Cluster;
   value: LoadBalancerData;
   updater: UpdaterFunction<LoadBalancerData>;
   validationResults: Map<string, ValidationResult>;
-}) {
-  const cluster = selectedCluster.value;
+};
 
-  if (cluster === undefined) {
-    return <NotFound />;
-  }
-
+export function SetupLoadBalancer(props: Props) {
   const applicationNameError = props.validationResults.get("applicationName");
+  const [appNameTouched, setAppNameTouched] = useState(false);
   const namespaceError = props.validationResults.get("namespace");
+  const [namespaceTouched, setNamespaceTouched] = useState(false);
   const nameError = props.validationResults.get("name");
+  const [loadBalancerNameTouched, setLoadBalancerTouched] = useState(false);
   const externalIpsError = props.validationResults.get("externalIps");
+  const [externalIpsTouched, setExternalIpsTouched] = useState(false);
   const portsError = props.validationResults.get("ports");
+  const [portsTouched, setPortsTouched] = useState(false);
 
   function isError(result: ValidationResult | undefined) {
     return result?.isValid === false;
@@ -38,22 +40,27 @@ export function SetupLoadBalancer(props: {
 
   function setApplicationName(name: string) {
     props.updater((data) => (data.applicationName = name));
+    setAppNameTouched(true);
   }
 
   function setNamespace(namespace: string) {
     props.updater((data) => (data.namespace = namespace));
+    setNamespaceTouched(true);
   }
 
   function setName(name: string) {
     props.updater((data) => (data.name = name));
+    setLoadBalancerTouched(true);
   }
 
   function setExternalIps(externalIps: string[]) {
     props.updater((data) => (data.externalIps = externalIps));
+    setExternalIpsTouched(true);
   }
 
   function setPorts(ports: LoadBalancerPort[]) {
     props.updater((data) => (data.ports = ports));
+    setPortsTouched(true);
   }
 
   return (
@@ -66,18 +73,18 @@ export function SetupLoadBalancer(props: {
             label="Application Name"
             defaultValue={props.value.applicationName}
             onBlur={(e) => setApplicationName(e.target.value)}
-            error={isError(applicationNameError)}
-            helperText={applicationNameError?.message}
+            error={appNameTouched && isError(applicationNameError)}
+            helperText={appNameTouched ? applicationNameError?.message : undefined}
           />
         </Grid>
 
         <Grid sm={4} xs={12}>
           <SelectNamespace
             defaultNamespace={props.value.namespace}
-            cluster={cluster}
+            cluster={props.cluster}
             onNamespaceChanged={setNamespace}
-            error={isError(namespaceError)}
-            helperText={namespaceError?.message}
+            error={namespaceTouched && isError(namespaceError)}
+            helperText={namespaceTouched ? namespaceError?.message : undefined}
           />
         </Grid>
 
@@ -88,8 +95,8 @@ export function SetupLoadBalancer(props: {
             label="Deployment Name"
             defaultValue={props.value.name}
             onBlur={(e) => setName(e.target.value)}
-            error={isError(nameError)}
-            helperText={nameError?.message}
+            error={loadBalancerNameTouched && isError(nameError)}
+            helperText={loadBalancerNameTouched ? nameError?.message : undefined}
           />
         </Grid>
 
@@ -101,8 +108,8 @@ export function SetupLoadBalancer(props: {
             toString={(ip) => ip}
             getEmptyValue={getDefaultIpAddress}
             onChange={setExternalIps}
-            error={isError(externalIpsError)}
-            helperText={externalIpsError?.message}
+            error={externalIpsTouched && isError(externalIpsError)}
+            helperText={externalIpsTouched ? externalIpsError?.message : undefined}
             dialogContentFactory={(value, setValue) => <ExternalIpDialog address={value} onAddressChange={setValue} />}
           />
 
@@ -113,8 +120,8 @@ export function SetupLoadBalancer(props: {
             toString={(port) => `${port.hostPort}:${port.targetPort}`}
             getEmptyValue={getDefaultPort}
             onChange={setPorts}
-            error={isError(portsError)}
-            helperText={portsError?.message}
+            error={portsTouched && isError(portsError)}
+            helperText={portsTouched ? portsError?.message : undefined}
             dialogContentFactory={(value, setValue) => <PortDialog port={value} onPortChange={setValue} />}
           />
         </div>

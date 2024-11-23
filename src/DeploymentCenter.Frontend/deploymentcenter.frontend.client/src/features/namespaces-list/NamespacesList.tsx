@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DeleteResource } from "../../shared/components/delete-resource/DeleteResource";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Cluster } from "../../shared/models/cluster";
+import { setSelectedNamespace } from "../../shared/services/configuration-service";
 
 type Props = {
   cluster: Cluster;
@@ -19,6 +20,10 @@ export function NamespacesList(props: Props) {
   const [namespaceName, setNamespaceName] = useState<string>('');
   const dataService = useSelectNamespaceDataService(props.cluster);
 
+  function setNamespace(namespace: string) {
+    setSelectedNamespace(namespace);
+  }
+
   const factory: ResourcesFactory = async () => {
     const response = await dataService?.getNamespaces();
     return response?.map(
@@ -26,6 +31,7 @@ export function NamespacesList(props: Props) {
       ({
         name: x.name,
         icon: NamespaceIcon,
+        clickHandler: () => setNamespace(x.name),
         action:
           <DeleteResource
             resourceName={x.name}

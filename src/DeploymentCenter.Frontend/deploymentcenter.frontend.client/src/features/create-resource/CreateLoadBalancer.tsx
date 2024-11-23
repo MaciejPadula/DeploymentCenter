@@ -76,6 +76,7 @@ export function CreateLoadBalancer(props: Props) {
       resetForm={resetData}
     >
       <SetupLoadBalancer
+        cluster={props.cluster}
         value={currentValue}
         updater={updateData}
         validationResults={validationResult}
