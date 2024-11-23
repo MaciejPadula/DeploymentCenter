@@ -40,12 +40,12 @@ export function DeploymentsList(props: Props) {
 
   return (
     <ResourcesList
-      resourceKey="DeploymentsLoader"
+      resourceKey={`DeploymentsLoader-${props.cluster.name}-${namespace}`}
       resourceText="Deployments"
       resourcesFactory={factory}
       setupResource={{
         title: "Setup new deployment",
-        clickHandler: () => navigation.setupDeployment(),
+        clickHandler: () => navigation.setupDeployment(props.cluster.name),
       }}
     />
   );

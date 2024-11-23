@@ -11,7 +11,6 @@ import { CreateDeployment } from "./features/create-resource/CreateDeployment";
 import { CreateLoadBalancer } from "./features/create-resource/CreateLoadBalancer";
 import { NamespacesList } from "./features/namespaces-list/NamespacesList";
 import { ClusterFromUrlGuard } from "./shared/guards/ClusterFromUrlGuard";
-import { ClusterFromConfigGuard } from "./shared/guards/ClusterFromConfigGuard";
 
 export function RouteRecords() {
   return (
@@ -20,8 +19,8 @@ export function RouteRecords() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<MainPage />} />
 
-          <Route path="setup-deployment" element={<ClusterFromConfigGuard factory={c => <CreateDeployment cluster={c} />} />} />
-          <Route path="setup-load-balancer" element={<ClusterFromConfigGuard factory={c => <CreateLoadBalancer cluster={c} />} />} />
+          <Route path="/:clusterName/setup-deployment" element={<ClusterFromUrlGuard factory={c => <CreateDeployment cluster={c} />} />} />
+          <Route path="/:clusterName/setup-load-balancer" element={<ClusterFromUrlGuard factory={c => <CreateLoadBalancer cluster={c} />} />} />
 
           <Route path="clusters-configuration" element={<ClustersList />} />
 

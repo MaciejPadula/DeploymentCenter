@@ -40,12 +40,12 @@ export function LoadBalancersList(props: Props) {
 
   return (
     <ResourcesList
-      resourceKey="LoadBalancersLoader"
+      resourceKey={`LoadBalancersLoader-${props.cluster.name}-${namespace}`}
       resourceText="Load Balancers"
       resourcesFactory={factory}
       setupResource={{
         title: "Setup new load balancer",
-        clickHandler: () => navigation.setupService(),
+        clickHandler: () => navigation.setupService(props.cluster.name),
       }}
     />
   );

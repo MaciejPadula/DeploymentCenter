@@ -73,7 +73,7 @@ export function NamespacesList(props: Props) {
 
   return <>
     <ResourcesList
-      resourceKey={`NamespacesLoader_${props.cluster.name}`}
+      resourceKey={`Namespaces-${props.cluster.name}`}
       resourceText="Namespaces"
       resourcesFactory={factory}
       setupResource={{

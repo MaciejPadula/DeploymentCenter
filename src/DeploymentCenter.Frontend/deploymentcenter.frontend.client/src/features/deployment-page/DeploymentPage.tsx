@@ -60,7 +60,7 @@ export function DeploymentPage(props: Props) {
         cluster={props.cluster}
       />}
       <ResourceSummary
-        resourceSummaryKey={`deployment-${namespace}-${deploymentName}`}
+        resourceSummaryKey={`Deployment-${namespace}-${deploymentName}`}
         resourceSummaryFactory={factory}
         onPageLoaded={() => setAreDetailsLoaded(true)}
         onPageError={() => setAreDetailsLoaded(false)}

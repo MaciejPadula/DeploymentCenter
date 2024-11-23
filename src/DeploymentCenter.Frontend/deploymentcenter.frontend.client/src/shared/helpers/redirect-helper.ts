@@ -1,6 +1,9 @@
 const routesToMaintain = [
-  "setup-application"
+  "setup-deployment",
+  "setup-load-balancer",
 ];
+
+const clusterNameRouteIndex = 2;
 
 export function createRedirectUrl(
   locationPathname: string,
@@ -8,7 +11,7 @@ export function createRedirectUrl(
   selectedNamespace: string
 ) {
   const mainRoute = locationPathname.split("/");
-  if (routesToMaintain.some(x => x === mainRoute[1])) {
+  if (routesToMaintain.some(x => x === mainRoute[clusterNameRouteIndex])) {
     return locationPathname;
   }
 

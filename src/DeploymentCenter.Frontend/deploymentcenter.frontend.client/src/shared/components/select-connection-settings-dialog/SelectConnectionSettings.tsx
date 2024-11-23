@@ -7,7 +7,6 @@ import {
 } from "@mui/material";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { SelectNamespace } from "../select-namespaces/SelectNamespace";
-import { useLocation } from "react-router-dom";
 import { SelectClusters } from "../select-clusters/SelectClusters";
 import {
   configuration,
@@ -15,7 +14,6 @@ import {
   selectedCluster,
   setClusterAndNamespace,
 } from "../../services/configuration-service";
-import { useAppRouting } from "../../hooks/navigation";
 import { Cluster } from "../../models/cluster";
 
 type Props = {
@@ -23,8 +21,6 @@ type Props = {
 };
 
 export function SelectNamespaceDialog(props: Props) {
-  const navigation = useAppRouting();
-  const location = useLocation();
   const [namespaceControl, setNamespaceControl] = useState(
     selectedNamespace.value
   );
@@ -34,7 +30,7 @@ export function SelectNamespaceDialog(props: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const [cluster, setCluster] = useState<Cluster | null>(null);
 
-  const validForm = useMemo(() => !!namespaceControl && !!clusterControl, [clusterControl, namespaceControl]);
+  const validForm = useMemo(() => cluster && !!namespaceControl && !!clusterControl, [cluster, clusterControl, namespaceControl]);
 
   useEffect(() => {
     const cluster = configuration.value.clusters.find(
@@ -60,12 +56,6 @@ export function SelectNamespaceDialog(props: Props) {
     if (props.onClose) {
       props.onClose();
     }
-
-    navigation.updateConnection(
-      location.pathname,
-      clusterControl,
-      namespaceControl
-    );
   }
 
   return (

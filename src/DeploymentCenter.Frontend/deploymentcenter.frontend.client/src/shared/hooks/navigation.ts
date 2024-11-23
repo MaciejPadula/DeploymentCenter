@@ -13,23 +13,21 @@ export function useAppRouting() {
   }
 
   function updateConnection(
-    currentLocation: string,
     cluster: string,
     namespace: string
   ) {
-    if (!cluster || !namespace || !currentLocation) {
+    if (!cluster || !namespace) {
       return;
     }
-    navigate(createRedirectUrl(currentLocation, cluster, namespace));
-    reloadPage();
+    navigate(createRedirectUrl(window.location.pathname, cluster, namespace));
   }
 
-  function setupDeployment() {
-    navigate("/setup-deployment");
+  function setupDeployment(clusterName: string) {
+    navigate(`/${clusterName}/setup-deployment`);
   }
 
-  function setupLoadBalancer() {
-    navigate("/setup-load-balancer");
+  function setupLoadBalancer(clusterName: string) {
+    navigate(`/${clusterName}/setup-load-balancer`);
   }
 
   function deploymentPage(

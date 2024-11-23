@@ -69,7 +69,7 @@ export function LoadBalancerPage(props: Props) {
         loadBalancerName={loadBalancerName}
       />}
       <ResourceSummary
-        resourceSummaryKey={`loadbalancer-${namespace}-${loadBalancerName}`}
+        resourceSummaryKey={`LoadBalancer-${namespace}-${loadBalancerName}`}
         resourceSummaryFactory={factory}
         onPageLoaded={() => setAreDetailsLoaded(true)}
         onPageError={() => setAreDetailsLoaded(false)}
