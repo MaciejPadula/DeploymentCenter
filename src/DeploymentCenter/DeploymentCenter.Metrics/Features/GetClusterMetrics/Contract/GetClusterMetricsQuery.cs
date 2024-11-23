@@ -3,4 +3,4 @@ using MediatR;
 
 namespace DeploymentCenter.Metrics.Features.GetClusterMetrics.Contract;
 
-public class GetClusterMetricsQuery() : IRequest<CurrentMetrics?>;
+public record GetClusterMetricsQuery() : IRequest<CurrentMetrics?>;
