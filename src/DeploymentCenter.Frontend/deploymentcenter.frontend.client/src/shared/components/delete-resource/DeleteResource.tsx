@@ -46,7 +46,7 @@ export function DeleteResource(props: Props) {
           </Typography>
 
           <TextField
-            label="Test"
+            label="Resource Name"
             variant={InputVariant}
             onChange={(e) => setValue(e.target.value)}
           />
