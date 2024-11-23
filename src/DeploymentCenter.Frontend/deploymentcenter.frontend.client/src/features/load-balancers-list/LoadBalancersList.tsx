@@ -7,23 +7,19 @@ import {
 import useLoadBalancersDataService from "./load-balancers-data-service";
 import { SvcIcon } from "../../assets/icons";
 import { useAppRouting } from "../../shared/hooks/navigation";
-import { configuration } from "../../shared/services/configuration-service";
 import { NotFound } from "../../shared/components/error/not-found/NotFound";
+import { Cluster } from "../../shared/models/cluster";
 
-export function LoadBalancersList() {
+type Props = {
+  cluster: Cluster;
+}
+
+export function LoadBalancersList(props: Props) {
   const navigation = useAppRouting();
-  const { namespace, clusterName } = useParams();
-  const cluster = configuration.value.clusters.find(
-    (c) => c.name === clusterName
-  );
-  const dataService = useLoadBalancersDataService(cluster);
+  const { namespace } = useParams();
+  const dataService = useLoadBalancersDataService(props.cluster);
 
-  if (
-    !dataService ||
-    namespace === undefined ||
-    clusterName === undefined ||
-    cluster === undefined
-  ) {
+  if (namespace === undefined) {
     return <NotFound />;
   }
 
@@ -31,14 +27,14 @@ export function LoadBalancersList() {
     const response = await dataService.getLoadBalancers(namespace);
     return response.map(
       (x) =>
-        ({
-          clusterName: clusterName,
-          name: x.name,
-          namespace,
-          icon: SvcIcon,
-          clickHandler: () =>
-            navigation.loadBalancerPage(clusterName, namespace, x.name),
-        } as ResourceRowModel)
+      ({
+        clusterName: props.cluster.name,
+        name: x.name,
+        namespace,
+        icon: SvcIcon,
+        clickHandler: () =>
+          navigation.loadBalancerPage(props.cluster.name, namespace, x.name),
+      } as ResourceRowModel)
     );
   };
 

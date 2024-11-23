@@ -34,11 +34,6 @@ function metricsDataService(httpClient: HttpClient) {
   };
 }
 
-export default function useMetricsDataService(
-  cluster: Cluster | undefined
-) {
-  if (!cluster) {
-    return null;
-  }
+export default function useMetricsDataService(cluster: Cluster) {
   return metricsDataService(new HttpClient(cluster.apiUrl, cluster.kubeconfig));
 }

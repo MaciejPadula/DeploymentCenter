@@ -12,9 +12,9 @@ export function IpAddresses(props: {
 }) {
   const dataService = useLoadBalancerPageDataService(props.cluster);
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ["podsLoader"],
+    queryKey: [`ipAddresses-${props.loadBalancerName}-${props.namespace}`],
     queryFn: async () =>
-      await dataService?.getLoadBalancerIpAddresses(
+      await dataService.getLoadBalancerIpAddresses(
         props.namespace,
         props.loadBalancerName
       ),

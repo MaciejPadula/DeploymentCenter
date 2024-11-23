@@ -1,9 +1,9 @@
 import { Skeleton, Typography } from "@mui/material";
 import { GargeChartBox } from "../charts/gauge/GaugeChartBox";
 import useMetricsDataService from "../../services/metrics-service";
-import { configuration } from "../../services/configuration-service";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { Cluster } from "../../models/cluster";
 
 interface ResourceMetrics {
   value: number;
@@ -21,16 +21,17 @@ function toFixed(value: number, precision: number = 0): number {
   return Number(value.toFixed(precision));
 }
 
-export function ClusterStatistics() {
-  const cluster = configuration.value.clusters.find(
-    (c) => c.name === configuration.value.cluster
-  );
-  const dataService = useMetricsDataService(cluster);
+type Props = {
+  cluster: Cluster;
+}
+
+export function ClusterStatistics(props: Props) {
+  const dataService = useMetricsDataService(props.cluster);
 
   const { data: metrics } = useQuery({
-    queryKey: ["clusterMetrics"],
+    queryKey: ["clusterMetrics", props.cluster.name],
     queryFn: async () => {
-      return await dataService?.getClusterMetrics();
+      return await dataService.getClusterMetrics();
     },
     refetchInterval: 5000,
   });
@@ -46,10 +47,6 @@ export function ClusterStatistics() {
       maxValue: (metrics?.maxMemoryUsage ?? 0) / divider,
     };
   }, [metrics]);
-
-  if (!dataService || !cluster) {
-    return <></>;
-  }
 
   return (
     <div className="p-4">

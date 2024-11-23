@@ -12,9 +12,9 @@ export function LoadBalancerPorts(props: {
 }) {
   const dataService = useLoadBalancerPageDataService(props.cluster);
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ["loadBalancerPortsLoader"],
+    queryKey: [`loadBalancerPortsLoader-${props.loadBalancerName}-${props.namespace}`],
     queryFn: async () =>
-      await dataService?.getLoadBalancerPorts(
+      await dataService.getLoadBalancerPorts(
         props.namespace,
         props.loadBalancerName
       ),

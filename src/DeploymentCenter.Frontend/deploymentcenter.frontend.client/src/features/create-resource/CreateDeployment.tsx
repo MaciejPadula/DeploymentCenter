@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useFormService } from "../../libs/forms/form-service";
 import { CreateResourceForm } from "../../shared/components/create-resource-form/CreateResourceForm";
 import { useAppRouting } from "../../shared/hooks/navigation";
-import { selectedCluster } from "../../shared/services/configuration-service";
 import useApplicationFormDataService from "./form-data-service";
 import { SetupDeployment } from "./setup-deployment/SetupDeployment";
 import {
@@ -16,11 +15,15 @@ import { kubernetesNameValidator } from "./validators/kubernetes-name-validator"
 import { textValidator } from "../../shared/validators/text-validator";
 import { greaterThanValidator } from "../../shared/validators/greater-than-validator";
 import { numberValidator } from "../../shared/validators/number-validator";
+import { Cluster } from "../../shared/models/cluster";
 
-export function CreateDeployment() {
+type Props = {
+  cluster: Cluster;
+};
+
+export function CreateDeployment(props: Props) {
   const storageKey = "deploymentData";
-  const cluster = selectedCluster.value;
-  const formDataService = useApplicationFormDataService(cluster);
+  const formDataService = useApplicationFormDataService(props.cluster);
   const navigation = useAppRouting();
   const {
     currentValue,
@@ -73,13 +76,9 @@ export function CreateDeployment() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!cluster) {
-    navigation.mainPage();
-  }
-
   async function submit() {
     await formDataService?.createDeployment(currentValue);
-    navigation.deploymentPage(cluster!.name, currentValue.namespace, currentValue.name);
+    navigation.deploymentPage(props.cluster.name, currentValue.namespace, currentValue.name);
   }
 
   function reset() {

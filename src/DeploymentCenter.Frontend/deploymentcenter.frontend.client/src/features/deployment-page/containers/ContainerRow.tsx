@@ -23,13 +23,13 @@ export function ContainerRow(props: { container: Container }) {
               className="w-full sm:w-1/2"
               variant={InputVariant}
               label={"Key"}
-              value={x.key}
+              value={x.key ?? ''}
             />
             <TextField
               className="w-full sm:w-1/2"
               variant={InputVariant}
               label={"Value"}
-              value={x.value}
+              value={x.value ?? ''}
             />
           </div>
         ))}

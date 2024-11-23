@@ -8,14 +8,11 @@ import { ResourceTypesGrid } from "./resource-types-grid/ResourceTypesGrid";
 import { Typography } from "@mui/material";
 import { useAppRouting } from "../../shared/hooks/navigation";
 import { ClusterStatistics } from "../../shared/components/cluster-statistics/ClusterStatistics";
-import { configuration } from "../../shared/services/configuration-service";
 import { NoClusterFound } from "./NoClusterFound";
+import { ClusterFromConfigGuard } from "../../shared/guards/ClusterFromConfigGuard";
 
 export function MainPage() {
   const navigation = useAppRouting();
-  const cluster = configuration.value.clusters.find(
-    (c) => c.name === configuration.value.cluster
-  );
 
   const factory: ResourcesFactory = async () => {
     const response = getRecentlyVisitedPages();
@@ -33,8 +30,9 @@ export function MainPage() {
 
   return (
     <div className="w-full flex flex-col">
-      {!cluster && <NoClusterFound />}
-      <ClusterStatistics />
+      <ClusterFromConfigGuard factory={c => <ClusterStatistics cluster={c} />}>
+        <NoClusterFound />
+      </ClusterFromConfigGuard>
       <ResourcesList
         resourceKey="RecentlyVisistedLoader"
         resourceText="Recently Visited Resources"

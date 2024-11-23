@@ -4,53 +4,43 @@ import {
   ResourceSummaryFactory,
 } from "../../shared/components/resource-page/resource-summary-model";
 import { ReplicasList } from "./pods/PodsList";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-service";
 import { getDeploymentUrl } from "../../shared/services/routing-service";
 import { DeployIcon } from "../../assets/icons";
 import { ContainersList } from "./containers/ContainersList";
 import useDeploymentPageDataService from "./deployment-page-data-service";
 import { DeploymentStatistics } from "./statistics/DeploymentStatistics";
-import { configuration } from "../../shared/services/configuration-service";
 import { DeploymentToolbar } from "./toolbar/DeploymentToolbar";
 import { createSummary } from "./details-factory";
 import { NotFound } from "../../shared/components/error/not-found/NotFound";
+import { Cluster } from "../../shared/models/cluster";
 
-export function DeploymentPage() {
-  const { deploymentName, namespace, clusterName } = useParams();
-  const cluster = configuration.value.clusters.find(
-    (c) => c.name === clusterName
-  );
-  const dataService = useDeploymentPageDataService(cluster);
+type Props = {
+  cluster: Cluster;
+};
+
+export function DeploymentPage(props: Props) {
+  const { deploymentName, namespace } = useParams();
+  const dataService = useDeploymentPageDataService(props.cluster);
+  const [areDetailsLoaded, setAreDetailsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    if (
-      !dataService ||
-      deploymentName === undefined ||
-      namespace === undefined ||
-      clusterName === undefined ||
-      cluster === undefined
-    ) {
+    if (deploymentName === undefined || namespace === undefined) {
       return;
     }
 
     addRecentlyVisitedPage(
-      clusterName,
+      props.cluster.name,
       deploymentName,
       namespace,
       DeployIcon,
-      getDeploymentUrl(clusterName, namespace, deploymentName)
+      getDeploymentUrl(props.cluster.name, namespace, deploymentName)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (
-    !dataService ||
-    deploymentName === undefined ||
-    namespace === undefined ||
-    clusterName === undefined ||
-    cluster === undefined
-  ) {
+  if (deploymentName === undefined || namespace === undefined) {
     return <NotFound />;
   }
 
@@ -59,35 +49,41 @@ export function DeploymentPage() {
       namespace,
       deploymentName
     );
-    return createSummary(summary, cluster);
+    return createSummary(summary, props.cluster);
   };
 
   return (
     <div className="flex flex-col w-full p-2 gap-2">
-      <DeploymentToolbar
+      {areDetailsLoaded && <DeploymentToolbar
         namespace={namespace}
         deploymentName={deploymentName}
-        cluster={cluster}
-      />
+        cluster={props.cluster}
+      />}
       <ResourceSummary
         resourceSummaryKey={`deployment-${namespace}-${deploymentName}`}
         resourceSummaryFactory={factory}
+        onPageLoaded={() => setAreDetailsLoaded(true)}
+        onPageError={() => setAreDetailsLoaded(false)}
       />
-      <DeploymentStatistics
-        cluster={cluster}
-        deploymentName={deploymentName}
-        namespace={namespace}
-      />
-      <ReplicasList
-        cluster={cluster}
-        deploymentName={deploymentName}
-        namespace={namespace}
-      />
-      <ContainersList
-        cluster={cluster}
-        deploymentName={deploymentName}
-        namespace={namespace}
-      />
+      {areDetailsLoaded && (
+        <>
+          <DeploymentStatistics
+            cluster={props.cluster}
+            deploymentName={deploymentName}
+            namespace={namespace}
+          />
+          <ReplicasList
+            cluster={props.cluster}
+            deploymentName={deploymentName}
+            namespace={namespace}
+          />
+          <ContainersList
+            cluster={props.cluster}
+            deploymentName={deploymentName}
+            namespace={namespace}
+          /></>
+      )}
+
     </div>
   );
 }

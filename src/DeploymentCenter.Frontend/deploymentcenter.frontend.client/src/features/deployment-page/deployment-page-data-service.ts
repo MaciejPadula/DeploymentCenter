@@ -77,14 +77,11 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     deploymentName: string,
     replicasCount: number
   ) {
-    await httpClient.post(
-      `/${controller}/ScaleDeployment`,
-      {
-        namespace: namespace,
-        deploymentName: deploymentName,
-        replicasCount: replicasCount,
-      }
-    );
+    await httpClient.post(`/${controller}/ScaleDeployment`, {
+      namespace: namespace,
+      deploymentName: deploymentName,
+      replicasCount: replicasCount,
+    });
   }
 
   async function removePod(namespace: string, podName: string) {
@@ -106,12 +103,7 @@ function DeploymentPageDataService(httpClient: HttpClient) {
   };
 }
 
-export default function useDeploymentPageDataService(
-  cluster: Cluster | undefined
-) {
-  if (cluster == undefined) {
-    return null;
-  }
+export default function useDeploymentPageDataService(cluster: Cluster) {
   return DeploymentPageDataService(
     new HttpClient(cluster.apiUrl, cluster.kubeconfig)
   );

@@ -16,7 +16,7 @@ export function LoadBalancerToolbar(props: Props) {
   const loadBalancerService = useLoadBalancerPageDataService(props.cluster);
 
   async function deleteLoadBalancer() {
-    await loadBalancerService?.removeLoadBalancer(
+    await loadBalancerService.removeLoadBalancer(
       props.namespace,
       props.loadBalancerName
     );

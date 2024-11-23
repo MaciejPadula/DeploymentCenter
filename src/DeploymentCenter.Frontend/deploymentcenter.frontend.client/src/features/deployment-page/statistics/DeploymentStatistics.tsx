@@ -30,7 +30,7 @@ export function DeploymentStatistics(props: Props) {
   const { data: pods } = useQuery({
     queryKey: [`podsLoader-${props.deploymentName}-${props.namespace}`],
     queryFn: async () =>
-      await dataService?.getDeploymentPods(
+      await dataService.getDeploymentPods(
         props.namespace,
         props.deploymentName
       ),
@@ -39,7 +39,7 @@ export function DeploymentStatistics(props: Props) {
   const { data: deploymentDetails } = useQuery({
     queryKey: [`deployment-${props.namespace}-${props.deploymentName}`],
     queryFn: async () => {
-      const summary = await dataService?.getDeploymentDetails(
+      const summary = await dataService.getDeploymentDetails(
         props.namespace,
         props.deploymentName
       );
@@ -54,7 +54,7 @@ export function DeploymentStatistics(props: Props) {
       props.cluster.apiUrl,
     ],
     queryFn: async () =>
-      await metricsService?.getDeploymentMetrics(
+      await metricsService.getDeploymentMetrics(
         props.namespace,
         props.deploymentName
       ),
