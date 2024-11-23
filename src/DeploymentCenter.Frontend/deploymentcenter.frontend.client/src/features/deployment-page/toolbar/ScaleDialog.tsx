@@ -51,7 +51,7 @@ export function ScaleDialog(props: Props) {
           <PlusMinusInput
             label={"Replicas"}
             defaultValue={value}
-            onChange={(value) => setValue(value)}
+            onChange={(value) => setValue(value ?? 0)}
             min={1}
           />
         </DialogContent>
