@@ -37,15 +37,15 @@ internal class HttpContextKubeConfigProviderTests
     }
 
     [Test]
-    public void GetKubeConfig_WhenCalledWithNullHeader_ReturnsEmptyString()
+    public void GetKubeConfig_WhenCalledWithNullHeader_ShouldThrowException()
     {
         // Arrange
         _httpContextAccessor.HttpContext?.Request.Headers["Auth"].Returns(StringValues.Empty);
 
         // Act
-        var result = _sut.GetKubeConfig();
+        var result = _sut.Invoking(x => x.GetKubeConfig());
 
         // Assert
-        result.Should().BeEmpty();
+        result.Should().Throw<ArgumentException>();
     }
 }
