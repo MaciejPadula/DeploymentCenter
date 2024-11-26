@@ -9,7 +9,7 @@ namespace DeploymentCenter.Deployments.Api.Features;
 
 internal class ScaleDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    private record ScaleDeploymentRequest(string Namespace, string DeploymentName, int ReplicasCount);
+    internal record ScaleDeploymentRequest(string Namespace, string DeploymentName, int ReplicasCount);
 
     protected override Delegate Handler => async (
         [FromBody] ScaleDeploymentRequest request,

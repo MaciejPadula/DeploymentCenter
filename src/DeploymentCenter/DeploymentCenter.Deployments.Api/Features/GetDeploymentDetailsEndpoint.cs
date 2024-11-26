@@ -9,7 +9,7 @@ namespace DeploymentCenter.Deployments.Api.Features;
 
 internal class GetDeploymentDetailsEndpoint() : ApiGetEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    private record GetDeploymentDetailsResponse(
+    internal record GetDeploymentDetailsResponse(
         string Namespace,
         string DeploymentName,
         string ApplicationName,

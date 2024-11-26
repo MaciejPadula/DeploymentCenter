@@ -10,7 +10,7 @@ namespace DeploymentCenter.Deployments.Api.Features;
 
 internal class GetDeploymentContainersEndpoint() : ApiGetEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    private record GetDeploymentContainersResponse(List<Container> Containers);
+    internal record GetDeploymentContainersResponse(List<Container> Containers);
 
     protected override Delegate Handler => async (
         [FromQuery] string @namespace,

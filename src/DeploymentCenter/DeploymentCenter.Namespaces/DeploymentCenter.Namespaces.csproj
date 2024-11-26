@@ -10,8 +10,4 @@
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="KubernetesClient" Version="14.0.9" />
-  </ItemGroup>
-
 </Project>

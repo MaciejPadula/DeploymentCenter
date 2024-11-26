@@ -26,7 +26,7 @@ internal class HttpContextKubeConfigProviderTests
         // Arrange
         var kubeConfig = "kubeConfig";
         var encodedKubeConfig = "encodedKubeConfig";
-        _httpContextAccessor.HttpContext.Request.Headers["Auth"].Returns(new StringValues(encodedKubeConfig));
+        _httpContextAccessor.HttpContext?.Request.Headers["Auth"].Returns(new StringValues(encodedKubeConfig));
         _kubeConfigDecoder.DecodeKubeConfig(encodedKubeConfig).Returns(kubeConfig);
 
         // Act
@@ -40,7 +40,7 @@ internal class HttpContextKubeConfigProviderTests
     public void GetKubeConfig_WhenCalledWithNullHeader_ReturnsEmptyString()
     {
         // Arrange
-        _httpContextAccessor.HttpContext.Request.Headers["Auth"].Returns(StringValues.Empty);
+        _httpContextAccessor.HttpContext?.Request.Headers["Auth"].Returns(StringValues.Empty);
 
         // Act
         var result = _sut.GetKubeConfig();
