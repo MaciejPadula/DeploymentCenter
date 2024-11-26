@@ -9,9 +9,9 @@ namespace DeploymentCenter.Deployments.Api.Features;
 
 internal class GetDeploymentsListEndpoint() : ApiGetEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    private record Deployment(string Name);
+    internal record Deployment(string Name);
 
-    private record GetDeploymentsListResponse(List<Deployment> Deployments);
+    internal record GetDeploymentsListResponse(List<Deployment> Deployments);
 
     protected override Delegate Handler => async (
         [FromQuery] string @namespace,

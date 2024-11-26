@@ -8,9 +8,9 @@ namespace DeploymentCenter.Security.Api.Features;
 
 internal class SecurePasswordEndpoint() : ApiPostEndpointBase(new SecurityEndpointInfoFactory())
 {
-    private record SecurePasswordRequest(string PlainText);
+    internal record SecurePasswordRequest(string PlainText);
 
-    private record SecurePasswordResponse(string SecurePassword);
+    internal record SecurePasswordResponse(string SecurePassword);
 
     protected override Delegate Handler => async (
         IMediator mediator,

@@ -9,12 +9,12 @@ namespace DeploymentCenter.Deployments.Api.Features;
 
 internal class GetDeploymentPodsEndpoint() : ApiGetEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    private record Pod(
+    internal record Pod(
         string Name,
         string Status,
         string Ip);
 
-    private record GetDeploymentPodsResponse(List<Pod> Pods);
+    internal record GetDeploymentPodsResponse(List<Pod> Pods);
 
     protected override Delegate Handler => async (
         [FromQuery] string @namespace,

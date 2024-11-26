@@ -7,7 +7,12 @@ public static class IEnumerableExtensions
     public static TOutType SumOrDefault<TSource, TOutType>(this IEnumerable<TSource> source, Func<TSource, TOutType> selector, TOutType defaultValue)
         where TOutType : INumber<TOutType>
     {
-        var result = defaultValue;
+        if (!source.Any())
+        {
+            return defaultValue;
+        }
+
+        TOutType result = default(TOutType) ?? defaultValue;
 
         foreach (var sourceItem in source)
         {
@@ -15,6 +20,7 @@ public static class IEnumerableExtensions
         }
 
         return result;
+
     }
 
     public static TOutType MaxOrDefault<TSource, TOutType>(this IEnumerable<TSource> source, Func<TSource, TOutType> selector, TOutType defaultValue)

@@ -58,3 +58,5 @@ app.UseMiddlewares();
 app.UseHttpsRedirection();
 
 app.Run();
+
+public partial class Program { }

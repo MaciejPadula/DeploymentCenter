@@ -9,7 +9,7 @@ namespace DeploymentCenter.Deployments.Api.Features;
 
 internal class CreateDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    private record CreateDeploymentRequest(
+    internal record CreateDeploymentRequest(
         string Namespace,
         string Name,
         string ApplicationName,
