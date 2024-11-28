@@ -4,8 +4,8 @@ import useMetricsDataService from "../../services/metrics-service";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { Cluster } from "../../models/cluster";
-import { AxiosError } from "axios";
 import StatisticsNotAvailable from "../error/StatisticsNotAvailable";
+import { areMetricsAvailable } from "../../helpers/metrics-helper";
 
 interface ResourceMetrics {
   value: number;
@@ -29,11 +29,6 @@ type Props = {
 
 export function ClusterStatistics(props: Props) {
   const dataService = useMetricsDataService(props.cluster);
-
-  function areMetricsAvailable(error: unknown) {
-    return error === undefined || (error instanceof AxiosError && error?.response?.status !== 501);
-  }
-
   const { error, data: metrics } = useQuery({
     queryKey: ["clusterMetrics", props.cluster.name],
     queryFn: async () => {
