@@ -14,6 +14,7 @@ import { Cluster } from "../../../shared/models/cluster";
 import { useQuery } from "@tanstack/react-query";
 import { createSummary } from "../details-factory";
 import useMetricsDataService from "../../../shared/services/metrics-service";
+import { isPodFailed, isPodPending, isPodRunning } from "../pod-helper";
 
 const maxPointsOnChart = 10;
 
@@ -83,15 +84,15 @@ export function DeploymentStatistics(props: Props) {
     return Number.parseInt(deploymentDetails?.properties.get("Replicas") ?? '0');
   }, [deploymentDetails])
   const pendingPods = useMemo(
-    () => pods?.filter((x) => x.status === "Pending").length ?? 0,
+    () => pods?.filter((x) => isPodPending(x)).length ?? 0,
     [pods]
   );
   const alivePods = useMemo(
-    () => pods?.filter((x) => x.status === "Running").length ?? 0,
+    () => pods?.filter((x) => isPodRunning(x)).length ?? 0,
     [pods]
   );
   const deadPods = useMemo(
-    () => pods?.filter((x) => x.status === "Succeeded").length ?? deploymentReplicas - pendingPods - alivePods,
+    () => pods?.filter((x) => isPodFailed(x)).length ?? deploymentReplicas - pendingPods - alivePods,
     [pods, deploymentReplicas, pendingPods, alivePods]
   );
 

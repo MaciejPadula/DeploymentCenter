@@ -1,11 +1,15 @@
 ﻿using DeploymentCenter.Deployments.Core.Models;
 using DeploymentCenter.Deployments.Features;
 using DeploymentCenter.Infrastructure.K8s.Client;
+using DeploymentCenter.Infrastructure.K8s.Mappers;
 using k8s;
+using k8s.Models;
 
 namespace DeploymentCenter.Infrastructure.K8s.Implementations;
 
-internal class K8sPodClient(IKubernetesClientFactory kubernetesClientFactory) : IPodClient
+internal class K8sPodClient(
+    IKubernetesClientFactory kubernetesClientFactory,
+    IK8sPodMapper k8SPodMapper) : IPodClient
 {
     public async Task<string> GetPodLogs(string @namespace, string podName)
     {
@@ -31,10 +35,7 @@ internal class K8sPodClient(IKubernetesClientFactory kubernetesClientFactory) : 
         var pods = await client.CoreV1.ListNamespacedPodAsync(@namespace);
         return pods?.Items?
             .Where(x => x.Metadata.Name.StartsWith(deploymentName))
-            .Select(x => new Pod(
-                x.Metadata.Name,
-                x.Status.Phase,
-                x.Status.PodIP))
+            .Select(k8SPodMapper.Map)
             .ToList() ?? [];
     }
 
