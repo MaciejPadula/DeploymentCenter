@@ -31,7 +31,7 @@ export function ClusterStatistics(props: Props) {
   const dataService = useMetricsDataService(props.cluster);
 
   function areMetricsAvailable(error: unknown) {
-    return error === undefined || error instanceof AxiosError && error?.response?.status !== 501;
+    return error === undefined || (error instanceof AxiosError && error?.response?.status !== 501);
   }
 
   const { error, data: metrics } = useQuery({

@@ -78,11 +78,13 @@ export function ReplicaRow(props: {
             <DeleteResource resourceName={props.pod.name} onDelete={removePod}>
               <Button>Delete pod</Button>
             </DeleteResource>
-            <ReplicaLogs
-              namespace={props.namespace}
-              podName={props.pod.name}
-              cluster={props.cluster}
-            />
+            {props.pod.status.health === PodHealthStatus.Running &&
+              <ReplicaLogs
+                namespace={props.namespace}
+                podName={props.pod.name}
+                cluster={props.cluster}
+              />
+            }
           </>
         )}
       </AccordionDetails>
