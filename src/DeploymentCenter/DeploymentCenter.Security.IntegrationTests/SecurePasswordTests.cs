@@ -48,6 +48,6 @@ internal class SecurePasswordTests
         var testCallResult = await _sut.GetAsync("/api/Deployments/GetDeploymentsList?namespace=default", kubeconfig);
 
         // Assert
-        testCallResult.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        testCallResult.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 }

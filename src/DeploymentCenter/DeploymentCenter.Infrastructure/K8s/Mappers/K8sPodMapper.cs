@@ -13,7 +13,7 @@ internal class K8sPodMapper : IK8sPodMapper
     public Pod Map(V1Pod pod) => new(
         pod.Metadata.Name,
         pod.Status.Phase,
-        ParsePodStatus(pod.Status.ContainerStatuses.LastOrDefault()?.State),
+        ParsePodStatus(pod.Status.ContainerStatuses?.LastOrDefault()?.State),
         pod.Status.PodIP);
 
     private static PodStatus? ParsePodStatus(V1ContainerState? state)
