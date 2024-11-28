@@ -2,6 +2,5 @@
 
 public readonly record struct Pod(
     string Name,
-    string Phase,
-    PodStatus? Status,
+    PodStatus Status,
     string Ip);
