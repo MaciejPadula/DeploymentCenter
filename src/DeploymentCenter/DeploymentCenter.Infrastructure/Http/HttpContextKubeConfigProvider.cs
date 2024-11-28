@@ -14,7 +14,12 @@ internal class HttpContextKubeConfigProvider(IHttpContextAccessor httpContextAcc
     public string GetKubeConfig()
     {
         var value = httpContextAccessor.HttpContext?.Request.Headers[KubeConfigHeaderKey];
-        ArgumentException.ThrowIfNullOrEmpty(value, KubeConfigHeaderKey);
+
+        if (string.IsNullOrEmpty(value))
+        {
+            throw new UnauthorizedAccessException();
+        }
+
         return kubeConfigDecoder.DecodeKubeConfig(value!);
     }
 }

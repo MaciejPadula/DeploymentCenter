@@ -46,6 +46,6 @@ internal class HttpContextKubeConfigProviderTests
         var result = _sut.Invoking(x => x.GetKubeConfig());
 
         // Assert
-        result.Should().Throw<ArgumentException>();
+        result.Should().Throw<UnauthorizedAccessException>();
     }
 }
