@@ -24,7 +24,7 @@ export function UsageCharts(props: Props) {
   const [metrics, setMetrics] = useState<DeploymentMetrics[]>([]);
 
   function areMetricsAvailable(error: unknown) {
-    return error === undefined || error instanceof AxiosError && error?.response?.status !== 501;
+    return error === undefined || (error instanceof AxiosError && error?.response?.status !== 501);
   }
 
   const { error, data: stats } = useQuery({
