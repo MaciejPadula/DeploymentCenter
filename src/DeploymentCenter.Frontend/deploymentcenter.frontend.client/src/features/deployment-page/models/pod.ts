@@ -1,5 +1,11 @@
+interface PodStatus {
+  reason: string;
+  message: string;
+}
+
 export interface Pod {
   name: string;
-  status: string;
+  phase: string;
+  status: PodStatus | null;
   ip: string;
 }

@@ -13,6 +13,7 @@ import { ReplicaLogs } from "./PodLogs";
 import { Cluster } from "../../../shared/models/cluster";
 import { DeleteResource } from "../../../shared/components/delete-resource/DeleteResource";
 import useDeploymentPageDataService from "../deployment-page-data-service";
+import { isPodFailed, isPodPending, isPodRunning } from "../pod-helper";
 
 export function ReplicaRow(props: {
   pod: Pod;
@@ -27,11 +28,11 @@ export function ReplicaRow(props: {
   }
 
   function podTextColor() {
-    if (props.pod.status === "Running") {
+    if (isPodRunning(props.pod)) {
       return "green";
-    } else if (props.pod.status === "Pending") {
+    } else if (isPodPending(props.pod)) {
       return "orange";
-    } else if (props.pod.status === "Succeeded") {
+    } else if (isPodFailed(props.pod)) {
       return "red";
     }
   }
@@ -50,7 +51,7 @@ export function ReplicaRow(props: {
           {props.pod.name}
         </Typography>
         <Typography className={"hidden w-1/3 sm:flex"}>
-          Pod status: {props.pod.status}
+          Pod status: {props.pod.status?.reason ?? props.pod.phase}
         </Typography>
         <Typography className={"hidden  w-1/3 sm:flex"}>
           Internal Ip: {props.pod.ip}
@@ -61,7 +62,15 @@ export function ReplicaRow(props: {
           <>
             <div className={"block sm:hidden"}>
               <div>Internal Ip: {props.pod.ip}</div>
-              <div>Pod status: {props.pod.status}</div>
+              <div>Pod status: {props.pod.phase}</div>
+              {
+                props.pod.status && (
+                  <>
+                    <div>Reason: {props.pod.status.reason}</div>
+                    <div>Message: {props.pod.status.message}</div>
+                  </>
+                )
+              }
             </div>
             <DeleteResource resourceName={props.pod.name} onDelete={removePod}>
               <Button>Delete pod</Button>
