@@ -7,8 +7,8 @@ import { LoadBalancersList } from "./features/load-balancers-list/LoadBalancersL
 import { LoadBalancerPage } from "./features/load-balancer/LoadBalancerPage";
 import { NotFound } from "./shared/components/error/not-found/NotFound";
 import { ClustersList } from "./features/clusters-list/ClustersList";
-import { CreateDeployment } from "./features/create-resource/CreateDeployment";
-import { CreateLoadBalancer } from "./features/create-resource/CreateLoadBalancer";
+import { CreateDeploymentPage } from "./features/create-deployment/CreateDeploymentPage";
+import { CreateLoadBalancerPage } from "./features/create-load-balancer/CreateLoadBalancerPage";
 import { NamespacesList } from "./features/namespaces-list/NamespacesList";
 import { ClusterFromUrlGuard } from "./shared/guards/ClusterFromUrlGuard";
 
@@ -19,8 +19,8 @@ export function RouteRecords() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<MainPage />} />
 
-          <Route path="/:clusterName/setup-deployment" element={<ClusterFromUrlGuard factory={c => <CreateDeployment cluster={c} />} />} />
-          <Route path="/:clusterName/setup-load-balancer" element={<ClusterFromUrlGuard factory={c => <CreateLoadBalancer cluster={c} />} />} />
+          <Route path="/:clusterName/setup-deployment" element={<ClusterFromUrlGuard factory={c => <CreateDeploymentPage cluster={c} />} />} />
+          <Route path="/:clusterName/setup-load-balancer" element={<ClusterFromUrlGuard factory={c => <CreateLoadBalancerPage cluster={c} />} />} />
 
           <Route path="clusters-configuration" element={<ClustersList />} />
 

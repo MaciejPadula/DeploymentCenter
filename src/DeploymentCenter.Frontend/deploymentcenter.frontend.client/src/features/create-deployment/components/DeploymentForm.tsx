@@ -5,7 +5,7 @@ import {
   Container,
   getDefaultContainer,
 } from "../../deployment-page/models/container";
-import { DeploymentData } from "./deployment-data";
+import { DeploymentData } from "../models/deployment-data";
 import { UpdaterFunction } from "../../../shared/helpers/function-helpers";
 import { ValidationResult } from "../../../shared/models/validation-result";
 import { ContainersDialog } from "./ContainersDialog";
@@ -21,7 +21,7 @@ type Props = {
   validationResults: Map<string, ValidationResult>;
 };
 
-export function SetupDeployment(props: Props) {
+export function DeploymentForm(props: Props) {
   const applicationNameError = props.validationResults.get("applicationName");
   const [appNameTouched, setAppNameTouched] = useState(false);
   const namespaceError = props.validationResults.get("namespace");

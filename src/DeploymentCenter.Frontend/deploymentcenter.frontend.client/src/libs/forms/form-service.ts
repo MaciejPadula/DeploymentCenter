@@ -9,6 +9,8 @@ import { copyObject } from "../../shared/helpers/object-helper";
 
 type ValidatorFunction<T> = (field: T) => ValidationResult;
 
+export type AddValidatorFunction<T> = (fieldName: string, validator: ValidatorFunction<T>) => void;
+
 export function useFormService<T extends FormGroup>(
   storageKey: string,
   defaultValueFactory: () => T
@@ -22,7 +24,7 @@ export function useFormService<T extends FormGroup>(
     []
   );
 
-  const addValidator = useCallback(
+  const addValidator: AddValidatorFunction<T> = useCallback(
     (fieldName: string, validator: ValidatorFunction<T>) => {
       if (validators.has(fieldName)) {
         console.warn(`Validator for field ${fieldName} already exists`);

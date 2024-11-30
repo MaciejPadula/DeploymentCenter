@@ -1,19 +1,14 @@
-import { SelectNamespace } from "../../../shared/components/select-namespaces/SelectNamespace";
-import { InputVariant } from "../../../shared/helpers/material-config";
-import { ValidationResult } from "../../../shared/models/validation-result";
-import { UpdaterFunction } from "../../../shared/helpers/function-helpers";
-import {
-  getDefaultIpAddress,
-  getDefaultPort,
-  LoadBalancerData,
-  LoadBalancerPort,
-} from "./load-balancer-data";
 import { Unstable_Grid2 as Grid, TextField } from "@mui/material";
-import { ChipListControl } from "../../../shared/components/chip-list-control/ChipListControl";
 import { PortDialog } from "./PortDialog";
 import { ExternalIpDialog } from "./ExternalIpDialog";
-import { Cluster } from "../../../shared/models/cluster";
 import { useState } from "react";
+import { Cluster } from "../../../shared/models/cluster";
+import { getDefaultIpAddress, getDefaultPort, LoadBalancerData, LoadBalancerPort } from "../models/load-balancer-data";
+import { UpdaterFunction } from "../../../shared/helpers/function-helpers";
+import { ValidationResult } from "../../../shared/models/validation-result";
+import { InputVariant } from "../../../shared/helpers/material-config";
+import { SelectNamespace } from "../../../shared/components/select-namespaces/SelectNamespace";
+import { ChipListControl } from "../../../shared/components/chip-list-control/ChipListControl";
 
 type Props = {
   cluster: Cluster;
@@ -22,7 +17,7 @@ type Props = {
   validationResults: Map<string, ValidationResult>;
 };
 
-export function SetupLoadBalancer(props: Props) {
+export function LoadBalancerForm(props: Props) {
   const applicationNameError = props.validationResults.get("applicationName");
   const [appNameTouched, setAppNameTouched] = useState(false);
   const namespaceError = props.validationResults.get("namespace");

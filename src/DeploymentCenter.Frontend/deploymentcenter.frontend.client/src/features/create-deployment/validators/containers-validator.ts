@@ -1,5 +1,5 @@
-import { ValidationResult } from "../../../../shared/models/validation-result";
-import { DeploymentData } from "../deployment-data";
+import { ValidationResult } from "../../../shared/models/validation-result";
+import { DeploymentData } from "../models/deployment-data";
 
 export function containersValidator(value: DeploymentData): ValidationResult {
   const fieldToCheck = value.containers;
@@ -25,7 +25,13 @@ export function containersValidator(value: DeploymentData): ValidationResult {
     };
   }
 
-  if (fieldToCheck.some((container) => container.environmentVariables.some((env) => env.key && !env.value || !env.key && env.value))) {
+  if (
+    fieldToCheck.some((container) =>
+      container.environmentVariables.some(
+        (env) => (env.key && !env.value) || (!env.key && env.value)
+      )
+    )
+  ) {
     return {
       isValid: false,
       message: "Environment variables must have both key and value",

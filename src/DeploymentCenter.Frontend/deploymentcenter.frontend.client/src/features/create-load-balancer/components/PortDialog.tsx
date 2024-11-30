@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
-import { LoadBalancerPort } from "./load-balancer-data";
-import { InputVariant } from "../../../shared/helpers/material-config";
 import { ChangeEvent } from "react";
+import { InputVariant } from "../../../shared/helpers/material-config";
+import { LoadBalancerPort } from "../models/load-balancer-data";
 
 type Props = {
   port: LoadBalancerPort;
