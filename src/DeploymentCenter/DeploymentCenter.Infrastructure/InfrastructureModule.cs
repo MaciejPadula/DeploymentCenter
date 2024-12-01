@@ -1,4 +1,7 @@
 ﻿using DeploymentCenter.Deployments.Features;
+using DeploymentCenter.Infrastructure.AIChat;
+using DeploymentCenter.Infrastructure.AIChat.Cache;
+using DeploymentCenter.Infrastructure.AIChat.OpenAI;
 using DeploymentCenter.Infrastructure.Http;
 using DeploymentCenter.Infrastructure.K8s.Client;
 using DeploymentCenter.Infrastructure.K8s.Implementations;
@@ -8,6 +11,7 @@ using DeploymentCenter.Metrics.Features;
 using DeploymentCenter.Namespaces.Features;
 using DeploymentCenter.Security.Features.SecurePassword;
 using DeploymentCenter.Services.Features;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DeploymentCenter.Infrastructure;
@@ -16,6 +20,7 @@ public static class InfrastructureModule
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
+        services.AddMemoryCache();
         services.AddScoped<IKubeConfigProvider, HttpContextKubeConfigProvider>();
         services.AddScoped<IKubernetesClientFactory, KubernetesClientFactory>();
         services.AddTransient<IServiceClient, K8sServiceClient>();
@@ -29,6 +34,12 @@ public static class InfrastructureModule
 
         services.AddTransient<IKubeConfigDecoder, Base64PasswordSecurity>();
         services.AddTransient<IPasswordSecurity, Base64PasswordSecurity>();
+
+        services.AddTransient<IAIChatProvider, OpenAIChatClientProvider>();
+        services.AddTransient<IAnalyzeClient>(p =>
+            new CacheAnalyzeClient(
+                new AIChatAnalyzeClient(p.GetRequiredService<IAIChatProvider>()),
+                p.GetRequiredService<IMemoryCache>()));
 
         return services;
     }
