@@ -91,6 +91,27 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     );
   }
 
+  interface AnalyzeDeploymentRequest {
+    namespace: string;
+    deploymentName: string;
+    userQuestion: string;
+  }
+
+  interface AnalyzeDeploymentResponse {
+    result: string;
+  }
+
+  async function analyzeDeployment(namespace: string, deploymentName: string, userQuestion: string) {
+    return await httpClient.post<AnalyzeDeploymentRequest, AnalyzeDeploymentResponse>(
+      `/${controller}/AnalyzeDeployment`,
+      {
+        namespace: namespace,
+        deploymentName: deploymentName,
+        userQuestion: userQuestion
+      }
+    );
+  }
+
   return {
     getDeploymentDetails,
     getDeploymentPods,
@@ -100,6 +121,7 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     removeDeployment,
     scaleDeployment,
     removePod,
+    analyzeDeployment,
   };
 }
 
