@@ -13,9 +13,10 @@ internal class AnalyzeDeploymentHandler(IDeploymentClient deploymentClient, IPod
         var deploymentPods = await podClient.GetPods(request.Namespace, request.DeploymentName);
 
         var basicDetails = new DeploymentStatusDetails(
-            request.DeploymentName,
-            deploymentPods.ToDictionary(pod => pod.Name, pod => pod.Status),
-            request.AdditionalUserDetails);
+            deploymentInfo.Value,
+            deploymentPods,
+            containers,
+            request.UserQuestion);
 
         return await analyzeClient.AnalyzeDeploymentStatus(basicDetails);
     }
