@@ -12,7 +12,7 @@ internal class AnalyzeDeploymentEndpoint() : ApiPostEndpointBase(new Deployments
     internal record AnalyzeDeploymentRequest(
         string Namespace,
         string DeploymentName,
-        string AdditionalUserDetails);
+        string UserQuestion);
 
     internal record AnalyzeDeploymentResponse(
         string Result);
@@ -22,7 +22,7 @@ internal class AnalyzeDeploymentEndpoint() : ApiPostEndpointBase(new Deployments
         IMediator mediator,
         CancellationToken cancellationToken) =>
     {
-        var query = new AnalyzeDeploymentQuery(request.Namespace, request.DeploymentName, request.AdditionalUserDetails);
+        var query = new AnalyzeDeploymentQuery(request.Namespace, request.DeploymentName, request.UserQuestion);
         var result = await mediator.Send(query, cancellationToken);
 
         if (string.IsNullOrEmpty(result))

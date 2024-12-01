@@ -18,5 +18,5 @@ internal class CacheAnalyzeClient(IAnalyzeClient analyzeClient, IMemoryCache mem
             }) ?? string.Empty;
 
     private static string GetCacheKey(DeploymentStatusDetails deploymentStatusDetails) =>
-        $"{deploymentStatusDetails.DeploymentName}_{string.Join("__", deploymentStatusDetails.PodsStatuses.Select(x => $"{x.Key}&{x.Value}"))}_{deploymentStatusDetails.UserAdditionalDetails}";
+        $"{deploymentStatusDetails.Details.Namespace}_{deploymentStatusDetails.Details.Name}_{deploymentStatusDetails.UserQuestion}";
 }
