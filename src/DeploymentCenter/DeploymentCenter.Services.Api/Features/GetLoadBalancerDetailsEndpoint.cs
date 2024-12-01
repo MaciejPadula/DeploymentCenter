@@ -9,7 +9,7 @@ namespace DeploymentCenter.Services.Api.Features;
 
 internal class GetLoadBalancerDetailsEndpoint() : ApiGetEndpointBase(new ServicesEndpointInfoFactory())
 {
-    private readonly record struct GetLoadBalancerDetailsResponse(
+    internal readonly record struct GetLoadBalancerDetailsResponse(
         string Namespace,
         string LoadBalancerName,
         string ApplicationName);

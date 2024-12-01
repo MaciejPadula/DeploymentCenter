@@ -1,8 +1,11 @@
-﻿using DeploymentCenter.Api.Framework.Endpoints;
+﻿using DeploymentCenter.Api.Framework;
+using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Deployments.Api.Core;
+using DeploymentCenter.Deployments.Core.Exceptions;
 using DeploymentCenter.Deployments.Core.Models;
 using DeploymentCenter.Deployments.Features.CreateDeployment.Contract;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeploymentCenter.Deployments.Api.Features;
@@ -21,8 +24,7 @@ internal class CreateDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsE
         IMediator mediator,
         CancellationToken cancellationToken) =>
     {
-        await mediator.Send(
-            new CreateDeploymentCommand(
+        var createCommand = new CreateDeploymentCommand(
                 request.Namespace,
                 request.Name,
                 request.ApplicationName,
@@ -42,7 +44,12 @@ internal class CreateDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsE
                                 env.Value,
                                 env.ConfigMapName))
                             .ToList()))
-                    .ToList()),
+                    .ToList());
+
+        var result = await mediator.Send(
+            createCommand,
             cancellationToken);
+
+        return ResultsHandler.HandleResult(result, () => Results.Created());
     };
 }

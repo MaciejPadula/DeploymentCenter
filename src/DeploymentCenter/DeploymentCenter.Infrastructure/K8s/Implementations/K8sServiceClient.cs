@@ -3,6 +3,7 @@ using DeploymentCenter.Infrastructure.K8s.Mappers;
 using DeploymentCenter.Services.Core.Models;
 using DeploymentCenter.Services.Features;
 using k8s;
+using k8s.Autorest;
 using k8s.Models;
 
 namespace DeploymentCenter.Infrastructure.K8s.Implementations;
@@ -62,6 +63,25 @@ internal class K8sServiceClient(
         using var client = kubernetesClientFactory.GetClient();
         var loadBalancer = await GetLoadBalancerDetails(@namespace, name) ?? throw new Exception("Lb not found");
         await client.CoreV1.DeleteNamespacedServiceAsync(loadBalancer.Name, loadBalancer.Namespace);
+    }
+
+    public async Task<bool> LoadBalancerExists(string @namespace, string name)
+    {
+        try
+        {
+            using var client = kubernetesClientFactory.GetClient();
+            var loadBalancer = await GetLoadBalancerDetails(@namespace, name);
+            return loadBalancer is not null;
+        }
+        catch (HttpOperationException e)
+        {
+            if (e.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return false;
+            }
+
+            throw;
+        }
     }
 
     private async Task<IEnumerable<V1Service>> GetLoadBalancers(string @namespace, string? loadBalancerName = null)
