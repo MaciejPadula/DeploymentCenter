@@ -8,6 +8,7 @@ import { useAppRouting } from "../../../shared/hooks/navigation";
 import { ScaleDialog } from "./ScaleDialog";
 import { useQuery } from "@tanstack/react-query";
 import { createSummary } from "../details-factory";
+import { AnalyzeDeploymentDialog } from "./AnalyzeDeploymentDialog";
 
 type Props = {
   deploymentName: string;
@@ -80,6 +81,12 @@ export function DeploymentToolbar(props: Props) {
           </IconButton>
         </Tooltip>
       </DeleteResource>
+
+      <AnalyzeDeploymentDialog
+        cluster={props.cluster}
+        deploymentName={props.deploymentName}
+        namespace={props.namespace}
+      />
     </Paper>
   );
 }
