@@ -1,9 +1,12 @@
-﻿using DeploymentCenter.Deployments.Api.Core.Models;
+﻿using DeploymentCenter.Api.Framework;
+using DeploymentCenter.Deployments.Api.Core.Models;
 using DeploymentCenter.Deployments.Api.Features;
+using DeploymentCenter.Deployments.Core.Exceptions;
 using DeploymentCenter.Deployments.IntegrationTests.Extensions;
 using DeploymentCenter.IntegrationTests.Lib;
 using FluentAssertions;
 using System.Net;
+using System.Net.Http.Json;
 
 namespace DeploymentCenter.Deployments.IntegrationTests;
 
@@ -53,5 +56,35 @@ internal class ScaleDeploymentTests
         scaleResult.StatusCode.Should().Be(HttpStatusCode.OK);
         details?.AllReplicas.Should().Be(3);
         detailsAfterScale?.AllReplicas.Should().Be(5);
+    }
+
+    [Test]
+    public async Task ScaleDeployment_WhenReplicasCountIsInvalid_ShouldReturnBadRequest()
+    {
+        // Arrange
+        var deployment = new CreateDeploymentEndpoint.CreateDeploymentRequest(
+            "default",
+            "test-deployment",
+            "test-application",
+            3,
+            [new Container(
+                "test-container",
+                "test-image",
+                [new(80, 8080)],
+                [new("test-key", "test-value", null)])]);
+
+        await _sut.CreateDeployment(deployment);
+
+        // Act
+        var scaleRequest = new ScaleDeploymentEndpoint.ScaleDeploymentRequest(
+            "default",
+            "test-deployment",
+            -1);
+        var scaleResult = await _sut.PostAsync("/api/Deployments/ScaleDeployment", scaleRequest);
+        var content = await scaleResult.Content.ReadFromJsonAsync<ApiErrorResult>();
+
+        // Assert
+        scaleResult.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        content?.Code.Should().Be((int)DeploymentsStatusCode.InvalidReplicas);
     }
 }

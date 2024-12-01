@@ -1,9 +1,9 @@
 import { IconButton, TextField } from "@mui/material";
-import { InputVariant } from "../../../shared/helpers/material-config";
 import { FocusEvent } from "react";
-import { Container } from "../../deployment-page/models/container";
-import { DoubleInput } from "../../../shared/components/double-input/DoubleInput";
 import AddIcon from "@mui/icons-material/Add";
+import { Container } from "../../deployment-page/models/container";
+import { InputVariant } from "../../../shared/helpers/material-config";
+import { DoubleInput } from "../../../shared/components/double-input/DoubleInput";
 
 type Props = {
   container: Container;

@@ -10,4 +10,5 @@ public interface IServiceClient
     Task<List<LoadBalancerPort>> GetLoadBalancerPorts(string @namespace, string loadBalancerName);
     Task<List<LoadBalancerBasicInfo>> GetLoadBalancersBasicInfos(string @namespace);
     Task RemoveLoadBalancer(string @namespace, string name);
+    Task<bool> LoadBalancerExists(string @namespace, string name);
 }

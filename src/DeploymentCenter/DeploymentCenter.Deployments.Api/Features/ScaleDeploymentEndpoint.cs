@@ -1,6 +1,7 @@
 ﻿using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Deployments.Api.Core;
 using DeploymentCenter.Deployments.Features.ScaleDeployment.Contract;
+using DeploymentCenter.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,13 @@ internal class ScaleDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsEn
         IMediator mediator,
         CancellationToken cancellationToken) =>
     {
-        await mediator.Send(
+        var result = await mediator.Send(
             new ScaleDeploymentCommand(
                 request.Namespace,
                 request.DeploymentName,
                 request.ReplicasCount),
             cancellationToken);
-        return Results.Ok();
+
+        return ResultsHandler.HandleResult(result, () => Results.Ok());
     };
 }

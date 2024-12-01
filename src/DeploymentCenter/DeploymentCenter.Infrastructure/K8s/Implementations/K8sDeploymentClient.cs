@@ -4,6 +4,7 @@ using DeploymentCenter.Infrastructure.K8s.Client;
 using DeploymentCenter.Infrastructure.K8s.Mappers;
 using Json.Patch;
 using k8s;
+using k8s.Autorest;
 using k8s.Models;
 using System.Text.Json;
 
@@ -61,6 +62,25 @@ internal class K8sDeploymentClient(
             deploy.Spec.Selector.MatchLabels.TryGetValue(K8sConsts.ApplicationNameDictionaryKey, out var applicationName) ? applicationName : string.Empty,
             deploy.Status.AvailableReplicas ?? 0,
             deploy.Spec.Replicas ?? 0);
+    }
+
+    public async Task<bool> DeploymentExists(string @namespace, string deploymentName)
+    {
+        try
+        {
+            using var client = kubernetesClientFactory.GetClient();
+            var deploy = await client.AppsV1.ReadNamespacedDeploymentAsync(deploymentName, @namespace);
+            return deploy is not null;
+        }
+        catch (HttpOperationException e)
+        {
+            if (e.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return false;
+            }
+
+            throw;
+        }
     }
 
     public async Task RestartDeployment(string @namespace, string deploymentName) =>

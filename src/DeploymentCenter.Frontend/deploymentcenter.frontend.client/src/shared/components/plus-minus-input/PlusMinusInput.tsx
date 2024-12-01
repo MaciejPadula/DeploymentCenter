@@ -63,12 +63,12 @@ export function PlusMinusInput(props: Props) {
           onChange={handleChange}
           startAdornment={
             <IconButton onClick={() => handleMinus()}>
-              <RemoveCircleOutlineOutlinedIcon />
+              <RemoveCircleOutlineOutlinedIcon color={props.error ? 'error' : undefined} />
             </IconButton>
           }
           endAdornment={
             <IconButton onClick={() => handlePlus()}>
-              <AddCircleOutlineOutlinedIcon />
+              <AddCircleOutlineOutlinedIcon color={props.error ? 'error' : undefined} />
             </IconButton>
           }
         />

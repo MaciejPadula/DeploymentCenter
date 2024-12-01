@@ -8,6 +8,7 @@ public interface IDeploymentClient
     Task<DeploymentDetails?> GetDetails(string @namespace, string deploymentName);
     Task<List<DeploymentBasicInfo>> GetBasicInfos(string @namespace);
     Task<List<Container>> GetContainers(string @namespace, string deploymentName);
+    Task<bool> DeploymentExists(string @namespace, string deploymentName);
     Task RestartDeployment(string @namespace, string deploymentName);
     Task ScaleDeployment(string @namespace, string deploymentName, int replicas);
     Task RemoveDeployment(string @namespace, string deploymentName);

@@ -23,18 +23,21 @@ public class ScaleDeploymentHandlerTests
     }
 
     [Test]
-    public async Task Handle_WhenReplicasCountIsInvalid_ThrowsReplicasInvalidException()
+    public async Task Handle_WhenReplicasCountIsInvalid_ReturnsError()
     {
         // Arrange
         var command = new ScaleDeploymentCommand("namespace", "deploymentName", -1);
 
         _replicasCountValidator.Validate(command.ReplicasCount).Returns(false);
 
+        var expectedError = new BadRequestException(DeploymentsStatusCode.InvalidReplicas);
+
         // Act
-        Func<Task> act = async () => await _sut.Handle(command, CancellationToken.None);
+        var result = await _sut.Handle(command, CancellationToken.None);
 
         // Assert
-        await act.Should().ThrowAsync<ReplicasInvalidException>();
+        result.IsSuccess.Should().BeFalse();
+        result.Error!.Exception.Should().BeEquivalentTo(expectedError);
     }
 
     [Test]

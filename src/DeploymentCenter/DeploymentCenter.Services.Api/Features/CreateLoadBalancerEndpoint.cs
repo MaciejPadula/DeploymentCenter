@@ -3,12 +3,13 @@ using DeploymentCenter.Services.Api.Core;
 using DeploymentCenter.Services.Api.Core.Models;
 using DeploymentCenter.Services.Features.CreateLoadBalancer.Contract;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeploymentCenter.Services.Api.Features;
 internal class CreateLoadBalancerEndpoint() : ApiPostEndpointBase(new ServicesEndpointInfoFactory())
 {
-    private record CreateLoadBalancerRequest(
+    internal record CreateLoadBalancerRequest(
         string Namespace,
         string Name,
         string ApplicationName,
@@ -20,7 +21,7 @@ internal class CreateLoadBalancerEndpoint() : ApiPostEndpointBase(new ServicesEn
         IMediator mediator,
         CancellationToken cancellationToken) =>
     {
-        await mediator.Send(
+        var result = await mediator.Send(
             new CreateLoadBalancerCommand(
                 request.Namespace,
                 request.Name,
@@ -30,5 +31,7 @@ internal class CreateLoadBalancerEndpoint() : ApiPostEndpointBase(new ServicesEn
                     .ToList(),
                 request.ExternalIps),
             cancellationToken);
+
+        return ResultsHandler.HandleResult(result, () => Results.Created());
     };
 }

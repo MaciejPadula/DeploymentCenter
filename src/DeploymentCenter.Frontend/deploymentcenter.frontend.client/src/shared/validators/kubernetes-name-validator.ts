@@ -1,4 +1,4 @@
-import { ValidationResult } from "../../../shared/models/validation-result";
+import { ValidationResult } from "../models/validation-result";
 
 const kubernetesNameRegex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
 
