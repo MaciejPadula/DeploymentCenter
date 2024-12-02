@@ -3,7 +3,8 @@ import {
   // AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Button,
+  IconButton,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { Pod, PodHealth, PodHealthStatus } from "../models/pod";
@@ -14,6 +15,7 @@ import { Cluster } from "../../../shared/models/cluster";
 import { DeleteResource } from "../../../shared/components/delete-resource/DeleteResource";
 import useDeploymentPageDataService from "../deployment-page-data-service";
 import { getHealthColor } from "../services/pod-services";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export function ReplicaRow(props: {
   pod: Pod;
@@ -75,15 +77,21 @@ export function ReplicaRow(props: {
               <div>Internal Ip: {props.pod.ip}</div>
               <div>Pod status: {podStatusText}</div>
             </div>
-            <DeleteResource resourceName={props.pod.name} onDelete={removePod}>
-              <Button>Delete pod</Button>
-            </DeleteResource>
+
             {props.pod.status.health === PodHealthStatus.Running &&
               <ReplicaLogs
                 namespace={props.namespace}
                 podName={props.pod.name}
                 cluster={props.cluster}
-              />
+              >
+                <DeleteResource resourceName={props.pod.name} onDelete={removePod}>
+                  <Tooltip title={"Delete Pod"}>
+                    <IconButton>
+                      <DeleteIcon className="text-red-700" />
+                    </IconButton>
+                  </Tooltip>
+                </DeleteResource>
+              </ReplicaLogs>
             }
           </>
         )}
