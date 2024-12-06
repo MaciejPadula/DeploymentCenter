@@ -60,6 +60,6 @@ internal class SetEnvironmentVariablesTests
         // Assert
         result.StatusCode.Should().Be(HttpStatusCode.OK);
         containers.Should().NotBeNull();
-        containers.FirstOrDefault(x => x.Name == "test-container")?.EnvironmentVariables.Should().BeEquivalentTo(expectedEnvVariables);
+        containers?.FirstOrDefault(x => x.Name == "test-container")?.EnvironmentVariables.Should().BeEquivalentTo(expectedEnvVariables);
     }
 }

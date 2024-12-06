@@ -45,7 +45,7 @@ export function LoadBalancersList(props: Props) {
       resourcesFactory={factory}
       setupResource={{
         title: "Setup new load balancer",
-        clickHandler: () => navigation.setupService(props.cluster.name),
+        clickHandler: () => navigation.setupLoadBalancer(props.cluster.name),
       }}
     />
   );
