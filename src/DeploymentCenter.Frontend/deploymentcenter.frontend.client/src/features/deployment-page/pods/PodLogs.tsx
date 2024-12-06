@@ -4,11 +4,13 @@ import { Skeleton } from "@mui/material";
 import { Terminal } from "../../../shared/components/terminal/Terminal";
 import { Cluster } from "../../../shared/models/cluster";
 import { UnknownError } from "../../../shared/components/error/unknown-error/UnknownError";
+import { ReactNode } from "react";
 
 export function ReplicaLogs(props: {
   namespace: string;
   podName: string;
   cluster: Cluster;
+  children?: ReactNode;
 }) {
   const dataService = useDeploymentPageDataService(props.cluster);
 
@@ -33,7 +35,7 @@ export function ReplicaLogs(props: {
       {data === undefined ? (
         <Skeleton variant="rectangular" width="100%" height={200} />
       ) : (
-        <Terminal name={props.podName} text={data} />
+        <Terminal name={props.podName} text={data}>{props.children}</Terminal>
       )}
     </div>
   );

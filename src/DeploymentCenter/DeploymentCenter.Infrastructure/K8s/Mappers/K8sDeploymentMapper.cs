@@ -8,6 +8,7 @@ internal interface IK8sDeploymentMapper
     V1Deployment Map(Deployment deployment);
     DeploymentBasicInfo MapBasicInfo(V1Deployment deployment);
     Container MapContainer(V1Container container);
+    IEnumerable<V1EnvVar> MapEnvVars(IEnumerable<EnvironmentVariable> environmentVariables);
 }
 
 internal class K8sDeploymentMapper : IK8sDeploymentMapper
@@ -82,4 +83,22 @@ internal class K8sDeploymentMapper : IK8sDeploymentMapper
             container.Env?
                 .Select(x => new EnvironmentVariable(x.Name, x.Value, x.ValueFrom?.ConfigMapKeyRef?.Name))?
                 .ToList() ?? []);
+
+    public IEnumerable<V1EnvVar> MapEnvVars(IEnumerable<EnvironmentVariable> environmentVariables) =>
+        environmentVariables
+            .Select(x => new V1EnvVar
+            {
+                Name = x.Key,
+                Value = string.IsNullOrEmpty(x.ConfigMapName) ? x.Value : null,
+                ValueFrom = !string.IsNullOrEmpty(x.ConfigMapName)
+                    ? new V1EnvVarSource
+                    {
+                        ConfigMapKeyRef = new V1ConfigMapKeySelector
+                        {
+                            Name = x.ConfigMapName,
+                            Key = x.Key
+                        }
+                    }
+                    : null
+            });
 }

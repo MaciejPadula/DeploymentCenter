@@ -12,4 +12,5 @@ public interface IDeploymentClient
     Task RestartDeployment(string @namespace, string deploymentName);
     Task ScaleDeployment(string @namespace, string deploymentName, int replicas);
     Task RemoveDeployment(string @namespace, string deploymentName);
+    Task UpdateEnvironmentVariables(string @namespace, string deploymentName, string containerName, List<EnvironmentVariable> environmentVariables);
 }

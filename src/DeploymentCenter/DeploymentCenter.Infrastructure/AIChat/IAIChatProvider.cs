@@ -1,8 +1,6 @@
-﻿using OpenAI.Chat;
-
-namespace DeploymentCenter.Infrastructure.AIChat;
+﻿namespace DeploymentCenter.Infrastructure.AIChat;
 
 internal interface IAIChatProvider
 {
-    ChatClient? GetChatClient();
+    IChatClient? GetChatClient();
 }

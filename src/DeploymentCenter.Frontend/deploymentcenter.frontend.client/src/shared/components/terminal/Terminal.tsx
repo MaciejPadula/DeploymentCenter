@@ -1,10 +1,12 @@
-import { useEffect, useRef } from "react";
-import { Button } from "@mui/material";
+import { ReactNode, useEffect, useRef } from "react";
+import { Button, Tooltip } from "@mui/material";
 import { saveFileWithDialog } from "../../helpers/file-saver";
+import GetAppIcon from '@mui/icons-material/GetApp';
 
 type Props = {
   name: string;
   text: string;
+  children?: ReactNode;
 };
 
 export function Terminal(props: Props) {
@@ -22,8 +24,13 @@ export function Terminal(props: Props) {
   return (
     <>
       <div className="w-full flex justify-end">
-        <Button onClick={() => saveLogsToFile()}>Export logs</Button>
-      </div>
+        {props.children}
+        <Tooltip title="Save logs to file">
+          <Button onClick={saveLogsToFile} endIcon={<GetAppIcon />}>
+            Export logs
+          </Button>
+        </Tooltip>
+      </div >
       <div
         className="whitespace-pre-wrap bg-black text-white p-4 overflow-auto h-96 relative"
         ref={ref}

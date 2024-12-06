@@ -1,11 +1,11 @@
 ﻿using DeploymentCenter.Deployments.Features;
 using DeploymentCenter.Infrastructure.AIChat;
 using DeploymentCenter.Infrastructure.AIChat.Cache;
-using DeploymentCenter.Infrastructure.AIChat.OpenAI;
 using DeploymentCenter.Infrastructure.Http;
 using DeploymentCenter.Infrastructure.K8s.Client;
 using DeploymentCenter.Infrastructure.K8s.Implementations;
 using DeploymentCenter.Infrastructure.K8s.Mappers;
+using DeploymentCenter.Infrastructure.OpenAI;
 using DeploymentCenter.Infrastructure.Security;
 using DeploymentCenter.Metrics.Features;
 using DeploymentCenter.Namespaces.Features;

@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using DeploymentCenter.Infrastructure.AIChat;
+using Microsoft.Extensions.Configuration;
 using OpenAI;
-using OpenAI.Chat;
 
-namespace DeploymentCenter.Infrastructure.AIChat.OpenAI;
+namespace DeploymentCenter.Infrastructure.OpenAI;
 
 internal class OpenAIChatClientProvider(IConfiguration configuration) : IAIChatProvider
 {
-    public ChatClient? GetChatClient()
+    public IChatClient? GetChatClient()
     {
         var openAIKey = configuration["OpenAI:Key"];
         var openAIModel = configuration["OpenAI:Model"];
@@ -16,6 +16,7 @@ internal class OpenAIChatClientProvider(IConfiguration configuration) : IAIChatP
             return null;
         }
 
-        return new OpenAIClient(openAIKey).GetChatClient(openAIModel);
+        var chatClient = new OpenAIClient(openAIKey).GetChatClient(openAIModel);
+        return new OpenAIChatClient(chatClient);
     }
 }
