@@ -114,6 +114,25 @@ internal class K8sDeploymentClient(
         await client.AppsV1.DeleteNamespacedDeploymentAsync(deploymentName, @namespace);
     }
 
+    public async Task UpdateEnvironmentVariables(string @namespace, string deploymentName, string containerName, List<EnvironmentVariable> environmentVariables) =>
+        await PatchDeployment(
+            @namespace,
+            deploymentName,
+            deployment =>
+            {
+                deployment.Spec.Template.Spec.Containers = deployment.Spec.Template.Spec.Containers
+                    .Select(container =>
+                    {
+                        if (container.Name == containerName)
+                        {
+                            container.Env = deploymentMapper.MapEnvVars(environmentVariables).ToList();
+                        }
+                        return container;
+                    })
+                    .ToList();
+                return deployment;
+            });
+
     private async Task PatchDeployment(string @namespace, string deploymentName, Func<V1Deployment, V1Deployment> patcher)
     {
         using var client = kubernetesClientFactory.GetClient();
