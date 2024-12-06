@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { createRedirectUrl } from "../helpers/redirect-helper";
 
 export function useAppRouting() {
   const navigate = useNavigate();
@@ -10,16 +9,6 @@ export function useAppRouting() {
 
   function mainPage() {
     navigate("/");
-  }
-
-  function updateConnection(
-    cluster: string,
-    namespace: string
-  ) {
-    if (!cluster || !namespace) {
-      return;
-    }
-    navigate(createRedirectUrl(window.location.pathname, cluster, namespace));
   }
 
   function setupDeployment(clusterName: string) {
@@ -97,8 +86,7 @@ export function useAppRouting() {
     loadBalancerList,
     navigateToUrl,
     setupDeployment,
-    setupService: setupLoadBalancer,
-    updateConnection,
+    setupLoadBalancer,
     cronJobsList,
     namespacesList,
     reloadPage,
