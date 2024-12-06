@@ -25,7 +25,7 @@ jobs:
       working-directory: ./src/DeploymentCenter
 
     - name: Run Tests
-      run: dotnet test --no-build --no-restore
+      run: dotnet test
       working-directory: ./src/DeploymentCenter
       
     - name: Copy Output
@@ -39,7 +39,7 @@ jobs:
       working-directory: ./src/DeploymentCenter.Frontend
 
     - name: Run Tests
-      run: dotnet test --no-build --no-restore
+      run: dotnet test
       working-directory: ./src/DeploymentCenter.Frontend
       
     - name: Copy Output
