@@ -22,7 +22,13 @@ internal class K8sMetricsClient(IKubernetesClientFactory kubernetesClientFactory
         }
         catch (HttpOperationException ex)
         {
-            if (ex.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            HashSet<System.Net.HttpStatusCode> unavailableStatusCodes =
+            [
+                System.Net.HttpStatusCode.NotFound,
+                System.Net.HttpStatusCode.ServiceUnavailable 
+            ];
+
+            if (unavailableStatusCodes.Contains(ex.Response.StatusCode))
             {
                 return false;
             }

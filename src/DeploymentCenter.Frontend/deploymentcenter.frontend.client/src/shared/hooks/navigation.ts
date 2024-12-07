@@ -69,6 +69,13 @@ export function useAppRouting() {
     navigate(`/${clusterName}/namespaces`);
   }
 
+  function volumesList(clusterName: string, namespace: string) {
+    if (!clusterName || !namespace) {
+      return;
+    }
+    navigate(`/${clusterName}/${namespace}/volumes`);
+  }
+
   function navigateToUrl(url: string) {
     navigate(url);
   }
@@ -90,5 +97,6 @@ export function useAppRouting() {
     cronJobsList,
     namespacesList,
     reloadPage,
+    volumesList,
   };
 }

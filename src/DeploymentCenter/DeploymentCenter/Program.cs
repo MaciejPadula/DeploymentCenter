@@ -11,6 +11,8 @@ using DeploymentCenter.Security.Api;
 using DeploymentCenter.Services;
 using DeploymentCenter.Services.Api;
 using DeploymentCenter.SharedKernel;
+using DeploymentCenter.Volumes;
+using DeploymentCenter.Volumes.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,7 @@ builder.Services.RegisterServicesEndpoints();
 builder.Services.RegisterNamespacesEndpoints();
 builder.Services.RegisterSecurityEndpoints();
 builder.Services.RegisterMetricsEndpoints();
+builder.Services.RegisterVolumesEndpoints();
 
 // Add application layer
 builder.Services.AddDeploymentsModule();
@@ -33,6 +36,7 @@ builder.Services.AddServicesModule();
 builder.Services.AddNamespacesModule();
 builder.Services.AddSecurityModule();
 builder.Services.AddMetricsModule();
+builder.Services.AddVolumesModule();
 
 // Add infrastructure layer
 builder.Services.AddInfrastructure();

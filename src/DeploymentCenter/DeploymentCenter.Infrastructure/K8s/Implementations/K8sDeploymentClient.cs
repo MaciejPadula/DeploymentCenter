@@ -142,4 +142,68 @@ internal class K8sDeploymentClient(
         var patch = old.CreatePatch(expected);
         await client.AppsV1.PatchNamespacedDeploymentAsync(new V1Patch(patch, V1Patch.PatchType.JsonPatch), deploymentName, @namespace);
     }
+
+    public async Task ConnectVolume(string @namespace, string deploymentName, string volumeName, string containerName, string mountPath)
+    {
+        using var client = kubernetesClientFactory.GetClient();
+
+        var volume = await client.CoreV1.ReadPersistentVolumeAsync(volumeName);
+
+        var claimName = $"{volumeName}-claim";
+
+        var existingClaim = await client.CoreV1.ReadNamespacedPersistentVolumeClaimAsync(claimName, @namespace);
+
+        if (existingClaim is null)
+        {
+            var claim = new V1PersistentVolumeClaim
+            {
+                Metadata = new V1ObjectMeta
+                {
+                    Name = claimName,
+                    NamespaceProperty = @namespace
+                },
+                Spec = new V1PersistentVolumeClaimSpec
+                {
+                    AccessModes = ["ReadWriteOnce"],
+                    Resources = new V1VolumeResourceRequirements
+                    {
+                        Requests = new Dictionary<string, ResourceQuantity>
+                        {
+                            { "storage", volume.Spec.Capacity["storage"] }
+                        }
+                    }
+                }
+            };
+
+            await client.CoreV1.CreateNamespacedPersistentVolumeClaimAsync(claim, @namespace);
+        }
+
+        await PatchDeployment(
+            @namespace,
+            deploymentName,
+            deployment =>
+            {
+                var container = deployment.Spec.Template.Spec.Containers.First(x => x.Name == containerName);
+
+                container.VolumeMounts ??= [];
+
+                container.VolumeMounts.Add(new V1VolumeMount
+                {
+                    Name = volumeName,
+                    MountPath = mountPath
+                });
+
+                deployment.Spec.Template.Spec.Volumes ??= [];
+
+                deployment.Spec.Template.Spec.Volumes.Add(new V1Volume
+                {
+                    Name = volumeName,
+                    PersistentVolumeClaim = new V1PersistentVolumeClaimVolumeSource
+                    {
+                        ClaimName = claimName
+                    }
+                });
+                return deployment;
+            });
+    }
 }
