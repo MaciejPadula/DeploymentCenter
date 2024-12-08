@@ -24,6 +24,7 @@
     <ProjectReference Include="..\DeploymentCenter.Security\DeploymentCenter.Security.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Services\DeploymentCenter.Services.csproj" />
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Volumes\DeploymentCenter.Volumes.csproj" />
   </ItemGroup>
 
 

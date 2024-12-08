@@ -28,6 +28,11 @@ internal class GetDeploymentContainersEndpoint() : ApiGetEndpointBase(new Deploy
                         port.Port,
                         port.HostPort))
                     .ToList(),
+                container.Volumes
+                    .Select(volume => new ContainerVolume(
+                        volume.Name,
+                        volume.MountPath))
+                    .ToList(),
                 container.EnvironmentVariables
                     .Select(kv => new ContainerEnvironment(kv.Key, kv.Value, kv.ConfigMapName))
                     .ToList()))

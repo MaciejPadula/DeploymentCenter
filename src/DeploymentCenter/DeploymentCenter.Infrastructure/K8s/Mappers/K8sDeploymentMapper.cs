@@ -1,4 +1,5 @@
 ﻿using DeploymentCenter.Deployments.Core.Models;
+using DeploymentCenter.Deployments.Features.GetDeploymentVolumes.Contract;
 using k8s.Models;
 
 namespace DeploymentCenter.Infrastructure.K8s.Mappers;
@@ -9,6 +10,7 @@ internal interface IK8sDeploymentMapper
     DeploymentBasicInfo MapBasicInfo(V1Deployment deployment);
     Container MapContainer(V1Container container);
     IEnumerable<V1EnvVar> MapEnvVars(IEnumerable<EnvironmentVariable> environmentVariables);
+    DeploymentVolume MapVolume(V1Volume v1Volume);
 }
 
 internal class K8sDeploymentMapper : IK8sDeploymentMapper
@@ -80,6 +82,10 @@ internal class K8sDeploymentMapper : IK8sDeploymentMapper
                 .Ports?
                 .Select(x => new ContainerPort(x.ContainerPort, x.HostPort))?
                 .ToList() ?? [],
+            container
+                .VolumeMounts?
+                .Select(x => new ContainerVolume(x.Name, x.MountPath))?
+                .ToList() ?? [],
             container.Env?
                 .Select(x => new EnvironmentVariable(x.Name, x.Value, x.ValueFrom?.ConfigMapKeyRef?.Name))?
                 .ToList() ?? []);
@@ -101,4 +107,8 @@ internal class K8sDeploymentMapper : IK8sDeploymentMapper
                     }
                     : null
             });
+
+    public DeploymentVolume MapVolume(V1Volume v1Volume) => new(
+        v1Volume.Name,
+        v1Volume.PersistentVolumeClaim.ClaimName);
 }

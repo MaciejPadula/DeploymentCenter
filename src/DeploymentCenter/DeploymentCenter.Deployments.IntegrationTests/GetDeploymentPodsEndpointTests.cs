@@ -35,6 +35,7 @@ internal class GetDeploymentPodsEndpointTests
                 "test-container",
                 "test-image",
                 [new(80, 8080)],
+                [],
                 [new("test-key", "test-value", null)])]);
 
         await _sut.CreateDeployment(deployment);

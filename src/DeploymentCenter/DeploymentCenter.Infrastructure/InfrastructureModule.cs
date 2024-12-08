@@ -11,6 +11,7 @@ using DeploymentCenter.Metrics.Features;
 using DeploymentCenter.Namespaces.Features;
 using DeploymentCenter.Security.Features.SecurePassword;
 using DeploymentCenter.Services.Features;
+using DeploymentCenter.Volumes.Features;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +23,7 @@ public static class InfrastructureModule
     {
         services.AddMemoryCache();
         services.AddScoped<IKubeConfigProvider, HttpContextKubeConfigProvider>();
-        services.AddScoped<IKubernetesClientFactory, KubernetesClientFactory>();
+        services.AddScoped<IKubernetesClientFactory, DebugKubernetesClientFactory>();
         services.AddTransient<IServiceClient, K8sServiceClient>();
         services.AddTransient<IDeploymentClient, K8sDeploymentClient>();
         services.AddTransient<IPodClient, K8sPodClient>();
@@ -31,6 +32,7 @@ public static class InfrastructureModule
         services.AddTransient<IK8sServiceMapper, K8sServiceMapper>();
         services.AddTransient<IK8sDeploymentMapper, K8sDeploymentMapper>();
         services.AddTransient<IK8sPodMapper, K8sPodMapper>();
+        services.AddTransient<IVolumeClient, K8sVolumeClient>();
 
         services.AddTransient<IKubeConfigDecoder, Base64PasswordSecurity>();
         services.AddTransient<IPasswordSecurity, Base64PasswordSecurity>();

@@ -3,18 +3,19 @@ import { ResourceSummary } from "../../shared/components/resource-page/ResourceS
 import {
   ResourceSummaryFactory,
 } from "../../shared/components/resource-page/resource-summary-model";
-import { ReplicasList } from "./pods/PodsList";
+import { ReplicasList } from "./components/pods/PodsList";
 import { useEffect, useState } from "react";
 import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-service";
 import { getDeploymentUrl } from "../../shared/services/routing-service";
 import { DeployIcon } from "../../assets/icons";
-import { ContainersList } from "./containers/ContainersList";
 import useDeploymentPageDataService from "./deployment-page-data-service";
-import { DeploymentStatistics } from "./statistics/DeploymentStatistics";
-import { DeploymentToolbar } from "./toolbar/DeploymentToolbar";
 import { createSummary } from "./details-factory";
 import { NotFound } from "../../shared/components/error/not-found/NotFound";
 import { Cluster } from "../../shared/models/cluster";
+import { Volumes } from "./components/volumes/Volumes";
+import { DeploymentToolbar } from "./components/toolbar/DeploymentToolbar";
+import { DeploymentStatistics } from "./components/statistics/DeploymentStatistics";
+import { ContainersList } from "./components/containers/ContainersList";
 
 type Props = {
   cluster: Cluster;
@@ -81,7 +82,14 @@ export function DeploymentPage(props: Props) {
             cluster={props.cluster}
             deploymentName={deploymentName}
             namespace={namespace}
-          /></>
+          />
+          <Volumes
+            cluster={props.cluster}
+            deploymentName={deploymentName}
+            namespace={namespace}
+          />
+        </>
+
       )}
 
     </div>

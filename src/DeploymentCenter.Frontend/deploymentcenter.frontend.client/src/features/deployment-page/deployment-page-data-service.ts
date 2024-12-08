@@ -3,6 +3,7 @@ import { DeploymentDetails } from "./deployment-details";
 import { Pod } from "./models/pod";
 import { HttpClient } from "../../shared/services/http-client";
 import { Cluster } from "../../shared/models/cluster";
+import { DeploymentVolume } from "./models/deployment-volume";
 
 function DeploymentPageDataService(httpClient: HttpClient) {
   const controller = "api/Deployments";
@@ -101,13 +102,58 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     result: string;
   }
 
-  async function analyzeDeployment(namespace: string, deploymentName: string, userQuestion: string) {
-    return await httpClient.post<AnalyzeDeploymentRequest, AnalyzeDeploymentResponse>(
-      `/${controller}/AnalyzeDeployment`,
+  async function analyzeDeployment(
+    namespace: string,
+    deploymentName: string,
+    userQuestion: string
+  ) {
+    return await httpClient.post<
+      AnalyzeDeploymentRequest,
+      AnalyzeDeploymentResponse
+    >(`/${controller}/AnalyzeDeployment`, {
+      namespace: namespace,
+      deploymentName: deploymentName,
+      userQuestion: userQuestion,
+    });
+  }
+
+  interface GetDeploymentVolumesResponse {
+    volumes: DeploymentVolume[];
+  }
+
+  async function getDeploymentVolumes(
+    namespace: string,
+    deploymentName: string
+  ): Promise<DeploymentVolume[]> {
+    const response = await httpClient.get<GetDeploymentVolumesResponse>(
+      `/${controller}/GetDeploymentVolumes?namespace=${namespace}&deploymentName=${deploymentName}`
+    );
+    return response.volumes;
+  }
+
+  interface ConnectVolumeRequest {
+    namespace: string;
+    deploymentName: string;
+    volumeName: string;
+    containerName: string;
+    mountPath: string;
+  }
+
+  async function connectToVolume(
+    namespace: string,
+    deploymentName: string,
+    volumeName: string,
+    containerName: string,
+    mountPath: string
+  ) {
+    await httpClient.post<ConnectVolumeRequest, unknown>(
+      `/${controller}/ConnectVolume`,
       {
         namespace: namespace,
         deploymentName: deploymentName,
-        userQuestion: userQuestion
+        volumeName: volumeName,
+        containerName: containerName,
+        mountPath: mountPath,
       }
     );
   }
@@ -122,6 +168,8 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     scaleDeployment,
     removePod,
     analyzeDeployment,
+    getDeploymentVolumes,
+    connectToVolume,
   };
 }
 

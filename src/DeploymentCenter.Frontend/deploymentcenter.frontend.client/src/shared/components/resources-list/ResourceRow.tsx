@@ -14,9 +14,10 @@ export function ResourceRow(props: { row: ResourceRowModel }) {
     }
   }
 
-  const secondaryText = props.row.clusterName && props.row.namespace
-    ? `/${props.row.clusterName}/${props.row.namespace}`
-    : '';
+  const secondaryText = props.row.secondaryText ??
+    (props.row.clusterName && props.row.namespace
+      ? `/${props.row.clusterName}/${props.row.namespace}`
+      : '');
 
   return (
     <ListItem divider={true} secondaryAction={props.row.action}>

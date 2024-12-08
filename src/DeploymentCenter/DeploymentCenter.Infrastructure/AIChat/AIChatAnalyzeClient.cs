@@ -17,6 +17,7 @@ internal class AIChatAnalyzeClient(IAIChatProvider chatProvider) : IAnalyzeClien
         var deploymentJson = JsonSerializer.Serialize(deploymentStatusDetails.Details);
         var podsJson = JsonSerializer.Serialize(deploymentStatusDetails.Pods);
         var containersJson = JsonSerializer.Serialize(deploymentStatusDetails.Containers);
+        var volumesJson = JsonSerializer.Serialize(deploymentStatusDetails.Volumes);
 
         var chatHistory = new PromptBuilder()
             .WithResultFormat("MARKDOWN")
@@ -32,6 +33,7 @@ internal class AIChatAnalyzeClient(IAIChatProvider chatProvider) : IAnalyzeClien
             .WithParameter("Deployment Details", deploymentJson)
             .WithParameter("Pods Details", podsJson)
             .WithParameter("Containers Details", containersJson)
+            .WithParameter("Volumes Details", volumesJson)
             .Build(deploymentStatusDetails.UserQuestion);
 
         return await chatClient.CompleteChatAsync(chatHistory);

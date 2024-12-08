@@ -1,4 +1,5 @@
 ﻿using DeploymentCenter.Deployments.Core.Models;
+using DeploymentCenter.Deployments.Features.GetDeploymentVolumes.Contract;
 
 namespace DeploymentCenter.Deployments.Features;
 
@@ -13,4 +14,6 @@ public interface IDeploymentClient
     Task ScaleDeployment(string @namespace, string deploymentName, int replicas);
     Task RemoveDeployment(string @namespace, string deploymentName);
     Task UpdateEnvironmentVariables(string @namespace, string deploymentName, string containerName, List<EnvironmentVariable> environmentVariables);
+    Task ConnectVolume(string @namespace, string deploymentName, string volumeName, string containerName, string mountPath);
+    Task<List<DeploymentVolume>> GetDeploymentVolumes(string @namespace, string deploymentName);
 }

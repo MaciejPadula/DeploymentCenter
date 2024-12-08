@@ -11,6 +11,7 @@ import { CreateDeploymentPage } from "./features/create-deployment/CreateDeploym
 import { CreateLoadBalancerPage } from "./features/create-load-balancer/CreateLoadBalancerPage";
 import { NamespacesList } from "./features/namespaces-list/NamespacesList";
 import { ClusterFromUrlGuard } from "./shared/guards/ClusterFromUrlGuard";
+import { VolumesListPage } from "./features/volumes-list/VolumesListPage";
 
 export function RouteRecords() {
   return (
@@ -40,6 +41,11 @@ export function RouteRecords() {
           <Route
             path="/:clusterName/:namespace/load-balancers/:loadBalancerName"
             element={<ClusterFromUrlGuard factory={c => <LoadBalancerPage cluster={c} />} />}
+          />
+
+          <Route
+            path="/:clusterName/:namespace/volumes"
+            element={<ClusterFromUrlGuard factory={c => <VolumesListPage cluster={c} />} />}
           />
 
           <Route path="/:clusterName/namespaces"

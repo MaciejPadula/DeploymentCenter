@@ -35,7 +35,6 @@ export function ClusterStatistics(props: Props) {
       return await dataService.getClusterMetrics();
     },
     refetchInterval: 5000,
-    retry: (error: unknown) => areMetricsAvailable(error),
   });
 
   const cpuData: ResourceMetrics = useMemo(
