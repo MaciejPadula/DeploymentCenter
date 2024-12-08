@@ -23,7 +23,7 @@ public static class InfrastructureModule
     {
         services.AddMemoryCache();
         services.AddScoped<IKubeConfigProvider, HttpContextKubeConfigProvider>();
-        services.AddScoped<IKubernetesClientFactory, DebugKubernetesClientFactory>();
+        services.AddScoped<IKubernetesClientFactory, KubernetesClientFactory>();
         services.AddTransient<IServiceClient, K8sServiceClient>();
         services.AddTransient<IDeploymentClient, K8sDeploymentClient>();
         services.AddTransient<IPodClient, K8sPodClient>();
