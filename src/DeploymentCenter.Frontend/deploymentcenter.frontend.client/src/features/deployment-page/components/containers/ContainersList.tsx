@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@mui/material";
 import { ContainerRow } from "./ContainerRow";
-import useDeploymentPageDataService from "../deployment-page-data-service";
-import { Cluster } from "../../../shared/models/cluster";
-import { UnknownError } from "../../../shared/components/error/unknown-error/UnknownError";
+import useDeploymentPageDataService from "../../deployment-page-data-service";
+import { Cluster } from "../../../../shared/models/cluster";
+import { UnknownError } from "../../../../shared/components/error/unknown-error/UnknownError";
 
 export function ContainersList(props: {
   cluster: Cluster;
@@ -31,7 +31,14 @@ export function ContainersList(props: {
       {
         isLoading
           ? (<Skeleton variant="rectangular" width="100%" height={70} />)
-          : data.map((container) => (<ContainerRow key={container.name} container={container} />))
+          : data.map((container) => (
+            <ContainerRow
+              key={container.name}
+              container={container}
+              cluster={props.cluster}
+              namespace={props.namespace}
+              deploymentName={props.deploymentName}
+            />))
       }
     </div>
   );

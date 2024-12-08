@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import useDeploymentPageDataService from "../deployment-page-data-service";
+import useDeploymentPageDataService from "../../deployment-page-data-service";
 import { Skeleton } from "@mui/material";
 import { ReplicaRow } from "./PodRow";
-import { Cluster } from "../../../shared/models/cluster";
-import { UnknownError } from "../../../shared/components/error/unknown-error/UnknownError";
+import { Cluster } from "../../../../shared/models/cluster";
+import { UnknownError } from "../../../../shared/components/error/unknown-error/UnknownError";
 
 export function ReplicasList(props: {
   cluster: Cluster;

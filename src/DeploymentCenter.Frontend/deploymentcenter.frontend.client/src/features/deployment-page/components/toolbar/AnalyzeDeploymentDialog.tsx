@@ -1,8 +1,8 @@
-import { Cluster } from "../../../shared/models/cluster";
 import { useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip } from "@mui/material";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import { AnalyzeDialogContent } from "./AnalyzeDialogContent";
+import { Cluster } from "../../../../shared/models/cluster";
 
 type Props = {
   cluster: Cluster;

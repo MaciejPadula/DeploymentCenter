@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Cluster } from "../../../shared/models/cluster";
 import {
   Button,
   Dialog,
@@ -9,8 +8,9 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import { PlusMinusInput } from "../../../shared/components/plus-minus-input/PlusMinusInput";
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import { Cluster } from "../../../../shared/models/cluster";
+import { PlusMinusInput } from "../../../../shared/components/plus-minus-input/PlusMinusInput";
 
 type Props = {
   deploymentName: string;

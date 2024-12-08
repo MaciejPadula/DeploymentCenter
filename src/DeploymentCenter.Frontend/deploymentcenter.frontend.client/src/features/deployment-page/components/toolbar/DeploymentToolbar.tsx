@@ -1,14 +1,14 @@
 import { IconButton, Paper, Tooltip } from "@mui/material";
-import { DeleteResource } from "../../../shared/components/delete-resource/DeleteResource";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { Cluster } from "../../../shared/models/cluster";
-import useDeploymentPageDataService from "../deployment-page-data-service";
-import { useAppRouting } from "../../../shared/hooks/navigation";
 import { ScaleDialog } from "./ScaleDialog";
 import { useQuery } from "@tanstack/react-query";
-import { createSummary } from "../details-factory";
 import { AnalyzeDeploymentDialog } from "./AnalyzeDeploymentDialog";
+import useDeploymentPageDataService from "../../deployment-page-data-service";
+import { useAppRouting } from "../../../../shared/hooks/navigation";
+import { createSummary } from "../../details-factory";
+import { Cluster } from "../../../../shared/models/cluster";
+import { DeleteResource } from "../../../../shared/components/delete-resource/DeleteResource";
 
 type Props = {
   deploymentName: string;

@@ -1,13 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import useDeploymentPageDataService from "../deployment-page-data-service";
 import Markdown from "react-markdown";
-import { Cluster } from "../../../shared/models/cluster";
-import { ErrorBadge } from "../../../shared/components/error/error-badge/ErrorBadge";
 import { Button, CircularProgress, TextField } from "@mui/material";
-import { InputVariant } from "../../../shared/helpers/material-config";
 import { useState } from "react";
 
 import './AnalyzeDialogContent.css';
+import { Cluster } from "../../../../shared/models/cluster";
+import useDeploymentPageDataService from "../../deployment-page-data-service";
+import { InputVariant } from "../../../../shared/helpers/material-config";
+import { ErrorBadge } from "../../../../shared/components/error/error-badge/ErrorBadge";
 
 type Props = {
   cluster: Cluster;

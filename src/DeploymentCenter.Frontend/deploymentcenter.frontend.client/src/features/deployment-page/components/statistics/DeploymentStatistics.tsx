@@ -1,12 +1,12 @@
 import { CircularProgress, Paper, Typography } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 import { useMemo } from "react";
-import useDeploymentPageDataService from "../deployment-page-data-service";
-import { Cluster } from "../../../shared/models/cluster";
 import { useQuery } from "@tanstack/react-query";
-import { groupPodsByHealth } from "../services/pod-services";
-import { PodHealthStatus } from "../models/pod";
 import { UsageCharts } from "./UsageCharts";
+import { groupPodsByHealth } from "../../services/pod-services";
+import { Cluster } from "../../../../shared/models/cluster";
+import useDeploymentPageDataService from "../../deployment-page-data-service";
+import { PodHealthStatus } from "../../models/pod";
 
 type Props = {
   cluster: Cluster;

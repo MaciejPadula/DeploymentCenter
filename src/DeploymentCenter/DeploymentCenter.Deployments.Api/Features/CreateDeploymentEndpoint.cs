@@ -38,6 +38,7 @@ internal class CreateDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsE
                                 port.Port,
                                 port.HostPort))
                             .ToList(),
+                        [],
                         container.EnvironmentVariables
                             .Select(env => new EnvironmentVariable(
                                 env.Key,

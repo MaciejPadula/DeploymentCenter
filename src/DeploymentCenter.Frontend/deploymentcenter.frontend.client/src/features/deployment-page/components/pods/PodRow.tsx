@@ -7,14 +7,14 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { Pod, PodHealth, PodHealthStatus } from "../models/pod";
+import { Pod, PodHealth, PodHealthStatus } from "../../models/pod";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useMemo, useState } from "react";
 import { ReplicaLogs } from "./PodLogs";
-import { Cluster } from "../../../shared/models/cluster";
-import { DeleteResource } from "../../../shared/components/delete-resource/DeleteResource";
-import useDeploymentPageDataService from "../deployment-page-data-service";
-import { getHealthColor } from "../services/pod-services";
+import { Cluster } from "../../../../shared/models/cluster";
+import { DeleteResource } from "../../../../shared/components/delete-resource/DeleteResource";
+import useDeploymentPageDataService from "../../deployment-page-data-service";
+import { getHealthColor } from "../../services/pod-services";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export function ReplicaRow(props: {

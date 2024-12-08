@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
-import useMetricsDataService from "../../../shared/services/metrics-service";
-import { DeploymentMetrics } from "../models/deployment-metrics";
 import { useQuery } from "@tanstack/react-query";
-import { LineChartBox } from "../../../shared/components/charts/line-chart/LineChartBox";
-import StatisticsNotAvailable from "../../../shared/components/error/StatisticsNotAvailable";
-import { ChartSerie } from "../../../shared/components/charts/line-chart/chart-serie";
-import { getNowFormatedTime } from "../../../shared/helpers/date-helpers";
-import { lastElements } from "../../../shared/helpers/array-helpers";
-import { XAxisData } from "../../../shared/components/charts/line-chart/x-axis-data";
-import { Cluster } from "../../../shared/models/cluster";
-import { areMetricsAvailable } from "../../../shared/helpers/metrics-helper";
+import { Cluster } from "../../../../shared/models/cluster";
+import useMetricsDataService from "../../../../shared/services/metrics-service";
+import { DeploymentMetrics } from "../../models/deployment-metrics";
+import { areMetricsAvailable } from "../../../../shared/helpers/metrics-helper";
+import { getNowFormatedTime } from "../../../../shared/helpers/date-helpers";
+import { lastElements } from "../../../../shared/helpers/array-helpers";
+import { XAxisData } from "../../../../shared/components/charts/line-chart/x-axis-data";
+import { ChartSerie } from "../../../../shared/components/charts/line-chart/chart-serie";
+import { LineChartBox } from "../../../../shared/components/charts/line-chart/LineChartBox";
+import StatisticsNotAvailable from "../../../../shared/components/error/StatisticsNotAvailable";
 
 const maxPointsOnChart = 10;
 
@@ -35,7 +35,6 @@ export function UsageCharts(props: Props) {
         props.deploymentName
       ),
     refetchInterval: 5000,
-    retry: error => areMetricsAvailable(error),
   });
 
   useEffect(() => {
@@ -56,7 +55,7 @@ export function UsageCharts(props: Props) {
     });
   }, [stats]);
 
-  const metricsAvailable = useMemo(() =>  areMetricsAvailable(error), [error]);
+  const metricsAvailable = useMemo(() =>  areMetricsAvailable(error), [error]);   
 
   const xAxisData: XAxisData<string> = useMemo(() => {
     return {

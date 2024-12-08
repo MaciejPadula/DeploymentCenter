@@ -39,6 +39,7 @@ internal class CreateDeploymentTests
                 "test-container",
                 "test-image",
                 [new(80, 8080)],
+                [],
                 [new( "test-key", "test-value", null)])
             ]);
 
@@ -55,6 +56,7 @@ internal class CreateDeploymentTests
                 "test-container",
                 "test-image",
                 [new(80, 8080)],
+                [],
                 [new("test-key", "test-value", null)])
         ]);
 
@@ -83,6 +85,7 @@ internal class CreateDeploymentTests
                 "test-container",
                 "test-image",
                 [new(80, 8080)],
+                [],
                 [new( "test-key", "test-value", "test-config-map")])
             ]);
 
@@ -108,6 +111,7 @@ internal class CreateDeploymentTests
                 "test-container",
                 "test-image",
                 [new(80, 8080)],
+                [],
                 [new( "test-key", "test-value", "test-config-map")])
             ]);
         await _sut.CreateDeployment(request);

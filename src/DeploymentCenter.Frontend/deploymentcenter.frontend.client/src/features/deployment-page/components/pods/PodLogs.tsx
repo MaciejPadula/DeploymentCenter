@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import useDeploymentPageDataService from "../deployment-page-data-service";
+import useDeploymentPageDataService from "../../deployment-page-data-service";
 import { Skeleton } from "@mui/material";
-import { Terminal } from "../../../shared/components/terminal/Terminal";
-import { Cluster } from "../../../shared/models/cluster";
-import { UnknownError } from "../../../shared/components/error/unknown-error/UnknownError";
+import { Terminal } from "../../../../shared/components/terminal/Terminal";
+import { Cluster } from "../../../../shared/models/cluster";
+import { UnknownError } from "../../../../shared/components/error/unknown-error/UnknownError";
 import { ReactNode } from "react";
 
 export function ReplicaLogs(props: {

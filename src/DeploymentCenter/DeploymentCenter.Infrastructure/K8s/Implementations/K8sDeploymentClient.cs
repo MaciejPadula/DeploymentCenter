@@ -1,5 +1,6 @@
 ﻿using DeploymentCenter.Deployments.Core.Models;
 using DeploymentCenter.Deployments.Features;
+using DeploymentCenter.Deployments.Features.GetDeploymentVolumes.Contract;
 using DeploymentCenter.Infrastructure.K8s.Client;
 using DeploymentCenter.Infrastructure.K8s.Mappers;
 using Json.Patch;
@@ -7,6 +8,7 @@ using k8s;
 using k8s.Autorest;
 using k8s.Models;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace DeploymentCenter.Infrastructure.K8s.Implementations;
 
@@ -151,7 +153,7 @@ internal class K8sDeploymentClient(
 
         var claimName = $"{volumeName}-claim";
 
-        var existingClaim = await client.CoreV1.ReadNamespacedPersistentVolumeClaimAsync(claimName, @namespace);
+        var existingClaim = await GetClaim(claimName, @namespace);
 
         if (existingClaim is null)
         {
@@ -205,5 +207,36 @@ internal class K8sDeploymentClient(
                 });
                 return deployment;
             });
+    }
+
+    private async Task<V1PersistentVolumeClaim?> GetClaim(string @namespace, string claimName)
+    {
+        try
+        {
+            using var client = kubernetesClientFactory.GetClient();
+            return await client.CoreV1.ReadNamespacedPersistentVolumeClaimAsync(claimName, @namespace);
+        }
+        catch (HttpOperationException e)
+        {
+            if (e.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+            throw;
+        }
+    }
+
+    public async Task<List<DeploymentVolume>> GetDeploymentVolumes(string @namespace, string deploymentName)
+    {
+        using var client = kubernetesClientFactory.GetClient();
+        var deploy = await client.AppsV1.ReadNamespacedDeploymentAsync(deploymentName, @namespace);
+        return deploy?
+            .Spec?
+            .Template?
+            .Spec?
+            .Volumes?
+            .Select(deploymentMapper.MapVolume)?
+            .ToList() ?? [];
     }
 }
