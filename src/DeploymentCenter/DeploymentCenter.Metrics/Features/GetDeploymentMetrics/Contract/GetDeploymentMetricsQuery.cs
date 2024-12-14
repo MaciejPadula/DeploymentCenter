@@ -5,4 +5,4 @@ namespace DeploymentCenter.Metrics.Features.GetDeploymentMetrics.Contract;
 
 public readonly record struct GetDeploymentMetricsQuery(
     string Namespace,
-    string DeploymentName) : IRequest<CurrentUsage?>;
+    string DeploymentName) : IRequest<CurrentUsage>;

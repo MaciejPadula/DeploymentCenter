@@ -4,6 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { DeleteResource } from "../../../shared/components/delete-resource/DeleteResource";
 import useLoadBalancerPageDataService from "../load-balancer-page-data-service";
 import { useAppRouting } from "../../../shared/hooks/navigation";
+import { AnalyzeLoadBalancerDialog } from "../../assistant/AnalyzeLoadBalancerDialog";
 
 type Props = {
   loadBalancerName: string;
@@ -34,6 +35,11 @@ export function LoadBalancerToolbar(props: Props) {
           <DeleteIcon className="text-red-700" />
         </IconButton>
       </DeleteResource>
+      <AnalyzeLoadBalancerDialog
+        cluster={props.cluster}
+        loadBalancerName={props.loadBalancerName}
+        namespace={props.namespace}
+      />
     </Paper>
   );
 }

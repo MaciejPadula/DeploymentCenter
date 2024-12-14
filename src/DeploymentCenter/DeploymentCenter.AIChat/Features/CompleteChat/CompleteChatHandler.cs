@@ -12,11 +12,12 @@ internal class CompleteChatHandler(IAIChatProvider aIChatProvider, IMemoryCache 
 
     public async Task<Result<string>> Handle(CompleteChatQuery request, CancellationToken cancellationToken)
     {
-        var client = aIChatProvider.GetChatClient();
-        if (client is null)
+        if (!aIChatProvider.IsChatClientInitialized)
         {
             return new AIClientNotInitializedException();
         }
+
+        var client = aIChatProvider.GetChatClient();
 
         return await memoryCache.GetOrCreateAsync(
             request.QueryKey,

@@ -26,7 +26,7 @@ public class PromptBuilder
 
     public PromptBuilder WithUserLanguage(string language)
     {
-        _chatHistory.Add(new Message($"Your answer should be written in the {language} language", MessageSender.Prompt));
+        _chatHistory.Add(new Message($"Your answer should be written in the {language} language. If you can't determine language use english!!!", MessageSender.Prompt));
         return this;
     }
 

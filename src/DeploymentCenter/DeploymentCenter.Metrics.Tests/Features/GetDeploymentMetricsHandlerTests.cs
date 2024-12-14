@@ -20,19 +20,6 @@ internal class GetDeploymentMetricsHandlerTests
     }
 
     [Test]
-    public async Task Handle_WhenMetricsAreNotAvailable_ReturnsNull()
-    {
-        // Arrange
-        _metricsClient.AreMetricsAvailable().Returns(false);
-
-        // Act
-        var result = await _sut.Handle(new GetDeploymentMetricsQuery("namespace", "deploymentName"), CancellationToken.None);
-
-        // Assert
-        result.Should().BeNull();
-    }
-
-    [Test]
     public async Task Handle_WhenMetricsAreAvailable_ReturnsDeploymentMetrics()
     {
         // Arrange
