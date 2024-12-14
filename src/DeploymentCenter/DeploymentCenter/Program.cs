@@ -1,4 +1,7 @@
+using DeploymentCenter.AIChat;
 using DeploymentCenter.Api.Framework;
+using DeploymentCenter.Assistant;
+using DeploymentCenter.Assistant.Api;
 using DeploymentCenter.Deployments;
 using DeploymentCenter.Deployments.Api;
 using DeploymentCenter.Infrastructure;
@@ -29,6 +32,7 @@ builder.Services.RegisterNamespacesEndpoints();
 builder.Services.RegisterSecurityEndpoints();
 builder.Services.RegisterMetricsEndpoints();
 builder.Services.RegisterVolumesEndpoints();
+builder.Services.RegisterAssistantEndpoints();
 
 // Add application layer
 builder.Services.AddDeploymentsModule();
@@ -37,6 +41,8 @@ builder.Services.AddNamespacesModule();
 builder.Services.AddSecurityModule();
 builder.Services.AddMetricsModule();
 builder.Services.AddVolumesModule();
+builder.Services.AddAIChatModule();
+builder.Services.AddAssistantModule();
 
 // Add infrastructure layer
 builder.Services.AddInfrastructure();

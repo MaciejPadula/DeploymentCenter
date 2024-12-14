@@ -1,4 +1,4 @@
-﻿using DeploymentCenter.Infrastructure.AIChat;
+﻿using DeploymentCenter.AIChat.Features;
 using Microsoft.Extensions.Configuration;
 using OpenAI;
 

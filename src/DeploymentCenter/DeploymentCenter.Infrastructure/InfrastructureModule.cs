@@ -1,6 +1,5 @@
-﻿using DeploymentCenter.Deployments.Features;
-using DeploymentCenter.Infrastructure.AIChat;
-using DeploymentCenter.Infrastructure.AIChat.Cache;
+﻿using DeploymentCenter.AIChat.Features;
+using DeploymentCenter.Deployments.Features;
 using DeploymentCenter.Infrastructure.Http;
 using DeploymentCenter.Infrastructure.K8s.Client;
 using DeploymentCenter.Infrastructure.K8s.Implementations;
@@ -12,7 +11,6 @@ using DeploymentCenter.Namespaces.Features;
 using DeploymentCenter.Security.Features.SecurePassword;
 using DeploymentCenter.Services.Features;
 using DeploymentCenter.Volumes.Features;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DeploymentCenter.Infrastructure;
@@ -38,10 +36,6 @@ public static class InfrastructureModule
         services.AddTransient<IPasswordSecurity, Base64PasswordSecurity>();
 
         services.AddTransient<IAIChatProvider, OpenAIChatClientProvider>();
-        services.AddTransient<IAnalyzeClient>(p =>
-            new CacheAnalyzeClient(
-                new AIChatAnalyzeClient(p.GetRequiredService<IAIChatProvider>()),
-                p.GetRequiredService<IMemoryCache>()));
 
         return services;
     }

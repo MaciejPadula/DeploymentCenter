@@ -1,6 +1,8 @@
-﻿namespace DeploymentCenter.Infrastructure.AIChat;
+﻿using DeploymentCenter.AIChat.Core.Models;
 
-internal class PromptBuilder
+namespace DeploymentCenter.AIChat.Core.Helpers;
+
+public class PromptBuilder
 {
     private readonly List<Message> _chatHistory = [];
 

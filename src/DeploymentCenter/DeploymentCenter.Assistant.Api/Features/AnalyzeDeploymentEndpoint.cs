@@ -1,5 +1,6 @@
-﻿using DeploymentCenter.Api.Framework.Endpoints;
-using DeploymentCenter.Deployments.Api.Core;
+﻿using DeploymentCenter.AIChat.Core.Exceptions;
+using DeploymentCenter.Api.Framework.Endpoints;
+using DeploymentCenter.Assistant.Api.Core;
 using DeploymentCenter.Deployments.Features.AnalyzeDeployment.Contract;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DeploymentCenter.Deployments.Api.Features;
 
-internal class AnalyzeDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsEndpointsInfoFactory())
+internal class AnalyzeDeploymentEndpoint() : ApiPostEndpointBase(new ApiDefinition())
 {
     internal record AnalyzeDeploymentRequest(
         string Namespace,
@@ -25,11 +26,16 @@ internal class AnalyzeDeploymentEndpoint() : ApiPostEndpointBase(new Deployments
         var query = new AnalyzeDeploymentQuery(request.Namespace, request.DeploymentName, request.UserQuestion);
         var result = await mediator.Send(query, cancellationToken);
 
-        if (string.IsNullOrEmpty(result))
+        if (result.IsSuccess && result.Value is not null)
         {
-            return Results.StatusCode(StatusCodes.Status501NotImplemented);
+            return Results.Ok(new AnalyzeDeploymentResponse(result.Value));
         }
 
-        return Results.Ok(new AnalyzeDeploymentResponse(result));
+        if (result.Error?.Exception is AIClientNotInitializedException)
+        {
+           return Results.StatusCode(StatusCodes.Status501NotImplemented);
+        }
+
+        return Results.StatusCode(StatusCodes.Status500InternalServerError);
     };
 }

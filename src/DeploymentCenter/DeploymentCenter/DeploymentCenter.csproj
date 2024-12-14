@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DeploymentCenter.AIChat\DeploymentCenter.AIChat.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Assistant.Api\DeploymentCenter.Assistant.Api.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Assistant\DeploymentCenter.Assistant.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Deployments.Api\DeploymentCenter.Deployments.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Deployments\DeploymentCenter.Deployments.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Infrastructure\DeploymentCenter.Infrastructure.csproj" />

@@ -1,4 +1,5 @@
-﻿using DeploymentCenter.Infrastructure.AIChat;
+﻿using DeploymentCenter.AIChat.Core.Models;
+using DeploymentCenter.AIChat.Features;
 using OpenAI.Chat;
 
 namespace DeploymentCenter.Infrastructure.OpenAI;
