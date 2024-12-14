@@ -1,7 +1,6 @@
 ﻿using DeploymentCenter.AIChat.Core.Exceptions;
 using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Assistant.Api.Core;
-using DeploymentCenter.Deployments.Features.AnalyzeDeployment.Contract;
 using DeploymentCenter.Services.Features.AnalyzeLoadBalancer.Contract;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -34,7 +33,7 @@ internal class AnalyzeLoadBalancerEndpoint() : ApiPostEndpointBase(new ApiDefini
 
         if (result.Error?.Exception is AIClientNotInitializedException)
         {
-           return Results.StatusCode(StatusCodes.Status501NotImplemented);
+            return Results.StatusCode(StatusCodes.Status501NotImplemented);
         }
 
         return Results.StatusCode(StatusCodes.Status500InternalServerError);
