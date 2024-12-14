@@ -1,4 +1,5 @@
-﻿using DeploymentCenter.AIChat.Features.CompleteChat.Contract;
+﻿using DeploymentCenter.AIChat.Core.Exceptions;
+using DeploymentCenter.AIChat.Features.CompleteChat.Contract;
 using DeploymentCenter.SharedKernel;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
@@ -14,7 +15,7 @@ internal class CompleteChatHandler(IAIChatProvider aIChatProvider, IMemoryCache 
         var client = aIChatProvider.GetChatClient();
         if (client is null)
         {
-            return new Exception("Dupa");
+            return new AIClientNotInitializedException();
         }
 
         return await memoryCache.GetOrCreateAsync(

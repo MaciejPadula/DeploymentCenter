@@ -1,4 +1,5 @@
-﻿using DeploymentCenter.Api.Framework.Endpoints;
+﻿using DeploymentCenter.AIChat.Core.Exceptions;
+using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Assistant.Api.Core;
 using DeploymentCenter.Deployments.Features.AnalyzeDeployment.Contract;
 using MediatR;
@@ -30,6 +31,11 @@ internal class AnalyzeDeploymentEndpoint() : ApiPostEndpointBase(new ApiDefiniti
             return Results.Ok(new AnalyzeDeploymentResponse(result.Value));
         }
 
-        return Results.StatusCode(StatusCodes.Status501NotImplemented);
+        if (result.Error?.Exception is AIClientNotInitializedException)
+        {
+           return Results.StatusCode(StatusCodes.Status501NotImplemented);
+        }
+
+        return Results.StatusCode(StatusCodes.Status500InternalServerError);
     };
 }
