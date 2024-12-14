@@ -3,12 +3,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { ScaleDialog } from "./ScaleDialog";
 import { useQuery } from "@tanstack/react-query";
-import { AnalyzeDeploymentDialog } from "./AnalyzeDeploymentDialog";
 import useDeploymentPageDataService from "../../deployment-page-data-service";
 import { useAppRouting } from "../../../../shared/hooks/navigation";
 import { createSummary } from "../../details-factory";
 import { Cluster } from "../../../../shared/models/cluster";
 import { DeleteResource } from "../../../../shared/components/delete-resource/DeleteResource";
+import { AnalyzeDeploymentDialog } from "../../../assistant/AnalyzeDeploymentDialog";
 
 type Props = {
   deploymentName: string;

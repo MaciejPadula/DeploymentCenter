@@ -15,4 +15,8 @@
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="DeploymentCenter.AIChat.Tests"/>
+  </ItemGroup>
+
 </Project>

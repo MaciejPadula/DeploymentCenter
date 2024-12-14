@@ -10,6 +10,7 @@ import { useAppRouting } from "../../shared/hooks/navigation";
 import { ClusterStatistics } from "../../shared/components/cluster-statistics/ClusterStatistics";
 import { NoClusterFound } from "./NoClusterFound";
 import { ClusterFromConfigGuard } from "../../shared/guards/ClusterFromConfigGuard";
+import { MetricsAvailableGuard } from "../../shared/guards/MetricsAvailableGuard";
 
 export function MainPage() {
   const navigation = useAppRouting();
@@ -18,19 +19,25 @@ export function MainPage() {
     const response = getRecentlyVisitedPages();
     return response.map(
       (x) =>
-      ({
-        clusterName: x.clusterName,
-        name: x.title,
-        namespace: x.namespace,
-        icon: x.icon,
-        clickHandler: () => navigation.navigateToUrl(x.url),
-      } as ResourceRowModel)
+        ({
+          clusterName: x.clusterName,
+          name: x.title,
+          namespace: x.namespace,
+          icon: x.icon,
+          clickHandler: () => navigation.navigateToUrl(x.url),
+        } as ResourceRowModel)
     );
   };
 
   return (
     <div className="w-full flex flex-col">
-      <ClusterFromConfigGuard factory={c => <ClusterStatistics cluster={c} />}>
+      <ClusterFromConfigGuard
+        factory={(c) => (
+          <MetricsAvailableGuard cluster={c}>
+            <ClusterStatistics cluster={c} />
+          </MetricsAvailableGuard>
+        )}
+      >
         <NoClusterFound />
       </ClusterFromConfigGuard>
       <ResourcesList

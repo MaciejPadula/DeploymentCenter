@@ -4,15 +4,10 @@ using MediatR;
 
 namespace DeploymentCenter.Metrics.Features.GetClusterMetrics;
 
-internal class GetClusterMetricsHandler(IMetricsClient metricsClient) : IRequestHandler<GetClusterMetricsQuery, CurrentMetrics?>
+internal class GetClusterMetricsHandler(IMetricsClient metricsClient) : IRequestHandler<GetClusterMetricsQuery, CurrentMetrics>
 {
-    public async Task<CurrentMetrics?> Handle(GetClusterMetricsQuery request, CancellationToken cancellationToken)
+    public async Task<CurrentMetrics> Handle(GetClusterMetricsQuery request, CancellationToken cancellationToken)
     {
-        if (!await metricsClient.AreMetricsAvailable())
-        {
-            return null;
-        }
-
         var currentUsages = await metricsClient.GetClusterMetrics();
         var currentLimits = await metricsClient.GetClusterLimits();
 

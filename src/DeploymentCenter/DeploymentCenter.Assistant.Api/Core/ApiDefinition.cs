@@ -6,5 +6,5 @@ internal class ApiDefinition : IEndpointInfoFactory
 {
     public string GetEndpointGroupTag() => "Assistant";
 
-    public string GetEndpointPath(string endpointName) => $"api/Assitant/{endpointName}";
+    public string GetEndpointPath(string endpointName) => $"api/Assistant/{endpointName}";
 }

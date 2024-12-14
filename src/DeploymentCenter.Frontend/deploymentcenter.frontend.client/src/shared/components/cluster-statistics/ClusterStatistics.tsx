@@ -4,8 +4,6 @@ import useMetricsDataService from "../../services/metrics-service";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { Cluster } from "../../models/cluster";
-import StatisticsNotAvailable from "../error/StatisticsNotAvailable";
-import { areMetricsAvailable } from "../../helpers/metrics-helper";
 
 interface ResourceMetrics {
   value: number;
@@ -25,11 +23,11 @@ function toFixed(value: number, precision: number = 0): number {
 
 type Props = {
   cluster: Cluster;
-}
+};
 
 export function ClusterStatistics(props: Props) {
   const dataService = useMetricsDataService(props.cluster);
-  const { error, data: metrics } = useQuery({
+  const { data: metrics } = useQuery({
     queryKey: ["clusterMetrics", props.cluster.name],
     queryFn: async () => {
       return await dataService.getClusterMetrics();
@@ -49,48 +47,44 @@ export function ClusterStatistics(props: Props) {
     };
   }, [metrics]);
 
-  const metricsAvailable = useMemo(() => areMetricsAvailable(error), [error]);
-
   return (
     <div className="p-4">
       <Typography variant="h4" className="text-center">
         Cluster Statistics
       </Typography>
-      {metricsAvailable ?
-        <div className={"flex w-full"}>
-          <div className="w-full flex flex-col items-center">
-            {metrics ? (
-              <>
-                <Typography variant="h5">CPU</Typography>
-                <GargeChartBox
-                  minValue={0}
-                  value={toFixed(cpuData.value)}
-                  maxValue={cpuData.maxValue}
-                  suffix="%"
-                />
-              </>
-            ) : (
-              <Skeleton variant="rectangular" width="100%" height={200} />
-            )}
-          </div>
+      <div className={"flex w-full"}>
+        <div className="w-full flex flex-col items-center">
+          {metrics ? (
+            <>
+              <Typography variant="h5">CPU</Typography>
+              <GargeChartBox
+                minValue={0}
+                value={toFixed(cpuData.value)}
+                maxValue={cpuData.maxValue}
+                suffix="%"
+              />
+            </>
+          ) : (
+            <Skeleton variant="rectangular" width="100%" height={200} />
+          )}
+        </div>
 
-          <div className="w-full flex flex-col items-center">
-
-            {metrics ? (
-              <>
-                <Typography variant="h5">Memory</Typography>
-                <GargeChartBox
-                  minValue={0}
-                  value={toFixed(memoryData.value)}
-                  maxValue={toFixed(memoryData.maxValue)}
-                  suffix="MB"
-                />
-              </>
-            ) : (
-              <Skeleton variant="rectangular" width="100%" height={200} />
-            )}
-          </div>
-        </div> : <StatisticsNotAvailable />}
+        <div className="w-full flex flex-col items-center">
+          {metrics ? (
+            <>
+              <Typography variant="h5">Memory</Typography>
+              <GargeChartBox
+                minValue={0}
+                value={toFixed(memoryData.value)}
+                maxValue={toFixed(memoryData.maxValue)}
+                suffix="MB"
+              />
+            </>
+          ) : (
+            <Skeleton variant="rectangular" width="100%" height={200} />
+          )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -36,17 +36,4 @@ public class GetClusterMetricsHandlerTests
         // Assert
         result.Should().BeEquivalentTo(expectedResult);
     }
-
-    [Test]
-    public async Task Handle_WhenMetricsAreNotAvailable_ReturnsNull()
-    {
-        // Arrange
-        _metricsClient.AreMetricsAvailable().Returns(false);
-
-        // Act
-        var result = await _sut.Handle(new GetClusterMetricsQuery(), CancellationToken.None);
-
-        // Assert
-        result.Should().BeNull();
-    }
 }

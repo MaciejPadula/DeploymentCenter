@@ -2,5 +2,6 @@
 
 public interface IAIChatProvider
 {
-    IChatClient? GetChatClient();
+    bool IsChatClientInitialized { get; }
+    IChatClient GetChatClient();
 }

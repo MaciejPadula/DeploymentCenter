@@ -1,4 +1,5 @@
-﻿using DeploymentCenter.AIChat.Features;
+﻿using DeploymentCenter.AIChat.Core.Exceptions;
+using DeploymentCenter.AIChat.Features;
 using Microsoft.Extensions.Configuration;
 using OpenAI;
 
@@ -6,17 +7,20 @@ namespace DeploymentCenter.Infrastructure.OpenAI;
 
 internal class OpenAIChatClientProvider(IConfiguration configuration) : IAIChatProvider
 {
-    public IChatClient? GetChatClient()
-    {
-        var openAIKey = configuration["OpenAI:Key"];
-        var openAIModel = configuration["OpenAI:Model"];
+    private readonly string? _openAIKey = configuration["OpenAI:Key"];
+    private readonly string? _openAIModel = configuration["OpenAI:Model"];
 
-        if (string.IsNullOrEmpty(openAIKey) || string.IsNullOrEmpty(openAIModel))
+    public bool IsChatClientInitialized => !string.IsNullOrEmpty(_openAIKey)
+        && !string.IsNullOrEmpty(_openAIModel);
+
+    public IChatClient GetChatClient()
+    {
+        if (!IsChatClientInitialized)
         {
-            return null;
+            throw new AIClientNotInitializedException();
         }
 
-        var chatClient = new OpenAIClient(openAIKey).GetChatClient(openAIModel);
+        var chatClient = new OpenAIClient(_openAIKey).GetChatClient(_openAIModel);
         return new OpenAIChatClient(chatClient);
     }
 }

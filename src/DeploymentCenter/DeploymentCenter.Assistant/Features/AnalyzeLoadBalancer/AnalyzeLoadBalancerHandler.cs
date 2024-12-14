@@ -17,11 +17,11 @@ internal class AnalyzeLoadBalancerHandler(IMediator mediator) : IRequestHandler<
     public async Task<Result<string>> Handle(AnalyzeLoadBalancerQuery request, CancellationToken cancellationToken)
     {
         var detailsTask = mediator.Send(new GetLoadBalancerDetailsQuery(request.Namespace, request.LoadBalancerName), cancellationToken);
-        var ipAddressesTask = mediator.Send(new GetLoadBalancerIpAddressesQuery(request.Namespace, request.LoadBalancerName), cancellationToken);
         var portsTask = mediator.Send(new GetLoadBalancerPortsQuery(request.Namespace, request.LoadBalancerName), cancellationToken);
+        var ipAddresses = await mediator.Send(new GetLoadBalancerIpAddressesQuery(request.Namespace, request.LoadBalancerName), cancellationToken);
 
         var detailsJson = JsonSerializer.Serialize(await detailsTask);
-        var ipAddressesJson = JsonSerializer.Serialize(await ipAddressesTask);
+        var ipAddressesJson = JsonSerializer.Serialize(ipAddresses.Select(x => x.ToString()));
         var portsJson = JsonSerializer.Serialize(await portsTask);
 
         var chatHistory = new PromptBuilder()
