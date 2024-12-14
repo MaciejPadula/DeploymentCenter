@@ -110,7 +110,7 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     return await httpClient.post<
       AnalyzeDeploymentRequest,
       AnalyzeDeploymentResponse
-    >(`/${controller}/AnalyzeDeployment`, {
+    >(`/Assistant/AnalyzeDeployment`, {
       namespace: namespace,
       deploymentName: deploymentName,
       userQuestion: userQuestion,
@@ -147,7 +147,7 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     mountPath: string
   ) {
     await httpClient.post<ConnectVolumeRequest, unknown>(
-      `/api/Assistant/ConnectVolume`,
+      `/${controller}/ConnectVolume`,
       {
         namespace: namespace,
         deploymentName: deploymentName,
