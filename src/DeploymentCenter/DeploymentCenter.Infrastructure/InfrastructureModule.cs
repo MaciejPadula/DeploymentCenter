@@ -1,9 +1,5 @@
-﻿using DeploymentCenter.Deployments.Features;
-using DeploymentCenter.Deployments.Features.AnalyzeDeployment;
-using DeploymentCenter.Infrastructure.AIChat;
-using DeploymentCenter.Infrastructure.AIChat.Cache;
-using DeploymentCenter.Infrastructure.AIChat.Implementations;
-using DeploymentCenter.Infrastructure.Cache;
+﻿using DeploymentCenter.AIChat.Features;
+using DeploymentCenter.Deployments.Features;
 using DeploymentCenter.Infrastructure.Http;
 using DeploymentCenter.Infrastructure.K8s.Client;
 using DeploymentCenter.Infrastructure.K8s.Implementations;
@@ -14,7 +10,6 @@ using DeploymentCenter.Metrics.Features;
 using DeploymentCenter.Namespaces.Features;
 using DeploymentCenter.Security.Features.SecurePassword;
 using DeploymentCenter.Services.Features;
-using DeploymentCenter.Services.Features.AnalyzeLoadBalancer;
 using DeploymentCenter.Volumes.Features;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -41,14 +36,6 @@ public static class InfrastructureModule
         services.AddTransient<IPasswordSecurity, Base64PasswordSecurity>();
 
         services.AddTransient<IAIChatProvider, OpenAIChatClientProvider>();
-
-        services.AddCached<IDeploymentAnalyzeClient>(
-            p => new AIChatDeploymentAnalyzeClient(p.GetRequiredService<IAIChatProvider>()),
-            (p, cache, impl) => new CacheDeploymentAnalyzeClient(impl, cache));
-
-        services.AddCached<IServiceAnalyzeClient>(
-            p => new AIChatServiceAnalyzeClient(p.GetRequiredService<IAIChatProvider>()),
-            (p, cache, impl) => new CacheServiceAnalyzeClient(impl, cache));
 
         return services;
     }

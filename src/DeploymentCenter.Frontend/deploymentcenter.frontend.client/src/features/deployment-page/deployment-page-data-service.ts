@@ -147,7 +147,7 @@ function DeploymentPageDataService(httpClient: HttpClient) {
     mountPath: string
   ) {
     await httpClient.post<ConnectVolumeRequest, unknown>(
-      `/${controller}/ConnectVolume`,
+      `/api/Assistant/ConnectVolume`,
       {
         namespace: namespace,
         deploymentName: deploymentName,

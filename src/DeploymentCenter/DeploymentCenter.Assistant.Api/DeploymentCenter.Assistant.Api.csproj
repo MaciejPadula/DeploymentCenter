@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DeploymentCenter.Api\DeploymentCenter.Api.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Assistant\DeploymentCenter.Assistant.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>
