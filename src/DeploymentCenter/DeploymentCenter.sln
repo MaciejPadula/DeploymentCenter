@@ -76,9 +76,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Services.I
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Volumes", "Volumes", "{7AEB95FC-97C4-4056-9F1F-86D4CA7FF5B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Volumes", "DeploymentCenter.Volumes\DeploymentCenter.Volumes.csproj", "{BB1F101A-AFEF-4034-881A-1ED0DD4B849E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Volumes", "DeploymentCenter.Volumes\DeploymentCenter.Volumes.csproj", "{BB1F101A-AFEF-4034-881A-1ED0DD4B849E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentCenter.Volumes.Api", "DeploymentCenter.Volumes.Api\DeploymentCenter.Volumes.Api.csproj", "{57EEA500-5024-4602-964E-545DA7436062}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeploymentCenter.Volumes.Api", "DeploymentCenter.Volumes.Api\DeploymentCenter.Volumes.Api.csproj", "{57EEA500-5024-4602-964E-545DA7436062}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

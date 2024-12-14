@@ -1,10 +1,9 @@
-﻿using DeploymentCenter.Deployments.Core.Models;
-using DeploymentCenter.Deployments.Features;
+﻿using DeploymentCenter.Deployments.Features.AnalyzeDeployment;
 using System.Text.Json;
 
-namespace DeploymentCenter.Infrastructure.AIChat;
+namespace DeploymentCenter.Infrastructure.AIChat.Implementations;
 
-internal class AIChatAnalyzeClient(IAIChatProvider chatProvider) : IAnalyzeClient
+internal class AIChatDeploymentAnalyzeClient(IAIChatProvider chatProvider) : IDeploymentAnalyzeClient
 {
     public async Task<string> AnalyzeDeploymentStatus(DeploymentStatusDetails deploymentStatusDetails)
     {
@@ -22,13 +21,9 @@ internal class AIChatAnalyzeClient(IAIChatProvider chatProvider) : IAnalyzeClien
         var chatHistory = new PromptBuilder()
             .WithResultFormat("MARKDOWN")
             .WithUserLanguage("provided from user")
-            .WithBasePrompt("""
-                You are professional DevOps Engineer and you are working on a deployment.
-                Answer user question only if question is related to deployment from system data.
-                If user asks any other question, provide the answer that you are not able to answer this question.
-                When user question is empty look at the status of deployment pods and provide the analysis.
-                If all pods are healthy, tell user that everything is alright.
-                If any pod is unhealthy, provide the pod name, health status, reason and message and probable solution.
+            .AsProfessionalDevopsEngineerYouAreSupposedTo(
+                """
+                Answer user question about deployment provided in system data.
                 """)
             .WithParameter("Deployment Details", deploymentJson)
             .WithParameter("Pods Details", podsJson)

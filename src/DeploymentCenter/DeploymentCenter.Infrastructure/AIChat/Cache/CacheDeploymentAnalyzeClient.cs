@@ -1,16 +1,16 @@
-﻿using DeploymentCenter.Deployments.Core.Models;
-using DeploymentCenter.Deployments.Features;
+﻿using DeploymentCenter.Deployments.Features.AnalyzeDeployment;
+using DeploymentCenter.Infrastructure.AIChat.Implementations;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace DeploymentCenter.Infrastructure.AIChat.Cache;
 
-internal class CacheAnalyzeClient(IAnalyzeClient analyzeClient, IMemoryCache memoryCache) : IAnalyzeClient
+internal class CacheDeploymentAnalyzeClient(IDeploymentAnalyzeClient analyzeClient, IMemoryCache memoryCache) : IDeploymentAnalyzeClient
 {
     private static readonly TimeSpan CacheTTL = TimeSpan.FromMinutes(45);
 
     public async Task<string> AnalyzeDeploymentStatus(DeploymentStatusDetails deploymentStatusDetails) =>
         await memoryCache.GetOrCreateAsync(
-            $"{nameof(AIChatAnalyzeClient)}_{nameof(AnalyzeDeploymentStatus)}_{GetCacheKey(deploymentStatusDetails)}",
+            $"{nameof(AIChatDeploymentAnalyzeClient)}_{nameof(AnalyzeDeploymentStatus)}_{GetCacheKey(deploymentStatusDetails)}",
             async entry =>
             {
                 entry.AbsoluteExpirationRelativeToNow = CacheTTL;

@@ -1,8 +1,20 @@
-﻿namespace DeploymentCenter.Infrastructure.AIChat;
+﻿namespace DeploymentCenter.Infrastructure.AIChat.Helpers;
 
 internal class PromptBuilder
 {
     private readonly List<Message> _chatHistory = [];
+
+    public PromptBuilder AsProfessionalDevopsEngineerYouAreSupposedTo(string input)
+    {
+        return WithBasePrompt(
+            $"""
+            You are professional DevOps Engineer and you are working on a deployment.
+            Answer user question only if question is related to kubernetes cluster.
+            If user asks any other question, provide the answer that you are not able to answer this question.
+            As a professional DevOps Engineer, you are supposed to provide the answer to the user question.
+            {input}
+            """);
+    }
 
     public PromptBuilder WithBasePrompt(string basePrompt)
     {

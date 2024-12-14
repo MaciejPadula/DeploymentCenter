@@ -1,11 +1,10 @@
 ﻿using DeploymentCenter.Deployments.Core.Models;
 using DeploymentCenter.Deployments.Features.AnalyzeDeployment.Contract;
 using MediatR;
-using System.ComponentModel.DataAnnotations;
 
 namespace DeploymentCenter.Deployments.Features.AnalyzeDeployment;
 
-internal class AnalyzeDeploymentHandler(IDeploymentClient deploymentClient, IPodClient podClient, IAnalyzeClient analyzeClient) : IRequestHandler<AnalyzeDeploymentQuery, string>
+internal class AnalyzeDeploymentHandler(IDeploymentClient deploymentClient, IPodClient podClient, IDeploymentAnalyzeClient analyzeClient) : IRequestHandler<AnalyzeDeploymentQuery, string>
 {
     public async Task<string> Handle(AnalyzeDeploymentQuery request, CancellationToken cancellationToken)
     {
