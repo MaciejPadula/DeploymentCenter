@@ -53,7 +53,7 @@ API application should be placed in the same subnet with cluster that you would 
 
 ![image](https://github.com/user-attachments/assets/55d32743-4543-4fde-8156-6b703fe0052f)
 
-3. To add cluster you have to click selector in the top right corner and 'Edit Clusters'.
+2. To add cluster you have to click selector in the top right corner and 'Edit Clusters'.
 
 ![image](https://github.com/user-attachments/assets/d421889c-976a-46f2-872a-11137ee2d7c9)
 
