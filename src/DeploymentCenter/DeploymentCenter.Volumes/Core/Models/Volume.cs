@@ -1,3 +1,3 @@
 ﻿namespace DeploymentCenter.Volumes.Core.Models;
 
-public record Volume(string Name, string Path, int CapacityInKibiBytes);
+public record Volume(string Name, string Path, long CapacityInKibiBytes);

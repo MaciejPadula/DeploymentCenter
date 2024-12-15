@@ -12,19 +12,23 @@ internal class CompleteChatHandler(IAIChatProvider aIChatProvider, IMemoryCache 
 
     public async Task<Result<string>> Handle(CompleteChatQuery request, CancellationToken cancellationToken)
     {
+        return await memoryCache.GetOrCreateAsync(
+            request.QueryKey,
+            async entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = CacheExpiration;
+                return await HandleImpl(request, cancellationToken);
+            }) ?? string.Empty;
+    }
+
+    private async Task<Result<string>> HandleImpl(CompleteChatQuery request, CancellationToken cancellationToken)
+    {
         if (!aIChatProvider.IsChatClientInitialized)
         {
             return new AIClientNotInitializedException();
         }
 
         var client = aIChatProvider.GetChatClient();
-
-        return await memoryCache.GetOrCreateAsync(
-            request.QueryKey,
-            async entry =>
-            {
-                entry.AbsoluteExpirationRelativeToNow = CacheExpiration;
-                return await client.CompleteChatAsync(request.Messages);
-            }) ?? string.Empty;
+        return await client.CompleteChatAsync(request.Messages);
     }
 }

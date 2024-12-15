@@ -8,7 +8,7 @@ namespace DeploymentCenter.Volumes.Api.Features;
 
 internal class GetVolumesEndpoint() : ApiGetEndpointBase(new VolumesApiDefinition())
 {
-    internal record Volume(string Name, string Path, int CapacityInKibiBytes);
+    internal record Volume(string Name, string Path, long CapacityInKibiBytes);
 
     internal record GetVolumesResponse(List<Volume> Volumes);
 
