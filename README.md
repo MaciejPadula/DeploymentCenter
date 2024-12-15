@@ -22,7 +22,11 @@ Available Functions:
   - List
 
 In future:
-- complex AI
+- CronJobs
+- Request Limits in Deployments
+- Modyfing Env Variables in Deployments
+- Modyfing IP Addresses and Ports in LBs
+- More complex and versatile AI solution
 
 ## System Architecture
 
