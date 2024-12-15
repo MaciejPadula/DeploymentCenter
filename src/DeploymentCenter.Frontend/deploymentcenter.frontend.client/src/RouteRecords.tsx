@@ -1,17 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "./layout/Layout";
 import { MainPage } from "./features/main-page/MainPage";
-import { DeploymentsList } from "./features/deployments-list/DeploymentsList";
-import { DeploymentPage } from "./features/deployment-page/DeploymentPage";
-import { LoadBalancersList } from "./features/load-balancers-list/LoadBalancersList";
-import { LoadBalancerPage } from "./features/load-balancer/LoadBalancerPage";
 import { NotFound } from "./shared/components/error/not-found/NotFound";
 import { ClustersList } from "./features/clusters-list/ClustersList";
-import { CreateDeploymentPage } from "./features/create-deployment/CreateDeploymentPage";
-import { CreateLoadBalancerPage } from "./features/create-load-balancer/CreateLoadBalancerPage";
 import { NamespacesList } from "./features/namespaces-list/NamespacesList";
 import { ClusterFromUrlGuard } from "./shared/guards/ClusterFromUrlGuard";
 import { VolumesListPage } from "./features/volumes-list/VolumesListPage";
+import { loadBalancerRoutes } from "./features/load-balancer/LoadBalancerRoutes";
+import { deploymentRoutes } from "./features/deployment/DeploymentRoutes";
 
 export function RouteRecords() {
   return (
@@ -20,36 +16,31 @@ export function RouteRecords() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<MainPage />} />
 
-          <Route path="/:clusterName/setup-deployment" element={<ClusterFromUrlGuard factory={c => <CreateDeploymentPage cluster={c} />} />} />
-          <Route path="/:clusterName/setup-load-balancer" element={<ClusterFromUrlGuard factory={c => <CreateLoadBalancerPage cluster={c} />} />} />
+          {loadBalancerRoutes.map((r) => (
+            <Route key={r.route} path={r.route} element={r.component} />
+          ))}
+          {deploymentRoutes.map((r) => (
+            <Route key={r.route} path={r.route} element={r.component} />
+          ))}
 
           <Route path="clusters-configuration" element={<ClustersList />} />
 
           <Route
-            path="/:clusterName/:namespace/deployments"
-            element={<ClusterFromUrlGuard factory={c => <DeploymentsList cluster={c} />} />}
-          />
-          <Route
-            path="/:clusterName/:namespace/deployments/:deploymentName"
-            element={<ClusterFromUrlGuard factory={c => <DeploymentPage cluster={c} />} />}
-          />
-
-          <Route
-            path="/:clusterName/:namespace/load-balancers"
-            element={<ClusterFromUrlGuard factory={c => <LoadBalancersList cluster={c} />} />}
-          />
-          <Route
-            path="/:clusterName/:namespace/load-balancers/:loadBalancerName"
-            element={<ClusterFromUrlGuard factory={c => <LoadBalancerPage cluster={c} />} />}
-          />
-
-          <Route
             path="/:clusterName/:namespace/volumes"
-            element={<ClusterFromUrlGuard factory={c => <VolumesListPage cluster={c} />} />}
+            element={
+              <ClusterFromUrlGuard>
+                {(c) => <VolumesListPage cluster={c} />}
+              </ClusterFromUrlGuard>
+            }
           />
 
-          <Route path="/:clusterName/namespaces"
-            element={<ClusterFromUrlGuard factory={c => <NamespacesList cluster={c} />} />}
+          <Route
+            path="/:clusterName/namespaces"
+            element={
+              <ClusterFromUrlGuard>
+                {(c) => <NamespacesList cluster={c} />}
+              </ClusterFromUrlGuard>
+            }
           />
 
           <Route path="*" element={<NotFound />} />

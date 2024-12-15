@@ -7,10 +7,10 @@ import { ResourcesList } from "../../shared/components/resources-list/ResourcesL
 import { ResourceTypesGrid } from "./resource-types-grid/ResourceTypesGrid";
 import { Typography } from "@mui/material";
 import { useAppRouting } from "../../shared/hooks/navigation";
-import { ClusterStatistics } from "../../shared/components/cluster-statistics/ClusterStatistics";
+import { ClusterStatistics } from "../metrics/components/ClusterStatistics";
 import { NoClusterFound } from "./NoClusterFound";
 import { ClusterFromConfigGuard } from "../../shared/guards/ClusterFromConfigGuard";
-import { MetricsAvailableGuard } from "../../shared/guards/MetricsAvailableGuard";
+import { MetricsAvailableGuard } from "../metrics/guards/MetricsAvailableGuard";
 
 export function MainPage() {
   const navigation = useAppRouting();
@@ -31,14 +31,12 @@ export function MainPage() {
 
   return (
     <div className="w-full flex flex-col">
-      <ClusterFromConfigGuard
-        factory={(c) => (
+      <ClusterFromConfigGuard notSet={<NoClusterFound />}>
+        {(c) => (
           <MetricsAvailableGuard cluster={c}>
             <ClusterStatistics cluster={c} />
           </MetricsAvailableGuard>
         )}
-      >
-        <NoClusterFound />
       </ClusterFromConfigGuard>
       <ResourcesList
         resourceKey="RecentlyVisistedLoader"
@@ -46,10 +44,14 @@ export function MainPage() {
         resourcesFactory={factory}
         showIfEmpty={false}
       />
-      <div className="flex flex-col p-4">
-        <Typography variant="h5">All Resources</Typography>
-        <ResourceTypesGrid />
-      </div>
+      <ClusterFromConfigGuard notSet={<></>}>
+        {() => (
+          <div className="flex flex-col p-4">
+            <Typography variant="h5">All Resources</Typography>
+            <ResourceTypesGrid />
+          </div>
+        )}
+      </ClusterFromConfigGuard>
     </div>
   );
 }

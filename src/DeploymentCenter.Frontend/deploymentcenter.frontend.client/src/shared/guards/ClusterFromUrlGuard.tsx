@@ -4,9 +4,9 @@ import { configuration } from "../services/configuration-service";
 import { ClusterGuard } from "./ClusterGuard";
 
 type Props = {
-  factory: (x: Cluster) => JSX.Element;
-  children?: JSX.Element;
-}
+  children: (x: Cluster) => JSX.Element;
+  notSet?: JSX.Element;
+};
 
 export function ClusterFromUrlGuard(props: Props) {
   const { clusterName } = useParams();
@@ -14,5 +14,11 @@ export function ClusterFromUrlGuard(props: Props) {
     (c) => c.name === clusterName
   );
 
-  return <ClusterGuard cluster={cluster} factory={props.factory} children={props.children} />;
+  return (
+    <ClusterGuard
+      cluster={cluster}
+      children={props.children}
+      notSet={props.notSet}
+    />
+  );
 }
