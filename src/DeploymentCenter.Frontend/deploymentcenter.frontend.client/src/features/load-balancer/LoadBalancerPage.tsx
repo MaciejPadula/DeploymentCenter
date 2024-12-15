@@ -3,17 +3,17 @@ import {
   ResourceSummaryFactory,
   ResourceSummaryModel,
 } from "../../shared/components/resource-page/resource-summary-model";
-import useLoadBalancerPageDataService from "./load-balancer-page-data-service";
 import { ResourceSummary } from "../../shared/components/resource-page/ResourceSummary";
 import { getLoadBalancerUrl } from "../../shared/services/routing-service";
 import { addRecentlyVisitedPage } from "../../shared/services/recently-visited-service";
 import { useEffect, useState } from "react";
 import { SvcIcon } from "../../assets/icons";
-import { IpAddresses } from "./ip-addresses/IpAddresses";
-import { LoadBalancerPorts } from "./load-balancer-ports/LoadBalancerPorts";
-import { LoadBalancerToolbar } from "./toolbar/LoadBalancerToolbar";
+import { IpAddresses } from "./load-balancer-page/ip-addresses/IpAddresses";
+import { LoadBalancerPorts } from "./load-balancer-page/load-balancer-ports/LoadBalancerPorts";
+import { LoadBalancerToolbar } from "./load-balancer-page/toolbar/LoadBalancerToolbar";
 import { NotFound } from "../../shared/components/error/not-found/NotFound";
 import { Cluster } from "../../shared/models/cluster";
+import useLoadBalancersDataService from "./services/load-balancers-data-service";
 
 type Props = {
   cluster: Cluster;
@@ -21,7 +21,7 @@ type Props = {
 
 export function LoadBalancerPage(props: Props) {
   const { loadBalancerName, namespace } = useParams();
-  const dataService = useLoadBalancerPageDataService(props.cluster);
+  const dataService = useLoadBalancersDataService(props.cluster);
   const [areDetailsLoaded, setAreDetailsLoaded] = useState<boolean>(false);
 
   useEffect(() => {

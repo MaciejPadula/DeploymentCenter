@@ -3,14 +3,14 @@ import { Cluster } from "../models/cluster";
 
 type Props = {
   cluster: Cluster | undefined;
-  factory: (x: Cluster) => JSX.Element;
-  children?: JSX.Element;
+  children: (x: Cluster) => JSX.Element;
+  notSet?: JSX.Element;
 }
 
 export function ClusterGuard(props: Props) {
   if (!props.cluster) {
-    return props.children ?? <NotFound />;
+    return props.notSet ?? <NotFound />;
   }
 
-  return props.factory(props.cluster);
+  return props.children(props.cluster);
 }
