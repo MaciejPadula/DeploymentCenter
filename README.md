@@ -30,7 +30,7 @@ In future:
 
 ## System Architecture
 
-## How to deploy it to your server?
+## How to deploy this solution to your server?
 
 You can use docker-compose for example:
 ```YAML
