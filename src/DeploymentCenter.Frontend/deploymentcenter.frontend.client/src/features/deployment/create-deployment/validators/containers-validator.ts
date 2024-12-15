@@ -1,4 +1,4 @@
-import { ValidationResult } from "../../../shared/models/validation-result";
+import { ValidationResult } from "../../../../shared/models/validation-result";
 import { DeploymentData } from "../models/deployment-data";
 
 export function containersValidator(value: DeploymentData): ValidationResult {
