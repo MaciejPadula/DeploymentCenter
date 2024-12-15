@@ -1,4 +1,4 @@
-import { FormGroup } from "../../../libs/forms/form-group";
+import { FormGroup } from "../../../../libs/forms/form-group";
 import { Container } from "../../deployment-page/models/container";
 
 export interface DeploymentData extends FormGroup {
