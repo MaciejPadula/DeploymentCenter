@@ -62,7 +62,6 @@ internal class K8sDeploymentClient(
             deploy.Metadata.NamespaceProperty,
             deploy.Metadata.Name,
             deploy.Spec.Selector.MatchLabels.TryGetValue(K8sConsts.ApplicationNameDictionaryKey, out var applicationName) ? applicationName : string.Empty,
-            deploy.Status.AvailableReplicas ?? 0,
             deploy.Spec.Replicas ?? 0);
     }
 

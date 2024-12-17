@@ -56,6 +56,25 @@ internal class K8sMetricsClient(IKubernetesClientFactory kubernetesClientFactory
         return new CurrentUsage(cpu, memory);
     }
 
+    public async Task<CurrentLimit> GetDeploymentLimits(string @namespace, string deploymentName)
+    {
+        using var client = kubernetesClientFactory.GetClient();
+        var deploy = await client.AppsV1.ReadNamespacedDeploymentAsync(deploymentName, @namespace);
+        if (deploy is null)
+        {
+            return new CurrentLimit(0, 0);
+        }
+
+        var deploymentLimits = deploy.Spec.Template.Spec.Containers
+            .Select(podMetric => podMetric.Resources)
+            .ToList();
+
+        var cpu = deploymentLimits.SumOrDefault(x => (decimal)x.Limits[CPUKey], 0);
+        var memory = deploymentLimits.SumOrDefault(x => (decimal)x.Limits[MemoryKey], 0);
+
+        return new CurrentLimit(cpu, memory);
+    }
+
     public async Task<CurrentUsage> GetDeploymentMetrics(string @namespace, string deploymentName)
     {
         using var client = kubernetesClientFactory.GetClient();
@@ -64,8 +83,6 @@ internal class K8sMetricsClient(IKubernetesClientFactory kubernetesClientFactory
         {
             return new CurrentUsage(0, 0);
         }
-
-        var pods = await client.CoreV1.ListNamespacedPodAsync(@namespace);
 
         var metrics = await client.GetKubernetesPodsMetricsByNamespaceAsync(@namespace);
         var deploymentMetrics = metrics.Items
