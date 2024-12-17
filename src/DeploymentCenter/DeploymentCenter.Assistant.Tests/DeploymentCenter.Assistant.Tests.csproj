@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -16,6 +16,7 @@
     </PackageReference>
     <PackageReference Include="FluentAssertions" Version="7.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="NSubstitute" Version="5.3.0" />
     <PackageReference Include="NUnit" Version="4.3.0" />
     <PackageReference Include="NUnit.Analyzers" Version="4.4.0">
       <PrivateAssets>all</PrivateAssets>
@@ -25,8 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DeploymentCenter.IntegrationTests.Lib\DeploymentCenter.IntegrationTests.Lib.csproj" />
-    <ProjectReference Include="..\DeploymentCenter\DeploymentCenter.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Assistant\DeploymentCenter.Assistant.csproj" />
   </ItemGroup>
 
   <ItemGroup>

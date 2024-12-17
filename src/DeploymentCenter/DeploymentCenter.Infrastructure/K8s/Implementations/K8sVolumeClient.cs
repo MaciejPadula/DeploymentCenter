@@ -50,7 +50,7 @@ internal class K8sVolumeClient(IKubernetesClientFactory kubernetesClientFactory)
             .Select(x => new Volume(
                 x.Metadata.Name,
                 x.Spec.HostPath.Path,
-                x.Spec.Capacity["storage"].ToInt32() / 1024))
+                x.Spec.Capacity["storage"].ToInt64() / 1024))
             .ToList();
 
         return mapped;
