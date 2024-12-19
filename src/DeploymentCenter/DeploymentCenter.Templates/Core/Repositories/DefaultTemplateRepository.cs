@@ -48,13 +48,18 @@ internal class DefaultTemplateRepository : ITemplateRepository
         _templates = [sqlTemplate];
     }
 
-    public async Task<ResourceTemplate?> GetTemplate(string name)
+    public Task<ResourceTemplate?> GetTemplate(string name)
     {
-        return _templates.FirstOrDefault(t => t.Name == name);
+        return Task.FromResult(_templates.FirstOrDefault(t => t.Name == name));
     }
 
-    public async Task<List<ResourceTemplate>> GetTemplates()
+    public Task<List<TemplateBasicDetails>> GetTemplates()
     {
-        return _templates;
+        var result = _templates
+            .Select(t => new TemplateBasicDetails(
+                t.Name,
+                t.Resources.Select(x => x.Type).ToList()))
+            .ToList();
+        return Task.FromResult(result);
     }
 }

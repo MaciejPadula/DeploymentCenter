@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace DeploymentCenter.Templates.Core.Models;
+﻿namespace DeploymentCenter.Templates.Core.Models;
 
 public record Variable(
     string Name, string ValueTemplate);
