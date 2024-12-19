@@ -23,6 +23,8 @@
     <ProjectReference Include="..\DeploymentCenter.Metrics\DeploymentCenter.Metrics.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Namespaces.Api\DeploymentCenter.Namespaces.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Namespaces\DeploymentCenter.Namespaces.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Search.Api\DeploymentCenter.Search.Api.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Search\DeploymentCenter.Search.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Security.Api\DeploymentCenter.Security.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Security\DeploymentCenter.Security.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Services.Api\DeploymentCenter.Services.Api.csproj" />

@@ -9,6 +9,8 @@ using DeploymentCenter.Metrics;
 using DeploymentCenter.Metrics.Api;
 using DeploymentCenter.Namespaces;
 using DeploymentCenter.Namespaces.Api;
+using DeploymentCenter.Search;
+using DeploymentCenter.Search.Api;
 using DeploymentCenter.Security;
 using DeploymentCenter.Security.Api;
 using DeploymentCenter.Services;
@@ -36,6 +38,7 @@ builder.Services.RegisterMetricsEndpoints();
 builder.Services.RegisterVolumesEndpoints();
 builder.Services.RegisterAssistantEndpoints();
 builder.Services.RegisterTemplatesEndpoints();
+builder.Services.RegisterSearchEndpoints();
 
 // Add application layer
 builder.Services.AddDeploymentsModule();
@@ -47,6 +50,7 @@ builder.Services.AddVolumesModule();
 builder.Services.AddAIChatModule();
 builder.Services.AddAssistantModule();
 builder.Services.AddTemplatesModule();
+builder.Services.AddSearchModule();
 
 // Add infrastructure layer
 builder.Services.AddInfrastructure();
