@@ -58,7 +58,7 @@ export function SearchResults(props: Props) {
                       <ListItemIcon>
                         <Icon><img src={x.icon} /></Icon>
                       </ListItemIcon>
-                      <ListItemText primary={x.resource.name} secondary={x.resource.namespace} />
+                      <ListItemText primary={x.resource.name} />
                     </ListItemButton>
                   </ListItem>
                 ))}
