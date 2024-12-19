@@ -47,7 +47,6 @@ internal class CreateDeploymentTests
             "default",
             "test-deployment",
             "test-application",
-            0,
             3);
 
         var expectedContainers = new GetDeploymentContainersEndpoint.GetDeploymentContainersResponse(

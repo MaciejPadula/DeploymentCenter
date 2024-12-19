@@ -8,14 +8,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.Api\DeploymentCenter.Api.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.Deployments\DeploymentCenter.Deployments.csproj" />
-    <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Templates\DeploymentCenter.Templates.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="DeploymentCenter.Deployments.IntegrationTests" />
     <InternalsVisibleTo Include="DeploymentCenter.Templates.IntegrationTests" />
-    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
   </ItemGroup>
 
 </Project>

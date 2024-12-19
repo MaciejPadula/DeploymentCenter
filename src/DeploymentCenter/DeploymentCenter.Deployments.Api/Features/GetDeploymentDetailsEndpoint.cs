@@ -13,7 +13,6 @@ internal class GetDeploymentDetailsEndpoint() : ApiGetEndpointBase(new Deploymen
         string Namespace,
         string DeploymentName,
         string ApplicationName,
-        int AliveReplicas,
         int AllReplicas);
 
     protected override Delegate Handler => async (
@@ -33,7 +32,6 @@ internal class GetDeploymentDetailsEndpoint() : ApiGetEndpointBase(new Deploymen
             details.Value.Namespace,
             details.Value.Name,
             details.Value.ApplicationName,
-            details.Value.AliveReplicas,
             details.Value.AllReplicas));
     };
 }

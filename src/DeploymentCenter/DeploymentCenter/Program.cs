@@ -14,6 +14,8 @@ using DeploymentCenter.Security.Api;
 using DeploymentCenter.Services;
 using DeploymentCenter.Services.Api;
 using DeploymentCenter.SharedKernel;
+using DeploymentCenter.Templates;
+using DeploymentCenter.Templates.Api;
 using DeploymentCenter.Volumes;
 using DeploymentCenter.Volumes.Api;
 
@@ -33,6 +35,7 @@ builder.Services.RegisterSecurityEndpoints();
 builder.Services.RegisterMetricsEndpoints();
 builder.Services.RegisterVolumesEndpoints();
 builder.Services.RegisterAssistantEndpoints();
+builder.Services.RegisterTemplatesEndpoints();
 
 // Add application layer
 builder.Services.AddDeploymentsModule();
@@ -43,6 +46,7 @@ builder.Services.AddMetricsModule();
 builder.Services.AddVolumesModule();
 builder.Services.AddAIChatModule();
 builder.Services.AddAssistantModule();
+builder.Services.AddTemplatesModule();
 
 // Add infrastructure layer
 builder.Services.AddInfrastructure();

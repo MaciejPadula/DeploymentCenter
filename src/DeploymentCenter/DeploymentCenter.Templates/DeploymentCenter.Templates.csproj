@@ -7,15 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DeploymentCenter.Api\DeploymentCenter.Api.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Deployments\DeploymentCenter.Deployments.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Services\DeploymentCenter.Services.csproj" />
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="DeploymentCenter.Deployments.IntegrationTests" />
-    <InternalsVisibleTo Include="DeploymentCenter.Templates.IntegrationTests" />
+    <InternalsVisibleTo Include="DeploymentCenter.Templates.Tests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\CreateTemplate\" />
+    <Folder Include="Features\GetTemplates\" />
   </ItemGroup>
 
 </Project>
