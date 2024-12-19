@@ -35,7 +35,7 @@ internal class K8sResourceProvider(IKubernetesClientFactory kubernetesClientFact
         resources.AddRange(deployments.Items
             .Select(x => new Resource(
                 x.Name(),
-                ResourceType.LoadBalancer,
+                ResourceType.Deployment,
                 x.Namespace())));
 
         resources.AddRange(loadBalancers.Items
