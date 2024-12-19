@@ -9,7 +9,7 @@ namespace DeploymentCenter.Templates.Api.Features;
 
 internal class GetTemplateEndpoint() : ApiGetEndpointBase(new TemplatesApiDefinition())
 {
-    internal record TemplateVariable(string DisplayText, string DefaultValue);
+    internal record TemplateVariable(string Name, string DisplayName, string DefaultValue);
 
     internal record ResourceTemplate(
         string Name,
@@ -32,7 +32,7 @@ internal class GetTemplateEndpoint() : ApiGetEndpointBase(new TemplatesApiDefini
         var mappedResponse = new ResourceTemplate(
             response.Name,
             response.ConfigurableVariables
-                .Select(variable => new TemplateVariable(variable.DisplayName, variable.Value))
+                .Select(variable => new TemplateVariable(variable.Name, variable.DisplayName, variable.Value))
                 .ToList());
 
         return Results.Ok(new GetTemplateResponse(mappedResponse));
