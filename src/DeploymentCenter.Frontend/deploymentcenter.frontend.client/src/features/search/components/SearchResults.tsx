@@ -3,7 +3,6 @@ import { SearchResource, SearchResourceType } from "../models/search-resource";
 import { Cluster } from "../../../shared/models/cluster";
 import { getDeploymentUrl, getLoadBalancerUrl } from "../../../shared/services/routing-service";
 import { DeployIcon, SvcIcon } from "../../../assets/icons";
-import { useState } from "react";
 
 type Props = {
   cluster: Cluster;
