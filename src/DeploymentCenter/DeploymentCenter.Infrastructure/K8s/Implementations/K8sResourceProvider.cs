@@ -14,6 +14,9 @@ internal class K8sResourceProvider(IKubernetesClientFactory kubernetesClientFact
 
         return resources
             .Where(x => x.Name.Contains(phrase))
+            .OrderBy(x => x.Namespace)
+            .ThenBy(x => x.Type)
+            .ThenBy(x => x.Name)
             .ToList();
     }
 
@@ -23,12 +26,10 @@ internal class K8sResourceProvider(IKubernetesClientFactory kubernetesClientFact
 
         var deploymentsTask = client.AppsV1.ListDeploymentForAllNamespacesAsync();
         var loadBalancersTask = client.CoreV1.ListServiceForAllNamespacesAsync();
-        var volumesTask = client.CoreV1.ListPersistentVolumeAsync();
 
-        var (deployments, loadBalancers, volumes) = (
+        var (deployments, loadBalancers) = (
             await deploymentsTask,
-            await loadBalancersTask,
-            await volumesTask);
+            await loadBalancersTask);
 
         var resources = new List<Resource>();
 
@@ -44,11 +45,6 @@ internal class K8sResourceProvider(IKubernetesClientFactory kubernetesClientFact
                 x.Name(),
                 ResourceType.LoadBalancer,
                 x.Namespace())));
-
-        resources.AddRange(volumes.Items
-            .Select(x => new Resource(
-                x.Name(),
-                ResourceType.Volume)));
 
         return resources;
     }
