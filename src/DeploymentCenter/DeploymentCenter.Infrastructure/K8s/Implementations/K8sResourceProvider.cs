@@ -13,7 +13,7 @@ internal class K8sResourceProvider(IKubernetesClientFactory kubernetesClientFact
         var resources = await GetResourcesAsync();
 
         return resources
-            .Where(x => x.Name.Contains(phrase))
+            .Where(x => x.Name.Contains(phrase, StringComparison.InvariantCultureIgnoreCase))
             .OrderBy(x => x.Namespace)
             .ThenBy(x => x.Type)
             .ThenBy(x => x.Name)
