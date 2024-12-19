@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { Cluster } from "../../shared/models/cluster";
 import { useSearchService } from "./service/search-service";
 import { useQuery } from "@tanstack/react-query";
-import { TextField } from "@mui/material";
+import { FormControl, Input, InputLabel } from "@mui/material";
 import { SearchResults } from "./components/SearchResults";
 import { useDebounceInput } from "../../shared/hooks/debounce";
 import { useAppRouting } from "../../shared/hooks/navigation";
+import { InputVariant } from "../../shared/helpers/material-config";
+import SearchIcon from '@mui/icons-material/Search';
 
 type Props = {
   cluster: Cluster;
@@ -16,7 +18,7 @@ export function SearchResourcesInput(props: Props) {
   const navigation = useAppRouting();
   const [showResults, setShowResults] = useState(false);
   const { value, setValue } = useDebounceInput<string>("");
-  const parentRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { data: queryResult, isLoading, refetch } = useQuery({
     queryKey: ["search", value],
     queryFn: async () => {
@@ -34,30 +36,34 @@ export function SearchResourcesInput(props: Props) {
   }, [value]);
 
   return (
-    <div className="w-full relative">
-      <TextField
-        ref={parentRef}
+    <div className="w-full relative m-4">
+      <FormControl
         className="w-full"
-        onChange={e => setValue(e.target.value)}
-        onFocus={() => setShowResults(true)}
-        placeholder="Search resources"
-        autoComplete={'off'}
-      />
-      {
-        showResults && (
-          <SearchResults
-            resources={queryResult?.resources ?? []}
-            isLoading={isLoading}
-            cluster={props.cluster}
-            width={parentRef.current?.clientWidth}
-            onResourceClicked={(resource) => {
-              setShowResults(false);
-              navigation.navigateToUrl(resource.url);
-            }}
-          />
-        )
-      }
+        variant={InputVariant}
+      >
+        <InputLabel>Search</InputLabel>
+        <Input
+          ref={inputRef}
+          className="w-full"
+          onChange={e => setValue(e.target.value)}
+          autoComplete={'off'}
+          onFocus={() => setShowResults(true)}
+          onBlur={() => setTimeout(() => setShowResults(false), 200)}
+          endAdornment={<div className="p-2"><SearchIcon /></div>}
+        />
+      </FormControl>
 
+      <SearchResults
+        isParentFocused={showResults}
+        resources={queryResult?.resources ?? []}
+        isLoading={isLoading}
+        cluster={props.cluster}
+        width={inputRef.current?.clientWidth}
+        onResourceClicked={(resource) => {
+          setShowResults(false);
+          navigation.navigateToUrl(resource.url);
+        }}
+      />
     </div>
   );
 }

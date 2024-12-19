@@ -42,7 +42,7 @@ export function Navbar() {
             </div>
           </div>
 
-          {cluster && <div className="flex sm:hidden w-full"><SearchResourcesInput cluster={cluster} /></div>}
+          {cluster && <div className="flex sm:hidden w-full mt-4"><SearchResourcesInput cluster={cluster} /></div>}
         </Toolbar>
       </AppBar>
     </Box>
