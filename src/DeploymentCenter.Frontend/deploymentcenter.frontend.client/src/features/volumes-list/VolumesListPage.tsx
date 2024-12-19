@@ -21,7 +21,7 @@ export function VolumesListPage(props: Props) {
         clusterName: props.cluster.name,
         name: x.name,
         icon: VolumeIcon,
-        secondaryText: `${props.cluster.name} - ${x.path}`
+        secondaryText: <span>{`${props.cluster.name} - ${x.path}`}</span>
       } as ResourceRowModel)
     );
   };
