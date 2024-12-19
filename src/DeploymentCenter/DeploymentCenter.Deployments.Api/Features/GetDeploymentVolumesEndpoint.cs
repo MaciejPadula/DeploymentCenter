@@ -9,7 +9,7 @@ namespace DeploymentCenter.Deployments.Api.Features;
 
 internal class GetDeploymentVolumesEndpoint() : ApiGetEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    internal record Volume(string Name, string ClaimName);
+    internal record Volume(string Name, string? ClaimName);
 
     internal record GetDeploymentVolumesResponse(List<Volume> volumes);
 

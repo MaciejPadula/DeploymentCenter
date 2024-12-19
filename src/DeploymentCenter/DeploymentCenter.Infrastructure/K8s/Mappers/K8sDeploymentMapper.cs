@@ -110,5 +110,5 @@ internal class K8sDeploymentMapper : IK8sDeploymentMapper
 
     public DeploymentVolume MapVolume(V1Volume v1Volume) => new(
         v1Volume.Name,
-        v1Volume.PersistentVolumeClaim.ClaimName);
+        v1Volume.PersistentVolumeClaim?.ClaimName);
 }

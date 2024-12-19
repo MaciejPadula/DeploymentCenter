@@ -26,6 +26,6 @@ internal class GetTemplatesEndpoint() : ApiGetEndpointBase(new TemplatesApiDefin
                     .ToList()))
             .ToList();
 
-        return Results.Ok(mappedResponse);
+        return Results.Ok(new GetTemplatesResponse(mappedResponse));
     };
 }
