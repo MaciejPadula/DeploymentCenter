@@ -38,9 +38,9 @@ internal class DefaultTemplateRepository : ITemplateRepository
             Guid.NewGuid(),
             "sql-server",
             [
-                new("appName", "ApplicationName", "sql-server"),
+                new("appName", "Application Name", "sql-server"),
                 new("port", "Port", "1433"),
-                new("ipAddress", "IpAddress", "172.30.255.251"),
+                new("ipAddress", "Ip Address", "172.30.255.251"),
                 new("namespace", "Namespace", "default"),
                 new("saPassword", "SA Password", "zaq1@WSX")
             ],

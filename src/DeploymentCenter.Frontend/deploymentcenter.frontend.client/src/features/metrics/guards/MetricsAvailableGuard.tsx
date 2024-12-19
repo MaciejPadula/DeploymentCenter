@@ -3,6 +3,7 @@ import { Cluster } from "../../../shared/models/cluster";
 import useMetricsDataService from "../services/metrics-service";
 import StatisticsNotAvailable from "../components/StatisticsNotAvailable";
 import { MetricsAvailability } from "../models/metrics-availability";
+import { CircularProgress } from "@mui/material";
 
 type Props = {
   cluster: Cluster;
@@ -16,13 +17,15 @@ export function MetricsAvailableGuard(props: Props) {
     queryFn: async () => await dataService.areMetricsAvailable(),
   });
 
-  const showStatistics =
-    !isLoading && isFetched && data === MetricsAvailability.Available;
+  const isLoaded = !isLoading && isFetched;
+  const isNotLoaded = !isLoaded;
+  const showStatistics = data === MetricsAvailability.Available;
 
   return (
     <>
-      {isLoading && <div>loading</div>}
-      {showStatistics ? props.children : <StatisticsNotAvailable />}
+      {isNotLoaded && <div className="flex justify-center"><CircularProgress size={100} /></div>}
+      {isLoaded && showStatistics && props.children}
+      {isLoaded && !showStatistics && <StatisticsNotAvailable />}
     </>
   );
 }

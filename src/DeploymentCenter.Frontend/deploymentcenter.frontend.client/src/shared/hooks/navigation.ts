@@ -76,6 +76,13 @@ export function useAppRouting() {
     navigate(`/${clusterName}/${namespace}/volumes`);
   }
 
+  function templatesList(clusterName: string) {
+    if (!clusterName) {
+      return;
+    }
+    navigate(`/${clusterName}/templates`);
+  }
+
   function navigateToUrl(url: string) {
     navigate(url);
   }
@@ -98,5 +105,6 @@ export function useAppRouting() {
     namespacesList,
     reloadPage,
     volumesList,
+    templatesList,
   };
 }

@@ -1,6 +1,6 @@
 import { Unstable_Grid2 as Grid } from "@mui/material";
 import { ResourceTypeBox } from "./ResourceTypeBox";
-import { DeployIcon, NamespaceIcon, SvcIcon, VolumeIcon } from "../../../assets/icons";
+import { DeployIcon, NamespaceIcon, SvcIcon, TemplateIcon, VolumeIcon } from "../../../assets/icons";
 import { configuration } from "../../../shared/services/configuration-service";
 import { useAppRouting } from "../../../shared/hooks/navigation";
 
@@ -44,6 +44,13 @@ export function ResourceTypesGrid() {
           icon={VolumeIcon}
           text="Volumes"
           navigate={() => navigation.volumesList(config.cluster, config.namespace)}
+        />
+      </GridBox>
+      <GridBox>
+        <ResourceTypeBox
+          icon={TemplateIcon}
+          text="Templates"
+          navigate={() => navigation.templatesList(config.cluster)}
         />
       </GridBox>
     </Grid>
