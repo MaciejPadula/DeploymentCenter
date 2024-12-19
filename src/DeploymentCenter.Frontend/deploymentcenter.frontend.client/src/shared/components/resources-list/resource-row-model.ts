@@ -9,5 +9,5 @@ export interface ResourceRowModel {
   icon: string;
   clickHandler?: () => void;
   action?: ReactElement;
-  secondaryText?: string;
+  secondaryText?: ReactElement;
 }

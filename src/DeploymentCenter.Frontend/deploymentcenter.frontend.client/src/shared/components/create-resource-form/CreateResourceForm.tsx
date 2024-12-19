@@ -1,19 +1,30 @@
 import { clearLocalStorageItem } from "../../helpers/local-storage-helper";
-import { Button, Typography } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 import { ErrorBadge } from "../error/error-badge/ErrorBadge";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 
 export function CreateResourceForm(props: {
   resourceTitle: string;
-  storageKey: string;
+  storageKey?: string;
   isValid: boolean;
   onSubmit: () => Promise<void>;
   resetForm: () => void;
   children: React.ReactNode;
 }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   async function submit() {
-    await props.onSubmit();
-    clearLocalStorageItem(props.storageKey);
+    try {
+      setIsLoading(true);
+      await props.onSubmit();
+      if (props.storageKey) {
+        clearLocalStorageItem(props.storageKey);
+      }
+    }
+    finally {
+      setIsLoading(false);
+    }
   }
 
   const { mutateAsync, isError, error } = useMutation<void, Error>({
@@ -30,9 +41,12 @@ export function CreateResourceForm(props: {
         <Button
           variant="contained"
           onClick={() => mutateAsync()}
-          disabled={!props.isValid}
+          disabled={!props.isValid || isLoading}
         >
-          Submit
+          { isLoading && <CircularProgress size={20} className="mr-2" /> }
+          <span>
+            Submit
+          </span>
         </Button>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { ClusterFromUrlGuard } from "./shared/guards/ClusterFromUrlGuard";
 import { VolumesListPage } from "./features/volumes-list/VolumesListPage";
 import { loadBalancerRoutes } from "./features/load-balancer/LoadBalancerRoutes";
 import { deploymentRoutes } from "./features/deployment/DeploymentRoutes";
+import { templateRoutes } from "./features/template/TemplateRoutes";
 
 export function RouteRecords() {
   return (
@@ -19,7 +20,12 @@ export function RouteRecords() {
           {loadBalancerRoutes.map((r) => (
             <Route key={r.route} path={r.route} element={r.component} />
           ))}
+          
           {deploymentRoutes.map((r) => (
+            <Route key={r.route} path={r.route} element={r.component} />
+          ))}
+
+          {templateRoutes.map((r) => (
             <Route key={r.route} path={r.route} element={r.component} />
           ))}
 
