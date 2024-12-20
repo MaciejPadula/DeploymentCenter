@@ -1,4 +1,4 @@
-import { Unstable_Grid2 as Grid, TextField } from "@mui/material";
+import { Grid2 as Grid, TextField } from "@mui/material";
 import { PortDialog } from "./PortDialog";
 import { ExternalIpDialog } from "./ExternalIpDialog";
 import { useState } from "react";
@@ -61,7 +61,7 @@ export function LoadBalancerForm(props: Props) {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid sm={4} xs={12}>
+        <Grid size={{sm: 4, xs: 12}}>
           <TextField
             className="w-full"
             variant={InputVariant}
@@ -73,7 +73,7 @@ export function LoadBalancerForm(props: Props) {
           />
         </Grid>
 
-        <Grid sm={4} xs={12}>
+        <Grid size={{sm: 4, xs: 12}}>
           <SelectNamespace
             defaultNamespace={props.value.namespace}
             cluster={props.cluster}
@@ -83,7 +83,7 @@ export function LoadBalancerForm(props: Props) {
           />
         </Grid>
 
-        <Grid sm={4} xs={12}>
+        <Grid size={{sm: 4, xs: 12}}>
           <TextField
             className="w-full"
             variant={InputVariant}

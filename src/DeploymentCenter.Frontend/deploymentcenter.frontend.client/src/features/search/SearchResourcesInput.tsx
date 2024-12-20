@@ -36,7 +36,7 @@ export function SearchResourcesInput(props: Props) {
   }, [value]);
 
   return (
-    <div className="w-full relative m-4">
+    <div className="w-full relative py-2">
       <FormControl
         className="w-full"
         variant={InputVariant}

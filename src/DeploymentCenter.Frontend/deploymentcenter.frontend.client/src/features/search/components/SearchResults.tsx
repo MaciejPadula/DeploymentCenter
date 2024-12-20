@@ -1,8 +1,7 @@
-import { Card, CardContent, Icon, List, ListItemButton, ListItemText, ListItemIcon, ListItem, LinearProgress } from "@mui/material";
-import { SearchResource, SearchResourceType } from "../models/search-resource";
+import { Card, CardContent, LinearProgress } from "@mui/material";
+import { ResouceInSearchDetails, SearchResource } from "../models/search-resource";
 import { Cluster } from "../../../shared/models/cluster";
-import { getDeploymentUrl, getLoadBalancerUrl } from "../../../shared/services/routing-service";
-import { DeployIcon, SvcIcon } from "../../../assets/icons";
+import { SearchResourcesGroup } from "./SearchResourcesGroup";
 
 type Props = {
   cluster: Cluster;
@@ -13,30 +12,16 @@ type Props = {
   width?: number;
 }
 
-interface ResouceInSearchDetails {
-  resource: SearchResource;
-  icon: string;
-  url: string;
+function groupResources(resources: SearchResource[]) : Record<string, SearchResource[]> {
+  return resources.reduce<Record<string, SearchResource[]>>((acc, resource) => {
+    const namespace = resource.namespace ?? 'default';
+    (acc[namespace] = acc[namespace] || []).push(resource);
+    return acc;
+  }, {});
 }
 
 export function SearchResults(props: Props) {
-  function getDetails(resource: SearchResource): ResouceInSearchDetails | null {
-    switch (resource.type) {
-      case SearchResourceType.Deployment:
-        return { resource: resource, icon: DeployIcon, url: getDeploymentUrl(props.cluster.name, resource.namespace!, resource.name) };
-      case SearchResourceType.LoadBalancer:
-        return { resource: resource, icon: SvcIcon, url: getLoadBalancerUrl(props.cluster.name, resource.namespace!, resource.name) };
-      default:
-        return null;
-    }
-  }
-
-  const groupedResources = props.resources.reduce<Record<string, SearchResource[]>>((acc, fruit) => {
-    const namespace = fruit.namespace ?? 'default';
-    (acc[namespace] = acc[namespace] || []).push(fruit);
-    return acc;
-  }, {});
-
+  const groupedResources = groupResources(props.resources);
   const keys = Object.keys(groupedResources);
 
   return (
@@ -49,20 +34,14 @@ export function SearchResults(props: Props) {
         <CardContent>
           {props.isLoading && <LinearProgress />}
           {
-            groupedResources && keys.map(key => (
-              <List key={key}>
-                <div>{key.length > 0 ? key : 'Without Namespace'}</div>
-                {groupedResources[key].map(getDetails).filter(x => !!x).map(x => (
-                  <ListItem key={x.resource.name} className="!p-0">
-                    <ListItemButton onClick={() => props.onResourceClicked(x)} className="!py-0">
-                      <ListItemIcon>
-                        <Icon><img src={x.icon} /></Icon>
-                      </ListItemIcon>
-                      <ListItemText primary={x.resource.name} />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </List>
+            groupedResources && keys.map(namespace => (
+              <SearchResourcesGroup
+                key={namespace}
+                cluster={props.cluster}
+                namespace={namespace}
+                resources={groupedResources[namespace]}
+                onResourceClicked={props.onResourceClicked}
+              />
             ))
           }
         </CardContent>

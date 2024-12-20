@@ -5,6 +5,7 @@ import {
   configuration,
   deleteCluster,
 } from "../../shared/services/configuration-service";
+import { DeleteResource } from "../../shared/components/delete-resource/DeleteResource";
 
 export function ClustersList() {
   function handleClusterDeleted(clusterName: string) {
@@ -18,12 +19,11 @@ export function ClustersList() {
           key={cluster.name}
           divider={true}
           secondaryAction={
-            <IconButton
-              edge="end"
-              onClick={() => handleClusterDeleted(cluster.name)}
-            >
-              <DeleteIcon />
-            </IconButton>
+            <DeleteResource resourceName={cluster.name} onDelete={() => handleClusterDeleted(cluster.name)}>
+              <IconButton edge="end">
+                <DeleteIcon className="text-red-700" /> 
+              </IconButton>
+            </DeleteResource>
           }
         >
           <ListItemText primary={cluster.name} secondary={cluster.apiUrl} />

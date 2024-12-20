@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Cluster } from "../../../shared/models/cluster";
 import { useTemplatesDataService } from "../services/templates-data-service";
-import { Unstable_Grid2 as Grid, LinearProgress, TextField } from "@mui/material";
+import { Grid2 as Grid, LinearProgress, TextField } from "@mui/material";
 import { InputVariant } from "../../../shared/helpers/material-config";
 import { useRef } from "react";
 import { CreateResourceForm } from "../../../shared/components/create-resource-form/CreateResourceForm";
@@ -58,10 +58,7 @@ export function TemplateForm(props: Props) {
         <Grid container spacing={2}>
           {
             template.variables.map(variable => (
-              <Grid
-                sm={4}
-                xs={12}
-                key={variable.displayName}>
+              <Grid size={{ sm: 4, xs: 12 }} key={variable.displayName}>
                 <TextField
                   name={variable.name}
                   className="w-full"
