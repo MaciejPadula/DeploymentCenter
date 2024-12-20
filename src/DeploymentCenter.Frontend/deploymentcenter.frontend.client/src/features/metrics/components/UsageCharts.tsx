@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import useMetricsDataService from "../services/metrics-service";
 import { Cluster } from "../../../shared/models/cluster";
 import { getNowFormatedTime } from "../../../shared/helpers/date-helpers";
@@ -20,58 +20,52 @@ type Props = {
 export function UsageCharts(props: Props) {
   const metricsService = useMetricsDataService(props.cluster);
   const [metrics, setMetrics] = useState<TimedDeploymentMetrics[]>([]);
-  const { data: stats } = useQuery({
-    queryKey: [
-      "deploymentStatisticsLoader",
-      props.deploymentName,
-      props.namespace,
-      props.cluster.apiUrl,
-    ],
-    queryFn: async () =>
-      await metricsService.getDeploymentMetrics(
-        props.namespace,
-        props.deploymentName
-      ),
-    refetchInterval: 5000,
+  const { mutateAsync: fetchMetrics } = useMutation({
+    mutationFn: async () => await metricsService.getDeploymentMetrics(props.namespace, props.deploymentName),
   });
 
-  useEffect(() => {
-    if (stats === undefined) {
-      return;
-    }
-
+  async function loadMetrics() {
+    const result = await fetchMetrics();
     setMetrics((old) => {
       const newMetrics = [
         ...old,
         {
-          cpuUsage: stats.cpuUsage * 100,
-          memoryUsage: Math.round(stats.memoryUsage / 1024 / 1024),
+          cpuUsage: result.cpuUsage * 100,
+          memoryUsage: Math.round(result.memoryUsage / 1024 / 1024),
           timestampUtc: getNowFormatedTime(),
         },
       ];
+
       return lastElements(newMetrics, maxPointsOnChart);
     });
-  }, [stats]);
+  }
 
-  const xAxisData: XAxisData<string> = useMemo(() => {
-    return {
-      values: metrics.map((x) => x.timestampUtc),
-    };
-  }, [metrics]);
+  useEffect(() => {
+    setMetrics([]);
+  }, [props.deploymentName, props.namespace, props.cluster.name]);
 
-  const cpuChart: ChartSerie = useMemo(() => {
-    return {
-      title: "Cpu Usage [%]",
-      data: metrics.map((x) => x.cpuUsage),
-    };
-  }, [metrics]);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      await loadMetrics();
+    }, 5000);
 
-  const memoryChart: ChartSerie = useMemo(() => {
-    return {
-      title: "Memory Usage [MB]",
-      data: metrics.map((x) => x.memoryUsage),
-    };
-  }, [metrics]);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const xAxisData: XAxisData<string> = {
+    values: metrics.map((x) => x.timestampUtc),
+  };
+
+  const cpuChart: ChartSerie = {
+    title: "Cpu Usage [%]",
+    data: metrics.map((x) => x.cpuUsage),
+  };
+
+  const memoryChart: ChartSerie = {
+    title: "Memory Usage [MB]",
+    data: metrics.map((x) => x.memoryUsage),
+  };
 
   return (
     <>

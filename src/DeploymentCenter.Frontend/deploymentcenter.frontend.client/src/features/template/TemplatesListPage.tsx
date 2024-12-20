@@ -56,7 +56,7 @@ export function TemplatesListPage(props: Props) {
         secondaryText: (
           <span className="flex flex-row space-x-2 items-center">
             {
-              x.resourceTypes.map(mapTemplateResource).map(x => <TemplateResourceTypeIcon resource={x} />)
+              x.resourceTypes.map(mapTemplateResource).map(x => <TemplateResourceTypeIcon key={x.type} resource={x} />)
             }
           </span>
         ),

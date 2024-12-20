@@ -10,3 +10,9 @@ export interface SearchResource {
   type: SearchResourceType;
   namespace?: string;
 }
+
+export interface ResouceInSearchDetails {
+  resource: SearchResource;
+  icon: string;
+  url: string;
+}
