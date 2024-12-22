@@ -8,7 +8,7 @@ import {
   Skeleton,
 } from "@mui/material";
 import { useSelectNamespaceDataService } from "./select-namespace-data-service";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { InputVariant } from "../../helpers/material-config";
 import { Cluster } from "../../models/cluster";
 import Edit from "@mui/icons-material/Edit";
@@ -35,9 +35,7 @@ export function SelectNamespace(props: Props) {
 
   const isLoading = isPending || isFetching || data == undefined;
 
-  const namespaceExists = useMemo(() => {
-    return data && data.filter((x) => x.name == namespace).length > 0;
-  }, [data, namespace]);
+  const namespaceExists = data && data.filter((x) => x.name == namespace).length > 0;
 
   useEffect(() => {
     refetch();
@@ -45,7 +43,7 @@ export function SelectNamespace(props: Props) {
 
   useEffect(() => {
     if (data && !namespaceExists) {
-      props.onNamespaceChanged('');
+      props.onNamespaceChanged("");
     }
   }, [data, namespaceExists, props]);
 
@@ -82,7 +80,7 @@ export function SelectNamespace(props: Props) {
         >
           <InputLabel>Namespace</InputLabel>
           <Select
-            value={namespaceExists ? namespace : ''}
+            value={namespaceExists ? namespace : ""}
             onChange={(e) => handleNamespaceChange(e.target.value)}
           >
             {data.map((x) => (
@@ -90,7 +88,10 @@ export function SelectNamespace(props: Props) {
                 {x.name}
               </MenuItem>
             ))}
-            <MenuItem onClick={onNamespaceEdit} className="flex items-center gap-2">
+            <MenuItem
+              onClick={onNamespaceEdit}
+              className="flex items-center gap-2"
+            >
               <Edit />
               Edit Namespaces
             </MenuItem>

@@ -7,8 +7,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useMemo, useState } from "react";
 import { InputVariant } from "../../helpers/material-config";
+import { useState } from "react";
 
 type Props = {
   resourceName: string;
@@ -20,10 +20,7 @@ export function DeleteResource(props: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string>("");
 
-  const disabled = useMemo(
-    () => value !== props.resourceName,
-    [props.resourceName, value]
-  );
+  const disabled = value !== props.resourceName;
 
   function handleSave() {
     props.onDelete();

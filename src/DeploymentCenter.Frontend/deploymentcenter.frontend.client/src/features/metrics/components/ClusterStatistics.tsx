@@ -2,7 +2,6 @@ import { Skeleton, Typography } from "@mui/material";
 import { GargeChartBox } from "../../../shared/components/charts/gauge/GaugeChartBox";
 import useMetricsDataService from "../services/metrics-service";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 import { Cluster } from "../../../shared/models/cluster";
 
 interface ResourceMetrics {
@@ -35,17 +34,16 @@ export function ClusterStatistics(props: Props) {
     refetchInterval: 5000,
   });
 
-  const cpuData: ResourceMetrics = useMemo(
-    () => getResourceMetrics(metrics?.cpuUsage ?? 0, metrics?.maxCpuUsage ?? 0),
-    [metrics]
+  const cpuData: ResourceMetrics = getResourceMetrics(
+    metrics?.cpuUsage ?? 0,
+    metrics?.maxCpuUsage ?? 0
   );
-  const memoryData: ResourceMetrics = useMemo(() => {
-    const divider = 1024 * 1024;
-    return {
-      value: (metrics?.memoryUsage ?? 0) / divider,
-      maxValue: (metrics?.maxMemoryUsage ?? 0) / divider,
-    };
-  }, [metrics]);
+
+  const divider = 1024 * 1024;
+  const memoryData: ResourceMetrics = {
+    value: (metrics?.memoryUsage ?? 0) / divider,
+    maxValue: (metrics?.maxMemoryUsage ?? 0) / divider,
+  };
 
   return (
     <div className="p-4">
