@@ -7,16 +7,16 @@ import { AppLogo } from "./AppLogo";
 export function NavbarContentDesktop(props: { cluster: Cluster | undefined }) {
   return (
     <Grid container className="w-full">
-      <Grid className="self-center pr-8">
+      <Grid className="self-center" size={4}>
         <AppLogo />
       </Grid>
 
 
-      <Grid className={'self-center'} size="grow">
+      <Grid className={'self-center'} size={4}>
         {props.cluster && <SearchResourcesInput cluster={props.cluster} />}
       </Grid>
 
-      <Grid className="self-center pl-8">
+      <Grid className="self-center flex justify-end" size={4}>
         <SelectNamespaceDialog />
       </Grid>
     </Grid>
