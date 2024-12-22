@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { SelectNamespace } from "../select-namespaces/SelectNamespace";
 import { SelectClusters } from "../select-clusters/SelectClusters";
 import {
@@ -30,7 +30,7 @@ export function SelectNamespaceDialog(props: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const [cluster, setCluster] = useState<Cluster | null>(null);
 
-  const validForm = useMemo(() => cluster && !!namespaceControl && !!clusterControl, [cluster, clusterControl, namespaceControl]);
+  const validForm = cluster && !!namespaceControl && !!clusterControl;
 
   useEffect(() => {
     const cluster = configuration.value.clusters.find(

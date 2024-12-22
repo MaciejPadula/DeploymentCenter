@@ -7,7 +7,7 @@ import {
   ListItemButton,
   TextField,
 } from "@mui/material";
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useState } from "react";
 import { Cluster } from "../../shared/models/cluster";
 import { InputVariant } from "../../shared/helpers/material-config";
 import { addCluster } from "../../shared/services/configuration-service";
@@ -19,13 +19,9 @@ export function AddClusterDialog() {
   const [clusterApiUrl, setClusterApiUrl] = useState("");
   const [kubeconfig, setKubeconfig] = useState("");
 
-  const buttonDisabled = useMemo(
-    () =>
-      clusterName.length === 0 ||
-      clusterApiUrl.length === 0 ||
-      kubeconfig.length === 0,
-    [clusterName, clusterApiUrl, kubeconfig]
-  );
+  const buttonDisabled = clusterName.length === 0
+    || clusterApiUrl.length === 0
+    || kubeconfig.length === 0;
 
   const clustersDataService = useClustersDataService(clusterApiUrl);
 
@@ -88,7 +84,11 @@ export function AddClusterDialog() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button variant="contained" onClick={handleSave} disabled={buttonDisabled}>
+          <Button
+            variant="contained"
+            onClick={handleSave}
+            disabled={buttonDisabled}
+          >
             Save
           </Button>
         </DialogActions>

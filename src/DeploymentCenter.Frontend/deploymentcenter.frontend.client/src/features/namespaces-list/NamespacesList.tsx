@@ -3,7 +3,7 @@ import { ResourceRowModel, ResourcesFactory } from "../../shared/components/reso
 import { ResourcesList } from "../../shared/components/resources-list/ResourcesList";
 import { NamespaceIcon } from "../../assets/icons";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { InputVariant } from "../../shared/helpers/material-config";
 import { useQuery } from "@tanstack/react-query";
 import { DeleteResource } from "../../shared/components/delete-resource/DeleteResource";
@@ -55,9 +55,7 @@ export function NamespacesList(props: Props) {
     await refetch();
   }
 
-  const disabled = useMemo(() => {
-    return namespaceName.length === 0;
-  }, [namespaceName]);
+  const disabled = namespaceName.length === 0;
 
   async function createNamespace() {
     await dataService.createNamespace(namespaceName);

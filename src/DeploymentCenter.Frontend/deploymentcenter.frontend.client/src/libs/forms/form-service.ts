@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   getFromLocalStorage,
   setInLocalStorage,
@@ -24,16 +24,13 @@ export function useFormService<T extends FormGroup>(
     []
   );
 
-  const addValidator: AddValidatorFunction<T> = useCallback(
-    (fieldName: string, validator: ValidatorFunction<T>) => {
-      if (validators.has(fieldName)) {
-        console.warn(`Validator for field ${fieldName} already exists`);
-      }
+  const addValidator: AddValidatorFunction<T> = (fieldName: string, validator: ValidatorFunction<T>) => {
+    if (validators.has(fieldName)) {
+      console.warn(`Validator for field ${fieldName} already exists`);
+    }
 
-      validators.set(fieldName, validator as ValidatorFunction<T>);
-    },
-    [validators]
-  );
+    validators.set(fieldName, validator as ValidatorFunction<T>);
+  };
 
   const validationResult = useMemo(() => {
     const results = new Map<string, ValidationResult>();
@@ -45,9 +42,7 @@ export function useFormService<T extends FormGroup>(
     return results;
   }, [currentValue, validators]);
 
-  const isValid = useMemo(() => {
-    return Array.from(validationResult.values()).every((x) => x.isValid);
-  }, [validationResult]);
+  const isValid = Array.from(validationResult.values()).every((x) => x.isValid);
 
   useEffect(() => {
     setInLocalStorage(storageKey, currentValue);

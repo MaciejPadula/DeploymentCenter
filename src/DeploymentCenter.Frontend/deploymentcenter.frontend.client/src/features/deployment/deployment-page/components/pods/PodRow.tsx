@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Pod, PodHealth, PodHealthStatus } from "../../models/pod";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ReplicaLogs } from "./PodLogs";
 import { getHealthColor } from "../../services/pod-services";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -25,13 +25,9 @@ export function ReplicaRow(props: {
   const dataService = useDeploymentsDataService(props.cluster);
   const [accordationStatus, setAccordationStatus] = useState(false);
 
-  const podTextColor = useMemo(() => {
-    return getHealthColor(props.pod.status.health);
-  }, [props.pod.status.health]);
+  const podTextColor = getHealthColor(props.pod.status.health);
 
-  const podStatusText = useMemo(() => {
-    return getStatusText(props.pod.status);
-  }, [props.pod.status]);
+  const podStatusText = getStatusText(props.pod.status);
 
   function toggleAccordation() {
     setAccordationStatus((old) => !old);
