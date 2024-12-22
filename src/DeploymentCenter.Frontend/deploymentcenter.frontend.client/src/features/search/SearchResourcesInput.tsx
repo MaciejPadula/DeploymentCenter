@@ -19,8 +19,9 @@ export function SearchResourcesInput(props: Props) {
   const [showResults, setShowResults] = useState(false);
   const { value, setValue } = useDebounceInput<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
+  
   const { data: queryResult, isLoading, refetch } = useQuery({
-    queryKey: ["search", value],
+    queryKey: ["search", value, props.cluster.name],
     queryFn: async () => {
       if (value.length === 0) {
         return { resources: [] };

@@ -2,6 +2,7 @@ import { FormHelperText, IconButton, Typography } from "@mui/material";
 import { ChipListItem } from "./ChipListItem";
 import AddIcon from "@mui/icons-material/Add";
 import { Setter } from "../../helpers/function-helpers";
+import { ReactNode } from "react";
 
 type Props<T> = {
   dialogTitle: string;
@@ -10,7 +11,7 @@ type Props<T> = {
   toString: (value: T) => string;
   getEmptyValue: () => T;
   onChange: (value: T[]) => void;
-  dialogContentFactory: (value: T, setter: Setter<T>) => JSX.Element;
+  dialogContentFactory: (value: T, setter: Setter<T>) => ReactNode;
   error?: boolean;
   helperText?: string;
 };

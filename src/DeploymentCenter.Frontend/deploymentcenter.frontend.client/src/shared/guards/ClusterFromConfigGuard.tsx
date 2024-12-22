@@ -1,10 +1,11 @@
+import { ReactNode } from "react";
 import { Cluster } from "../models/cluster";
 import { selectedCluster } from "../services/configuration-service";
 import { ClusterGuard } from "./ClusterGuard";
 
 type Props = {
-  children: (x: Cluster) => JSX.Element;
-  notSet?: JSX.Element;
+  children: (x: Cluster) => ReactNode;
+  notSet?: ReactNode;
 };
 
 export function ClusterFromConfigGuard(props: Props) {

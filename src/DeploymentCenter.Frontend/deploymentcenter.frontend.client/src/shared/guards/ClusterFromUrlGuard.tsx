@@ -2,10 +2,11 @@ import { useParams } from "react-router-dom";
 import { Cluster } from "../models/cluster";
 import { configuration } from "../services/configuration-service";
 import { ClusterGuard } from "./ClusterGuard";
+import { ReactNode } from "react";
 
 type Props = {
-  children: (x: Cluster) => JSX.Element;
-  notSet?: JSX.Element;
+  children: (x: Cluster) => ReactNode;
+  notSet?: ReactNode;
 };
 
 export function ClusterFromUrlGuard(props: Props) {
