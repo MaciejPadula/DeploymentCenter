@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { Setter } from "../../helpers/function-helpers";
 
 type Props<T> = {
@@ -15,7 +15,7 @@ type Props<T> = {
   toString: (value: T) => string;
   onChange: (value: T) => void;
   onDelete: () => void;
-  dialogContentFactory: (value: T, setter: Setter<T>) => JSX.Element;
+  dialogContentFactory: (value: T, setter: Setter<T>) => ReactNode;
 };
 
 export function ChipListItem<T>(props: Props<T>) {

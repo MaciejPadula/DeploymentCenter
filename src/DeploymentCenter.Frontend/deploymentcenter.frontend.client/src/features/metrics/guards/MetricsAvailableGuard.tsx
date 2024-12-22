@@ -4,10 +4,11 @@ import useMetricsDataService from "../services/metrics-service";
 import StatisticsNotAvailable from "../components/StatisticsNotAvailable";
 import { MetricsAvailability } from "../models/metrics-availability";
 import { CircularProgress } from "@mui/material";
+import { ReactNode } from "react";
 
 type Props = {
   cluster: Cluster;
-  children: JSX.Element;
+  children: ReactNode;
 };
 
 export function MetricsAvailableGuard(props: Props) {
