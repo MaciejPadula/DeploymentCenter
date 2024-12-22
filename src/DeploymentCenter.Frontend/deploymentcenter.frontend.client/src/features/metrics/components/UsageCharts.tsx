@@ -41,10 +41,6 @@ export function UsageCharts(props: Props) {
   }
 
   useEffect(() => {
-    setMetrics([]);
-  }, [props.deploymentName, props.namespace, props.cluster.name]);
-
-  useEffect(() => {
     const interval = setInterval(async () => {
       await loadMetrics();
     }, 5000);
