@@ -24,7 +24,7 @@ internal class GetDeploymentMetricsHandlerTests
     {
         // Arrange
         _metricsClient.AreMetricsAvailable().Returns(true);
-        _metricsClient.GetDeploymentMetrics("namespace", "deploymentName").Returns(new CurrentUsage(4, 6));
+        _metricsClient.GetDeploymentMetrics("namespace", "deploymentName").Returns(new CurrentUsage(0.004m, 6));
         var expectedResult = new CurrentUsage(4, 6);
 
         // Act
