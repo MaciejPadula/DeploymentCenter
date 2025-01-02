@@ -32,7 +32,7 @@ In future:
 
 ## How to deploy this solution to your server?
 
-You can use docker-compose for example:
+You can use docker-compose, for example:
 ```YAML
 services:
   frontend:
@@ -53,7 +53,7 @@ services:
 API application should be placed in the same subnet with cluster that you would like to connect to.
 
 ## Setup connection process
-1. When you enter application first time you willbe informed about lack of cluster configuration.
+1. When you enter application first time, you will be informed about lack of cluster configuration.
 
 ![image](https://github.com/user-attachments/assets/55d32743-4543-4fde-8156-6b703fe0052f)
 
@@ -65,7 +65,7 @@ API application should be placed in the same subnet with cluster that you would 
 
 ![image](https://github.com/user-attachments/assets/a439b197-5f0f-4360-ad3c-e25848867625)
 
-4. After these steps you will be able to go through your cluster 😸.
+4. After these steps, you'll be able to explore your cluster 😸.
 
 ![image](https://github.com/user-attachments/assets/8a31c80e-bc40-4ba7-a079-0b91e40ef05b)
 
