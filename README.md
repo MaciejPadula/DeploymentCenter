@@ -11,6 +11,7 @@ Available Functions:
   - Read Deployment Containers and Env Variables
   - Read Volumes
   - Scale Pods Count
+  - Read Deployment Metrics in MB and cpu minutes
   - Delete
 - Load Balancers
   - Create
@@ -29,6 +30,7 @@ In future:
 - More complex and versatile AI solution
 
 ## System Architecture
+TODO
 
 ## How to deploy this solution to your server?
 
@@ -38,11 +40,11 @@ services:
   frontend:
     ports:
       - "80:8080"
-    image: "dulik65/deployment-center-frontend:202412150049"
+    image: "dulik65/deployment-center-frontend:202501021714"
   api:
     ports:
       - "8080:8080"
-    image: "dulik65/deployment-center-api:202412150049"
+    image: "dulik65/deployment-center-api:202501021714"
     environment:
     # optional
       OpenAI__Key: "..."
