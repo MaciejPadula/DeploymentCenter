@@ -30,7 +30,7 @@ export function UsageCharts(props: Props) {
       const newMetrics = [
         ...old,
         {
-          cpuUsage: result.cpuUsage * 100,
+          cpuUsage: result.cpuUsage,
           memoryUsage: Math.round(result.memoryUsage / 1024 / 1024),
           timestampUtc: getNowFormatedTime(),
         },
@@ -54,7 +54,7 @@ export function UsageCharts(props: Props) {
   };
 
   const cpuChart: ChartSerie = {
-    title: "Cpu Usage [%]",
+    title: "Cpu Usage [m]",
     data: metrics.map((x) => x.cpuUsage),
   };
 
