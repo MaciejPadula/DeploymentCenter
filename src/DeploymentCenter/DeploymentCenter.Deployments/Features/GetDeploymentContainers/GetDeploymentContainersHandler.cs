@@ -1,5 +1,5 @@
-﻿using DeploymentCenter.Deployments.Core.Models;
-using DeploymentCenter.Deployments.Features.GetDeploymentContainers.Contract;
+﻿using DeploymentCenter.Deployments.Features.GetDeploymentContainers.Contract;
+using DeploymentCenter.SharedKernel.Models;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features.GetDeploymentContainers;

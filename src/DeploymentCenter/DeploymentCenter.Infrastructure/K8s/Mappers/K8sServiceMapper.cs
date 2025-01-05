@@ -8,6 +8,8 @@ internal interface IK8sServiceMapper
     LoadBalancerBasicInfo Map(V1Service service);
     LoadBalancerDetails MapDetails(V1Service service);
     V1Service Map(LoadBalancer loadBalancer);
+    V1CronJob Map(CronJob cronJob);
+    CronJobBasicInfo Map(V1CronJob service);
 }
 
 internal class K8sServiceMapper : IK8sServiceMapper
@@ -39,6 +41,56 @@ internal class K8sServiceMapper : IK8sServiceMapper
                 ExternalIPs = loadBalancer.ExternalIps
             }
         };
+
+    public V1CronJob Map(CronJob cronJob) =>
+        new()
+        {
+            Metadata = new()
+            {
+                Name = cronJob.Name,
+                NamespaceProperty = cronJob.Namespace
+            },
+            Spec = new()
+            {
+                Schedule = cronJob.CronExpression,
+                JobTemplate = new()
+                {
+                    Spec = new()
+                    {
+                        Template = new()
+                        {
+                            Spec = new()
+                            {
+                                RestartPolicy = "Never",
+                                Containers = cronJob.Containers.Select(c => new V1Container
+                                {
+                                    Name = c.Name,
+                                    Image = c.Image,
+                                    Env = c.EnvironmentVariables.Select(e => new V1EnvVar
+                                    {
+                                        Name = e.Key,
+                                        Value = e.Value,
+                                        ValueFrom = !string.IsNullOrEmpty(e.ConfigMapName)
+                                            ? new V1EnvVarSource
+                                            {
+                                                ConfigMapKeyRef = new V1ConfigMapKeySelector
+                                                {
+                                                    Name = e.ConfigMapName,
+                                                    Key = e.Key
+                                                }
+                                            }
+                                            : null
+                                    }).ToList()
+                                }).ToList()
+                            }
+                        }
+                    }
+                },
+            }
+        };
+
+    public CronJobBasicInfo Map(V1CronJob service) =>
+        new(service.Metadata.NamespaceProperty, service.Metadata.Name, service.Spec.Schedule);
 
     public LoadBalancerDetails MapDetails(V1Service service) =>
         new(service.Metadata.NamespaceProperty,

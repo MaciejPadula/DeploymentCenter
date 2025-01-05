@@ -53,7 +53,7 @@ builder.Services.AddTemplatesModule();
 builder.Services.AddSearchModule();
 
 // Add infrastructure layer
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // Add libraries
 builder.Services.AddSharedKernelModule();

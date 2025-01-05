@@ -1,5 +1,4 @@
-﻿using DeploymentCenter.Deployments.Api.Core.Models;
-using DeploymentCenter.Deployments.Api.Features;
+﻿using DeploymentCenter.Deployments.Api.Features;
 using DeploymentCenter.Deployments.IntegrationTests.Extensions;
 using DeploymentCenter.IntegrationTests.Lib;
 using FluentAssertions;
@@ -31,7 +30,7 @@ internal class GetDeploymentPodsEndpointTests
             "test-deployment",
             "test-application",
             3,
-            [new Container(
+            [new DeploymentCenter.Api.Models.Container(
                 "test-container",
                 "test-image",
                 [new(80, 8080)],

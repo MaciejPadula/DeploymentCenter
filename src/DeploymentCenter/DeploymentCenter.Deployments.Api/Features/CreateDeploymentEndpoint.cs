@@ -4,6 +4,7 @@ using DeploymentCenter.Deployments.Api.Core;
 using DeploymentCenter.Deployments.Core.Exceptions;
 using DeploymentCenter.Deployments.Core.Models;
 using DeploymentCenter.Deployments.Features.CreateDeployment.Contract;
+using DeploymentCenter.SharedKernel.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ internal class CreateDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsE
         string Name,
         string ApplicationName,
         int Replicas,
-        List<Core.Models.Container> Containers);
+        List<DeploymentCenter.Api.Models.Container> Containers);
 
     protected override Delegate Handler => async (
         [FromBody] CreateDeploymentRequest request,

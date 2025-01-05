@@ -1,4 +1,4 @@
-﻿namespace DeploymentCenter.Deployments.Core.Models;
+﻿namespace DeploymentCenter.SharedKernel.Models;
 
 public readonly record struct EnvironmentVariable(
     string Key,

@@ -1,5 +1,4 @@
 using DeploymentCenter.Api.Framework;
-using DeploymentCenter.Deployments.Api.Core.Models;
 using DeploymentCenter.Deployments.Api.Features;
 using DeploymentCenter.Deployments.Core.Exceptions;
 using DeploymentCenter.Deployments.IntegrationTests.Extensions;
@@ -35,7 +34,7 @@ internal class CreateDeploymentTests
             "test-deployment",
             "test-application",
             3,
-            [new Container(
+            [new DeploymentCenter.Api.Models.Container(
                 "test-container",
                 "test-image",
                 [new(80, 8080)],
@@ -51,7 +50,7 @@ internal class CreateDeploymentTests
 
         var expectedContainers = new GetDeploymentContainersEndpoint.GetDeploymentContainersResponse(
         [
-            new Container(
+            new DeploymentCenter.Api.Models.Container(
                 "test-container",
                 "test-image",
                 [new(80, 8080)],
@@ -80,7 +79,7 @@ internal class CreateDeploymentTests
             "test-deployment",
             "test-application",
             0,
-            [new Container(
+            [new DeploymentCenter.Api.Models.Container(
                 "test-container",
                 "test-image",
                 [new(80, 8080)],
@@ -106,7 +105,7 @@ internal class CreateDeploymentTests
             "test-deployment",
             "test-application",
             1,
-            [new Container(
+            [new DeploymentCenter.Api.Models.Container(
                 "test-container",
                 "test-image",
                 [new(80, 8080)],

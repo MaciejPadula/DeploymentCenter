@@ -7,6 +7,7 @@ using DeploymentCenter.Deployments.Features.GetDeploymentDetails.Contract;
 using DeploymentCenter.Deployments.Features.GetDeploymentPods.Contract;
 using DeploymentCenter.Deployments.Features.GetDeploymentVolumes.Contract;
 using DeploymentCenter.SharedKernel;
+using DeploymentCenter.SharedKernel.Models;
 using FluentAssertions;
 using MediatR;
 using NSubstitute;

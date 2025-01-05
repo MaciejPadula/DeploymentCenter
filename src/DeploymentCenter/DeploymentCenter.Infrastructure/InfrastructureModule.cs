@@ -14,17 +14,27 @@ using DeploymentCenter.Search.Features.SearchResources;
 using DeploymentCenter.Security.Features.SecurePassword;
 using DeploymentCenter.Services.Features;
 using DeploymentCenter.Volumes.Features;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DeploymentCenter.Infrastructure;
 
 public static class InfrastructureModule
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        var runK8sInDebugMode = configuration.GetValue<bool>("K8s:RunInDebug");
+
         services.AddMemoryCache();
         services.AddScoped<IKubeConfigProvider, HttpContextKubeConfigProvider>();
-        services.AddScoped<IKubernetesClientFactory, KubernetesClientFactory>();
+        if (runK8sInDebugMode)
+        {
+            services.AddScoped<IKubernetesClientFactory, DebugKubernetesClientFactory>();
+        }
+        else
+        {
+            services.AddScoped<IKubernetesClientFactory, KubernetesClientFactory>();
+        }
         services.AddTransient<IServiceClient, K8sServiceClient>();
         services.AddTransient<IDeploymentClient, K8sDeploymentClient>();
         services.AddTransient<IPodClient, K8sPodClient>();

@@ -1,8 +1,8 @@
-﻿namespace DeploymentCenter.Deployments.Core.Models;
+﻿namespace DeploymentCenter.Api.Models;
 
 public record Container(
     string Name,
     string Image,
     List<ContainerPort> Ports,
     List<ContainerVolume> Volumes,
-    List<EnvironmentVariable> EnvironmentVariables);
+    List<ContainerEnvironment> EnvironmentVariables);
