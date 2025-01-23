@@ -1,8 +1,9 @@
-import { Icon, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import { Icon } from "@mui/material";
 import { ResouceInSearchDetails, SearchResource, SearchResourceType } from "../models/search-resource";
 import { DeployIcon, SvcIcon } from "../../../assets/icons";
 import { getDeploymentUrl, getLoadBalancerUrl } from "../../../shared/services/routing-service";
 import { Cluster } from "../../../shared/models/cluster";
+import { SearchList } from "./List/SearchList";
 
 type Props = {
   cluster: Cluster;
@@ -23,19 +24,15 @@ export function SearchResourcesGroup(props: Props) {
     }
   }
 
-  return (
-    <List>
-      <Typography>{props.namespace.length > 0 ? props.namespace : 'Without Namespace'}</Typography>
-      {props.resources.map(getDetails).filter(x => !!x).map(x => (
-        <ListItem divider={true} key={x.resource.name} className="!p-0">
-          <ListItemButton onClick={() => props.onResourceClicked(x)} className="!py-2">
-            <ListItemIcon>
-              <Icon><img src={x.icon} /></Icon>
-            </ListItemIcon>
-            <ListItemText primary={x.resource.name} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
-  )
+  const header = props.namespace.length > 0 ? props.namespace : 'Without Namespace';
+
+  const resources = props.resources.map(getDetails).filter(x => !!x).map(x => {
+    return {
+      name: x.resource.name,
+      icon: <Icon><img src={x.icon} /></Icon>,
+      onClick: () => props.onResourceClicked(x)
+    }
+  });
+
+  return <SearchList header={header} divider={true} items={resources} />;
 }
