@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Cluster } from "../../shared/models/cluster";
 import { useSearchService } from "./service/search-service";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +8,8 @@ import { useDebounceInput } from "../../shared/hooks/debounce";
 import { useAppRouting } from "../../shared/hooks/navigation";
 import { InputVariant } from "../../shared/helpers/material-config";
 import SearchIcon from '@mui/icons-material/Search';
+import { useLocalStorage } from "../../shared/hooks/local-storage";
+import { lastElements } from "../../shared/helpers/array-helpers";
 
 type Props = {
   cluster: Cluster;
@@ -16,10 +18,17 @@ type Props = {
 export function SearchResourcesInput(props: Props) {
   const service = useSearchService(props.cluster);
   const navigation = useAppRouting();
-  const [showResults, setShowResults] = useState(false);
+  const { value: showResults, setValue: setShowResults } = useDebounceInput(false, 100);
   const { value, setValue } = useDebounceInput<string>("");
+  const parentRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  
+  const { value: recentSearches, setValue: setRecentSearches } = useLocalStorage<string[]>('recentSearches', []);
+
+  function setLastSearches(search: string) {
+    const oldPart = recentSearches.filter(x => x !== search);
+    setRecentSearches(lastElements([...oldPart, search], 10));
+  }
+
   const { data: queryResult, isLoading, refetch } = useQuery({
     queryKey: ["search", value, props.cluster.name],
     queryFn: async () => {
@@ -27,7 +36,9 @@ export function SearchResourcesInput(props: Props) {
         return { resources: [] };
       }
 
-      return await service.search(value);
+      const response = await service.search(value);
+      setLastSearches(value);
+      return response;
     },
   });
 
@@ -35,6 +46,19 @@ export function SearchResourcesInput(props: Props) {
     refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
+
+  function focusInput() {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }
+
+  function setInput(val: string) {
+    setValue(val);
+    if (inputRef.current) {
+      inputRef.current.value = val;
+    }
+  }
 
   return (
     <div className="w-full relative py-2">
@@ -44,27 +68,39 @@ export function SearchResourcesInput(props: Props) {
       >
         <InputLabel>Search</InputLabel>
         <Input
-          ref={inputRef}
+          inputRef={inputRef}
           className="w-full"
           onChange={e => setValue(e.target.value)}
           autoComplete={'off'}
           onFocus={() => setShowResults(true)}
-          onBlur={() => setTimeout(() => setShowResults(false), 200)}
+          onBlur={() => setShowResults(false)}
           endAdornment={<div className="p-2"><SearchIcon /></div>}
         />
       </FormControl>
 
-      <SearchResults
-        isParentFocused={showResults}
-        resources={queryResult?.resources ?? []}
-        isLoading={isLoading}
-        cluster={props.cluster}
-        width={inputRef.current?.clientWidth}
-        onResourceClicked={(resource) => {
-          setShowResults(false);
-          navigation.navigateToUrl(resource.url);
-        }}
-      />
+      {
+        showResults && <SearchResults
+          query={value}
+          resources={queryResult?.resources ?? []}
+          recentSearches={recentSearches}
+          isLoading={isLoading}
+          cluster={props.cluster}
+          width={parentRef.current?.clientWidth}
+          onResourceClicked={(resource) => {
+            setInput('');
+            navigation.navigateToUrl(resource.url);
+          }}
+          onRecentSearchClicked={async (search) => {
+            setInput(search);
+            focusInput();
+          }}
+          onRemoveSearchClicked={async (search) => {
+            setRecentSearches(recentSearches.filter(x => x !== search));
+            focusInput();
+          }}
+        />
+      }
+
     </div>
   );
 }
