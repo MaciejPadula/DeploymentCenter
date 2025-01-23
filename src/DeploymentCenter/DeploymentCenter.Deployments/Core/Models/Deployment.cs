@@ -1,4 +1,6 @@
-﻿namespace DeploymentCenter.Deployments.Core.Models;
+﻿using DeploymentCenter.SharedKernel.Models;
+
+namespace DeploymentCenter.Deployments.Core.Models;
 
 public record Deployment(
     string Namespace,

@@ -9,25 +9,26 @@ import { VolumesListPage } from "./features/volumes-list/VolumesListPage";
 import { loadBalancerRoutes } from "./features/load-balancer/LoadBalancerRoutes";
 import { deploymentRoutes } from "./features/deployment/DeploymentRoutes";
 import { templateRoutes } from "./features/template/TemplateRoutes";
+import { cronJobsRoutes } from "./features/cron-jobs/CronJobsRoutes";
+import { RouteDefinition } from "./shared/models/route-definition";
 
 export function RouteRecords() {
+  function renderRoutes(routes: RouteDefinition[]) {
+    return routes.map((r) => (
+      <Route key={r.route} path={r.route} element={r.component} />
+    ));
+  }
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<MainPage />} />
 
-          {loadBalancerRoutes.map((r) => (
-            <Route key={r.route} path={r.route} element={r.component} />
-          ))}
-          
-          {deploymentRoutes.map((r) => (
-            <Route key={r.route} path={r.route} element={r.component} />
-          ))}
-
-          {templateRoutes.map((r) => (
-            <Route key={r.route} path={r.route} element={r.component} />
-          ))}
+          {renderRoutes(loadBalancerRoutes)}
+          {renderRoutes(deploymentRoutes)}
+          {renderRoutes(templateRoutes)}
+          {renderRoutes(cronJobsRoutes)}
 
           <Route path="clusters-configuration" element={<ClustersList />} />
 

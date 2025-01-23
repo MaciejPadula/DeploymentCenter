@@ -1,5 +1,6 @@
 ﻿using DeploymentCenter.Deployments.Core.Models;
 using DeploymentCenter.Deployments.Features.GetDeploymentVolumes.Contract;
+using DeploymentCenter.SharedKernel.Models;
 using k8s.Models;
 
 namespace DeploymentCenter.Infrastructure.K8s.Mappers;

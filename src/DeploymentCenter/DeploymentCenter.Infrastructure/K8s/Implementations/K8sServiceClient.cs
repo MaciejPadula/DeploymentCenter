@@ -92,4 +92,35 @@ internal class K8sServiceClient(
         return services.Items
             .Where(x => x.Spec.Type == LoadBalancerKey && (string.IsNullOrEmpty(loadBalancerName) || x.Metadata.Name == loadBalancerName));
     }
+
+    public async Task CreateCronJob(CronJob cronJob)
+    {
+        using var client = kubernetesClientFactory.GetClient();
+
+        await client.BatchV1.CreateNamespacedCronJobAsync(
+            serviceMapper.Map(cronJob),
+            cronJob.Namespace);
+    }
+
+    public async Task<List<CronJobBasicInfo>> GetCronJobsBasicInfos(string @namespace)
+    {
+        using var client = kubernetesClientFactory.GetClient();
+        var result = await client.BatchV1.ListNamespacedCronJobAsync(@namespace);
+
+        return result.Items
+            .Select(serviceMapper.Map)
+            .ToList();
+    }
+
+    public async Task<CronJobDetails?> GetCronJobDetails(string @namespace, string cronJobName)
+    {
+        using var client = kubernetesClientFactory.GetClient();
+        var cronJob = await client.BatchV1.ReadNamespacedCronJobAsync(cronJobName, @namespace);
+        if (cronJob is null)
+        {
+            return null;
+        }
+
+        return serviceMapper.MapDetails(cronJob);
+    }
 }

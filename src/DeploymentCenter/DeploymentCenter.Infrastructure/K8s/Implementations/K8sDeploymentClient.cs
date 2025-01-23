@@ -3,6 +3,7 @@ using DeploymentCenter.Deployments.Features;
 using DeploymentCenter.Deployments.Features.GetDeploymentVolumes.Contract;
 using DeploymentCenter.Infrastructure.K8s.Client;
 using DeploymentCenter.Infrastructure.K8s.Mappers;
+using DeploymentCenter.SharedKernel.Models;
 using Json.Patch;
 using k8s;
 using k8s.Autorest;

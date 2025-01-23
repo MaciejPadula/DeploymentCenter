@@ -1,5 +1,4 @@
-﻿using DeploymentCenter.Deployments.Api.Core.Models;
-using DeploymentCenter.Deployments.Api.Features;
+﻿using DeploymentCenter.Deployments.Api.Features;
 using DeploymentCenter.Deployments.IntegrationTests.Extensions;
 using DeploymentCenter.IntegrationTests.Lib;
 using FluentAssertions;
@@ -33,7 +32,7 @@ internal class SetEnvironmentVariablesTests
             "test-deployment",
             "test-application",
             3,
-            [new Container(
+            [new DeploymentCenter.Api.Models.Container(
                 "test-container",
                 "test-image",
                 [new(80, 8080)],
@@ -42,7 +41,7 @@ internal class SetEnvironmentVariablesTests
 
         await _sut.CreateDeployment(deployment);
 
-        var expectedEnvVariables = new List<ContainerEnvironment>
+        var expectedEnvVariables = new List<DeploymentCenter.Api.Models.ContainerEnvironment>
         {
             new("test-key", "test-value", null),
             new("test-key2", "test-value2", null)

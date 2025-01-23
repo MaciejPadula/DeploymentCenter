@@ -1,9 +1,8 @@
-﻿using DeploymentCenter.Deployments.Core.Models;
-using DeploymentCenter.Deployments.Features;
-using DeploymentCenter.Infrastructure.K8s.Client;
+﻿using DeploymentCenter.Infrastructure.K8s.Client;
 using DeploymentCenter.Infrastructure.K8s.Mappers;
+using DeploymentCenter.Pods.Core.Models;
+using DeploymentCenter.Pods.Features;
 using k8s;
-using k8s.Models;
 
 namespace DeploymentCenter.Infrastructure.K8s.Implementations;
 
@@ -29,12 +28,12 @@ internal class K8sPodClient(
         return string.Empty;
     }
 
-    public async Task<List<Pod>> GetPods(string @namespace, string deploymentName)
+    public async Task<List<Pod>> GetPods(string @namespace, string namePrefix)
     {
         using var client = kubernetesClientFactory.GetClient();
         var pods = await client.CoreV1.ListNamespacedPodAsync(@namespace);
         return pods?.Items?
-            .Where(x => x.Metadata.Name.StartsWith(deploymentName))
+            .Where(x => x.Metadata.Name.StartsWith(namePrefix))
             .Select(k8SPodMapper.Map)
             .ToList() ?? [];
     }

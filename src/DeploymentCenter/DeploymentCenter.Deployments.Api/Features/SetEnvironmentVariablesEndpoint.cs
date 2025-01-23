@@ -1,8 +1,7 @@
 ﻿using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Deployments.Api.Core;
-using DeploymentCenter.Deployments.Api.Core.Models;
-using DeploymentCenter.Deployments.Core.Models;
 using DeploymentCenter.Deployments.Features.SetEnvironmentVariables.Contract;
+using DeploymentCenter.SharedKernel.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +13,7 @@ internal class SetEnvironmentVariablesEndpoint() : ApiPostEndpointBase(new Deplo
         string Namespace,
         string DeploymentName,
         string ContainerName,
-        List<ContainerEnvironment> EnvironmentVariables);
+        List<DeploymentCenter.Api.Models.ContainerEnvironment> EnvironmentVariables);
 
     protected override Delegate Handler => async (
         [FromBody] SetEnvironmentVariablesRequest request,

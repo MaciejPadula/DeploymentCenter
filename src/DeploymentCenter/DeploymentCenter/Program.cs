@@ -9,6 +9,8 @@ using DeploymentCenter.Metrics;
 using DeploymentCenter.Metrics.Api;
 using DeploymentCenter.Namespaces;
 using DeploymentCenter.Namespaces.Api;
+using DeploymentCenter.Pods;
+using DeploymentCenter.Pods.Api;
 using DeploymentCenter.Search;
 using DeploymentCenter.Search.Api;
 using DeploymentCenter.Security;
@@ -30,6 +32,7 @@ builder.Services.AddCors();
 builder.Services.AddHttpContextAccessor();
 
 // Add presentation layer
+builder.Services.RegisterPodsEndpoints();
 builder.Services.RegisterDeploymentsEndpoints();
 builder.Services.RegisterServicesEndpoints();
 builder.Services.RegisterNamespacesEndpoints();
@@ -41,6 +44,7 @@ builder.Services.RegisterTemplatesEndpoints();
 builder.Services.RegisterSearchEndpoints();
 
 // Add application layer
+builder.Services.AddPodsModule();
 builder.Services.AddDeploymentsModule();
 builder.Services.AddServicesModule();
 builder.Services.AddNamespacesModule();
@@ -53,7 +57,7 @@ builder.Services.AddTemplatesModule();
 builder.Services.AddSearchModule();
 
 // Add infrastructure layer
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // Add libraries
 builder.Services.AddSharedKernelModule();

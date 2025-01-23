@@ -1,6 +1,7 @@
 ﻿using DeploymentCenter.Deployments.Core.Models;
 using DeploymentCenter.Deployments.Features.CreateDeployment.Contract;
 using DeploymentCenter.SharedKernel;
+using DeploymentCenter.SharedKernel.Models;
 using DeploymentCenter.Templates.Core.Models;
 using MediatR;
 

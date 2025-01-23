@@ -4,8 +4,8 @@ using DeploymentCenter.Assistant.Core.Extensions;
 using DeploymentCenter.Deployments.Features.AnalyzeDeployment.Contract;
 using DeploymentCenter.Deployments.Features.GetDeploymentContainers.Contract;
 using DeploymentCenter.Deployments.Features.GetDeploymentDetails.Contract;
-using DeploymentCenter.Deployments.Features.GetDeploymentPods.Contract;
 using DeploymentCenter.Deployments.Features.GetDeploymentVolumes.Contract;
+using DeploymentCenter.Pods.Features.GetPods.Contract;
 using DeploymentCenter.SharedKernel;
 using MediatR;
 using System.Text.Json;
@@ -18,7 +18,7 @@ internal class AnalyzeDeploymentHandler(IMediator mediator) : IRequestHandler<An
     {
         var deploymentDetails = mediator.Send(new GetDeploymentDetailsQuery(request.Namespace, request.DeploymentName), cancellationToken);
         var containers = mediator.Send(new GetDeploymentContainersQuery(request.Namespace, request.DeploymentName), cancellationToken);
-        var deploymentPods = mediator.Send(new GetDeploymentPodsQuery(request.Namespace, request.DeploymentName), cancellationToken);
+        var deploymentPods = mediator.Send(new GetPodsQuery(request.Namespace, request.DeploymentName), cancellationToken);
         var deploymentVolumes = mediator.Send(new GetDeploymentVolumesQuery(request.Namespace, request.DeploymentName), cancellationToken);
 
         var deploymentJson = JsonSerializer.Serialize(await deploymentDetails);
