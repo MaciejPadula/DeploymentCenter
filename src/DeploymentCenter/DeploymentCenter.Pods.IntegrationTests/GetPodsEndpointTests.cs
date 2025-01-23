@@ -5,7 +5,7 @@ using static DeploymentCenter.Deployments.Api.Features.GetPodsEndpoint;
 
 namespace DeploymentCenter.Deployments.IntegrationTests;
 
-internal class GetDeploymentPodsEndpointTests
+internal class GetPodsEndpointTests
 {
     private SystemUnderTest _sut;
 
@@ -22,7 +22,7 @@ internal class GetDeploymentPodsEndpointTests
     }
 
     [Test]
-    public async Task GetDeploymentPods_WhenDeploymentIsCreated_ShouldReturnPods()
+    public async Task GetPods_WhenDeploymentIsCreated_ShouldReturnPods()
     {
         // Arrange
         var deployment = new CreateDeploymentEndpoint.CreateDeploymentRequest(
@@ -40,12 +40,11 @@ internal class GetDeploymentPodsEndpointTests
         await _sut.PostAsync("/api/Deployments/CreateDeployment", deployment);
 
         // Act
-        var response = await _sut.GetAsync<GetPodsResponse>($"/api/Deployments/GetDeploymentPods?namespace=default&deploymentName=test-deployment");
+        var response = await _sut.GetAsync<GetPodsResponse>($"/api/Pods/GetPods?namespace=default&namePrefix=test-deployment");
 
         // Assert
         response.Should().NotBeNull();
         response?.Pods.Should().NotBeEmpty();
         response?.Pods.Count.Should().Be(3);
-
     }
 }
