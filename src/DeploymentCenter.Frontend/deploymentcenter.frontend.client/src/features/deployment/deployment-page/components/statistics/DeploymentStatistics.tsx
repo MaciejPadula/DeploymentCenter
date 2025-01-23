@@ -19,7 +19,7 @@ export function DeploymentStatistics(props: Props) {
   const { data: pods } = useQuery({
     queryKey: [`podsLoader-${props.deploymentName}-${props.namespace}`],
     queryFn: async () =>
-      await dataService.getDeploymentPods(
+      await dataService.getPods(
         props.namespace,
         props.deploymentName
       ),
