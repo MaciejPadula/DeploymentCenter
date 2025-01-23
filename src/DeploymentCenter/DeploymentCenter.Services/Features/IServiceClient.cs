@@ -7,6 +7,7 @@ public interface IServiceClient
     Task CreateLoadBalancer(LoadBalancer loadBalancer);
     Task CreateCronJob(CronJob cronJob);
     Task<List<CronJobBasicInfo>> GetCronJobsBasicInfos(string @namespace);
+    Task<CronJobDetails?> GetCronJobDetails(string @namespace, string cronJobName);
     Task<List<string>> GetLoadBalancerIpAddresses(string @namespace, string loadBalancerName);
     Task<LoadBalancerDetails?> GetLoadBalancerDetails(string @namespace, string loadBalancerName);
     Task<List<LoadBalancerPort>> GetLoadBalancerPorts(string @namespace, string loadBalancerName);

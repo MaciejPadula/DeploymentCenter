@@ -1,6 +1,6 @@
 import { Grid2 as Grid } from "@mui/material";
 import { ResourceTypeBox } from "./ResourceTypeBox";
-import { DeployIcon, NamespaceIcon, SvcIcon, TemplateIcon, VolumeIcon } from "../../../assets/icons";
+import { CronJobIcon, DeployIcon, NamespaceIcon, SvcIcon, TemplateIcon, VolumeIcon } from "../../../assets/icons";
 import { configuration } from "../../../shared/services/configuration-service";
 import { useAppRouting } from "../../../shared/hooks/navigation";
 
@@ -23,6 +23,13 @@ export function ResourceTypesGrid() {
           icon={DeployIcon}
           text="Deployments"
           navigate={() => navigation.deploymentList(config.cluster, config.namespace)}
+        />
+      </GridBox>
+      <GridBox>
+        <ResourceTypeBox
+          icon={CronJobIcon}
+          text="Cron Jobs"
+          navigate={() => navigation.cronJobsList(config.cluster, config.namespace)}
         />
       </GridBox>
       <GridBox>

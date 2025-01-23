@@ -9,10 +9,12 @@ namespace DeploymentCenter.Services.Api.Features;
 
 internal class GetCronJobsListEndpoint() : ApiGetEndpointBase(new ServicesEndpointInfoFactory())
 {
-    internal readonly record struct GetCronJobsListResponse(
+    internal readonly record struct CronJob(
         string Namespace,
-        string CronJobName,
+        string Name,
         string CronExpression);
+
+    private record GetCronJobsListResponse(List<CronJob> CronJobs);
 
     protected override Delegate Handler => async (
         [FromQuery] string @namespace,
@@ -22,10 +24,10 @@ internal class GetCronJobsListEndpoint() : ApiGetEndpointBase(new ServicesEndpoi
         var cronJobsList = await mediator.Send(new GetCronJobsListQuery(@namespace), cancellationToken);
 
         var mappedResult = cronJobsList
-            .Select(cronJob => new GetCronJobsListResponse(cronJob.Namespace, cronJob.Name, cronJob.CronExpression))
+            .Select(cronJob => new CronJob(cronJob.Namespace, cronJob.Name, cronJob.CronExpression))
             .ToList();
 
-        return Results.Ok(mappedResult);
+        return Results.Ok(new GetCronJobsListResponse(mappedResult));
     };
 }
 

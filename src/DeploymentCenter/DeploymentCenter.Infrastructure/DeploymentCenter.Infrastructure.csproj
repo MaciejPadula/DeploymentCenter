@@ -21,6 +21,7 @@
     <ProjectReference Include="..\DeploymentCenter.Deployments\DeploymentCenter.Deployments.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Metrics\DeploymentCenter.Metrics.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Namespaces\DeploymentCenter.Namespaces.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Pods\DeploymentCenter.Pods.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Search\DeploymentCenter.Search.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Security\DeploymentCenter.Security.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Services\DeploymentCenter.Services.csproj" />

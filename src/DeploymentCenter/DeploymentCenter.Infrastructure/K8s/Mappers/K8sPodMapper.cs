@@ -1,4 +1,4 @@
-﻿using DeploymentCenter.Deployments.Core.Models;
+﻿using DeploymentCenter.Pods.Core.Models;
 using k8s.Models;
 
 namespace DeploymentCenter.Infrastructure.K8s.Mappers;
@@ -32,8 +32,12 @@ internal class K8sPodMapper : IK8sPodMapper
 
         if (state?.Terminated is not null)
         {
+            var status = state.Terminated.ExitCode == 0
+                ? PodHealth.Completed
+                : PodHealth.Terminated;
+
             return new PodStatus(
-                PodHealth.Terminated,
+                status,
                 state.Terminated.Reason,
                 state.Terminated.Reason);
         }

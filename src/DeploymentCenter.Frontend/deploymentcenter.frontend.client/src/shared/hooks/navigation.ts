@@ -30,6 +30,17 @@ export function useAppRouting() {
     navigate(`/${clusterName}/${namespace}/deployments/${deploymentName}`);
   }
 
+  function cronJobPage(
+    clusterName: string,
+    namespace: string,
+    cronJobName: string
+  ) {
+    if (!clusterName || !namespace || !cronJobName) {
+      return;
+    }
+    navigate(`/${clusterName}/${namespace}/cron-jobs/${cronJobName}`);
+  }
+
   function loadBalancerPage(
     clusterName: string,
     namespace: string,
@@ -106,5 +117,6 @@ export function useAppRouting() {
     reloadPage,
     volumesList,
     templatesList,
+    cronJobPage,
   };
 }

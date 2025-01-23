@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DeploymentCenter.AIChat\DeploymentCenter.AIChat.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Deployments\DeploymentCenter.Deployments.csproj" />
+    <ProjectReference Include="..\DeploymentCenter.Pods\DeploymentCenter.Pods.csproj" />
     <ProjectReference Include="..\DeploymentCenter.Services\DeploymentCenter.Services.csproj" />
     <ProjectReference Include="..\DeploymentCenter.SharedKernel\DeploymentCenter.SharedKernel.csproj" />
   </ItemGroup>

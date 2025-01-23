@@ -10,6 +10,7 @@ internal interface IK8sServiceMapper
     V1Service Map(LoadBalancer loadBalancer);
     V1CronJob Map(CronJob cronJob);
     CronJobBasicInfo Map(V1CronJob service);
+    CronJobDetails MapDetails(V1CronJob service);
 }
 
 internal class K8sServiceMapper : IK8sServiceMapper
@@ -90,6 +91,9 @@ internal class K8sServiceMapper : IK8sServiceMapper
         };
 
     public CronJobBasicInfo Map(V1CronJob service) =>
+        new(service.Metadata.NamespaceProperty, service.Metadata.Name, service.Spec.Schedule);
+
+    public CronJobDetails MapDetails(V1CronJob service) =>
         new(service.Metadata.NamespaceProperty, service.Metadata.Name, service.Spec.Schedule);
 
     public LoadBalancerDetails MapDetails(V1Service service) =>

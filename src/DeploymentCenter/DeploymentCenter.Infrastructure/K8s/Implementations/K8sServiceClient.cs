@@ -105,10 +105,22 @@ internal class K8sServiceClient(
     public async Task<List<CronJobBasicInfo>> GetCronJobsBasicInfos(string @namespace)
     {
         using var client = kubernetesClientFactory.GetClient();
-        var list = await client.BatchV1.ListNamespacedCronJobAsync(@namespace);
+        var result = await client.BatchV1.ListNamespacedCronJobAsync(@namespace);
 
-        return list.Items
+        return result.Items
             .Select(serviceMapper.Map)
             .ToList();
+    }
+
+    public async Task<CronJobDetails?> GetCronJobDetails(string @namespace, string cronJobName)
+    {
+        using var client = kubernetesClientFactory.GetClient();
+        var cronJob = await client.BatchV1.ReadNamespacedCronJobAsync(cronJobName, @namespace);
+        if (cronJob is null)
+        {
+            return null;
+        }
+
+        return serviceMapper.MapDetails(cronJob);
     }
 }

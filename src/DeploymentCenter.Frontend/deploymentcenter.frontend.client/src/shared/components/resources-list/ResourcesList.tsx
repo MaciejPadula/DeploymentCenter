@@ -36,8 +36,6 @@ export function ResourcesList(props: Props) {
           </div>
         )}
 
-      {isLoading && <LinearProgress />}
-
       {props.setupResource && (
         <Button
           onClick={() => props.setupResource?.clickHandler()}
@@ -46,6 +44,8 @@ export function ResourcesList(props: Props) {
           {props.setupResource.title}
         </Button>
       )}
+
+      {isLoading && <LinearProgress />}
 
       {!isLoading && props.showIfEmpty !== false && data.length === 0 && (
         <NoElementsToDisplay />

@@ -4,8 +4,9 @@ using DeploymentCenter.Deployments.Features.AnalyzeDeployment;
 using DeploymentCenter.Deployments.Features.AnalyzeDeployment.Contract;
 using DeploymentCenter.Deployments.Features.GetDeploymentContainers.Contract;
 using DeploymentCenter.Deployments.Features.GetDeploymentDetails.Contract;
-using DeploymentCenter.Deployments.Features.GetDeploymentPods.Contract;
 using DeploymentCenter.Deployments.Features.GetDeploymentVolumes.Contract;
+using DeploymentCenter.Pods.Core.Models;
+using DeploymentCenter.Pods.Features.GetPods.Contract;
 using DeploymentCenter.SharedKernel;
 using DeploymentCenter.SharedKernel.Models;
 using FluentAssertions;
@@ -39,7 +40,7 @@ internal class AnalyzeDeploymentHandlerTests
         var chatHistory = "testChatHistory";
         _mediator.Send(Arg.Any<GetDeploymentDetailsQuery>(), ct).Returns(deploymentDetails);
         _mediator.Send(Arg.Any<GetDeploymentContainersQuery>(), ct).Returns(containers);
-        _mediator.Send(Arg.Any<GetDeploymentPodsQuery>(), ct).Returns(deploymentPods);
+        _mediator.Send(Arg.Any<GetPodsQuery>(), ct).Returns(deploymentPods);
         _mediator.Send(Arg.Any<GetDeploymentVolumesQuery>(), ct).Returns(deploymentVolumes);
         _mediator.Send(Arg.Any<CompleteChatQuery>(), ct).Returns(Result<string>.OnSuccess(chatHistory));
 
@@ -51,7 +52,7 @@ internal class AnalyzeDeploymentHandlerTests
         {
             _mediator.Send(Arg.Any<GetDeploymentDetailsQuery>(), ct);
             _mediator.Send(Arg.Any<GetDeploymentContainersQuery>(), ct);
-            _mediator.Send(Arg.Any<GetDeploymentPodsQuery>(), ct);
+            _mediator.Send(Arg.Any<GetPodsQuery>(), ct);
             _mediator.Send(Arg.Any<GetDeploymentVolumesQuery>(), ct);
             _mediator.Send(Arg.Any<CompleteChatQuery>(), ct);
         });

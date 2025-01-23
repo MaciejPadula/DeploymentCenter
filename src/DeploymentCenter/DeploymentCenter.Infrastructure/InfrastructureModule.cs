@@ -9,6 +9,7 @@ using DeploymentCenter.Infrastructure.OpenAI;
 using DeploymentCenter.Infrastructure.Security;
 using DeploymentCenter.Metrics.Features;
 using DeploymentCenter.Namespaces.Features;
+using DeploymentCenter.Pods.Features;
 using DeploymentCenter.Search.Features.IndexResources;
 using DeploymentCenter.Search.Features.SearchResources;
 using DeploymentCenter.Security.Features.SecurePassword;

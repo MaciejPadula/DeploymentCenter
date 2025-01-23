@@ -1,7 +1,6 @@
 import { Deployment } from "../deployments-list/models/deployment";
 import { DeploymentVolume } from "../deployment-page/models/deployment-volume";
 import { DeploymentDetails } from "../deployment-page/deployment-details";
-import { Pod } from "../deployment-page/models/pod";
 import { Container } from "../deployment-page/models/container";
 import { HttpClient } from "../../../shared/services/http-client";
 import { Cluster } from "../../../shared/models/cluster";
@@ -29,20 +28,6 @@ function DeploymentsDataService(httpClient: HttpClient) {
     );
   }
 
-  interface GetDeploymentPodsResponse {
-    pods: Pod[];
-  }
-
-  async function getDeploymentPods(
-    namespace: string,
-    deploymentName: string
-  ): Promise<Pod[]> {
-    const response = await httpClient.get<GetDeploymentPodsResponse>(
-      `/${controller}/GetDeploymentPods?namespace=${namespace}&deploymentName=${deploymentName}`
-    );
-    return response.pods;
-  }
-
   interface GetDeploymentContainersResponse {
     containers: Container[];
   }
@@ -55,20 +40,6 @@ function DeploymentsDataService(httpClient: HttpClient) {
       `/${controller}/GetDeploymentContainers?namespace=${namespace}&deploymentName=${deploymentName}`
     );
     return response.containers;
-  }
-
-  interface GetPodLogs {
-    logText: string;
-  }
-
-  async function getPodLogs(
-    namespace: string,
-    podName: string
-  ): Promise<string> {
-    const response = await httpClient.get<GetPodLogs>(
-      `/${controller}/GetPodLogs?namespace=${namespace}&podName=${podName}`
-    );
-    return response.logText;
   }
 
   async function restartDeployment(namespace: string, deploymentName: string) {
@@ -95,13 +66,6 @@ function DeploymentsDataService(httpClient: HttpClient) {
       deploymentName: deploymentName,
       replicasCount: replicasCount,
     });
-  }
-
-  async function removePod(namespace: string, podName: string) {
-    await httpClient.post(
-      `/${controller}/RemovePod?namespace=${namespace}&podName=${podName}`,
-      null
-    );
   }
 
   interface GetDeploymentVolumesResponse {
@@ -152,13 +116,10 @@ function DeploymentsDataService(httpClient: HttpClient) {
   return {
     getDeployments,
     getDeploymentDetails,
-    getDeploymentPods,
     getDeploymentContainers,
-    getPodLogs,
     restartDeployment,
     removeDeployment,
     scaleDeployment,
-    removePod,
     getDeploymentVolumes,
     connectToVolume,
     createDeployment,

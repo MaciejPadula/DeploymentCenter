@@ -13,9 +13,9 @@ import useDeploymentsDataService from "./service/deployments-data-service";
 import { createSummary } from "./deployment-page/details-factory";
 import { DeploymentToolbar } from "./deployment-page/components/toolbar/DeploymentToolbar";
 import { DeploymentStatistics } from "./deployment-page/components/statistics/DeploymentStatistics";
-import { ReplicasList } from "./deployment-page/components/pods/PodsList";
 import { ContainersList } from "./deployment-page/components/containers/ContainersList";
 import { Volumes } from "./deployment-page/components/volumes/Volumes";
+import { PodsList } from "../pods/components/PodsList";
 
 type Props = {
   cluster: Cluster;
@@ -73,9 +73,9 @@ export function DeploymentPage(props: Props) {
             deploymentName={deploymentName}
             namespace={namespace}
           />
-          <ReplicasList
+          <PodsList
             cluster={props.cluster}
-            deploymentName={deploymentName}
+            namePrefix={deploymentName}
             namespace={namespace}
           />
           <ContainersList

@@ -2,11 +2,11 @@ import { CircularProgress, Paper, Typography } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 import { useQuery } from "@tanstack/react-query";
 import { UsageCharts } from "../../../../metrics/components/UsageCharts";
-import { groupPodsByHealth } from "../../services/pod-services";
-import { PodHealthStatus } from "../../models/pod";
-import useDeploymentsDataService from "../../../service/deployments-data-service";
+import { groupPodsByHealth } from "../../../../pods/services/pod-services";
+import { PodHealthStatus } from "../../../../pods/models/pod";
 import { Cluster } from "../../../../../shared/models/cluster";
 import { MetricsAvailableGuard } from "../../../../metrics/guards/MetricsAvailableGuard";
+import usePodsDataService from "../../../../pods/services/pods-data-service";
 
 type Props = {
   cluster: Cluster;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export function DeploymentStatistics(props: Props) {
-  const dataService = useDeploymentsDataService(props.cluster);
+  const dataService = usePodsDataService(props.cluster);
   const { data: pods } = useQuery({
     queryKey: [`podsLoader-${props.deploymentName}-${props.namespace}`],
     queryFn: async () =>
