@@ -1,6 +1,5 @@
 ﻿using DeploymentCenter.AIChat.Features;
 using DeploymentCenter.Deployments.Features;
-using DeploymentCenter.Infrastructure.Elastic;
 using DeploymentCenter.Infrastructure.Http;
 using DeploymentCenter.Infrastructure.K8s.Client;
 using DeploymentCenter.Infrastructure.K8s.Implementations;
@@ -10,7 +9,6 @@ using DeploymentCenter.Infrastructure.Security;
 using DeploymentCenter.Metrics.Features;
 using DeploymentCenter.Namespaces.Features;
 using DeploymentCenter.Pods.Features;
-using DeploymentCenter.Search.Features.IndexResources;
 using DeploymentCenter.Search.Features.SearchResources;
 using DeploymentCenter.Security.Features.SecurePassword;
 using DeploymentCenter.Services.Features;
@@ -45,10 +43,7 @@ public static class InfrastructureModule
         services.AddTransient<IK8sDeploymentMapper, K8sDeploymentMapper>();
         services.AddTransient<IK8sPodMapper, K8sPodMapper>();
         services.AddTransient<IVolumeClient, K8sVolumeClient>();
-
-        services.AddTransient<IResourceProvider, K8sResourceProvider>();
         services.AddTransient<ISearchQueryExecutor, K8sResourceProvider>();
-        services.AddTransient<IResourceIndexer, ElasticResourceIndexer>();
 
         services.AddTransient<IKubeConfigDecoder, Base64PasswordSecurity>();
         services.AddTransient<IPasswordSecurity, Base64PasswordSecurity>();
