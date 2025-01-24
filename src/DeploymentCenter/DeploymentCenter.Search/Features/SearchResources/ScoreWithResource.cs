@@ -2,7 +2,6 @@
 
 namespace DeploymentCenter.Search.Features.SearchResources;
 
-public interface ISearchQueryExecutor
-{
-    Task<List<Resource>> QueryAllResources();
-}
+internal record ScoreWithResource(
+    Resource Resource,
+    int SearchScore);
