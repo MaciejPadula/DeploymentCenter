@@ -29,11 +29,11 @@ internal class SearchResourcesEndpoint() : ApiGetEndpointBase(new SearchApiDefin
     {
         var result = await mediator.Send(new SearchResourcesQuery(query), cancellationToken);
         var mappedResult = result
-        .ToDictionary(
-            x => x.Key,
-            x => x.Value
-                .Select(x => new Resource(x.Name, x.Namespace, MapType(x.Type)))
-                .ToList());
+            .ToDictionary(
+                x => x.Key,
+                x => x.Value
+                    .Select(x => new Resource(x.Name, x.Namespace, MapType(x.Type)))
+                    .ToList());
         return Results.Ok(new SearchResourcesResponse(mappedResult));
     };
 

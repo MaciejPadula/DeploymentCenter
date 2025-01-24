@@ -42,6 +42,7 @@ internal class FuzzySearchScoreCalculatorTests
     [TestCase("deploy", 100)]
     [TestCase("test-name-deplyo", 94)]
     [TestCase("test-name-dloy", 86)]
+    [TestCase("dasdasd", 29)]
     public void CalculateScore_WhenQueryPhraseAndResourcePassed_ShouldReturnScoreWithResource(string queryPhrase, int expectedScore)
     {
         // Arrange

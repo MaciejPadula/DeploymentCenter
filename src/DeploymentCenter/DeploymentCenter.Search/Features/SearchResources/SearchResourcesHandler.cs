@@ -1,6 +1,5 @@
 ﻿using DeploymentCenter.Search.Core.Models;
 using DeploymentCenter.Search.Features.SearchResources.Contract;
-using FuzzySharp;
 using MediatR;
 
 namespace DeploymentCenter.Search.Features.SearchResources;
