@@ -26,7 +26,7 @@ internal class K8sResourceProvider(IKubernetesClientFactory kubernetesClientFact
 
         var deploymentsTask = client.AppsV1.ListDeploymentForAllNamespacesAsync();
         var loadBalancersTask = client.CoreV1.ListServiceForAllNamespacesAsync();
-        var cronJobsTask = client.BatchV1.ListJobForAllNamespacesAsync();
+        var cronJobsTask = client.BatchV1.ListCronJobForAllNamespacesAsync();
 
         var (deployments, loadBalancers, cronJobs) = (
             await deploymentsTask,
