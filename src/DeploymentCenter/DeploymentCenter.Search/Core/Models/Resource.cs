@@ -5,7 +5,7 @@ public enum ResourceType
     Unknown = 0,
     Deployment = 1,
     LoadBalancer = 2,
-    Volume = 3
+    CronJob = 3,
 }
 
 public record Resource(

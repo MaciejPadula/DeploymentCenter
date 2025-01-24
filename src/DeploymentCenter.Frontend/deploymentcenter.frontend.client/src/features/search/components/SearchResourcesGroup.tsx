@@ -1,7 +1,7 @@
 import { Icon } from "@mui/material";
 import { ResouceInSearchDetails, SearchResource, SearchResourceType } from "../models/search-resource";
-import { DeployIcon, SvcIcon } from "../../../assets/icons";
-import { getDeploymentUrl, getLoadBalancerUrl } from "../../../shared/services/routing-service";
+import { CronJobIcon, DeployIcon, SvcIcon,  } from "../../../assets/icons";
+import { getCronJobUrl, getDeploymentUrl, getLoadBalancerUrl } from "../../../shared/services/routing-service";
 import { Cluster } from "../../../shared/models/cluster";
 import { SearchList } from "./List/SearchList";
 
@@ -19,6 +19,8 @@ export function SearchResourcesGroup(props: Props) {
         return { resource: resource, icon: DeployIcon, url: getDeploymentUrl(props.cluster.name, resource.namespace!, resource.name) };
       case SearchResourceType.LoadBalancer:
         return { resource: resource, icon: SvcIcon, url: getLoadBalancerUrl(props.cluster.name, resource.namespace!, resource.name) };
+      case SearchResourceType.CronJob:
+        return { resource: resource, icon: CronJobIcon, url: getCronJobUrl(props.cluster.name, resource.namespace!, resource.name) };
       default:
         return null;
     }

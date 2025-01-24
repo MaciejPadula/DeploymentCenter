@@ -2,11 +2,10 @@ import { useEffect, useRef } from "react";
 import { Cluster } from "../../shared/models/cluster";
 import { useSearchService } from "./service/search-service";
 import { useQuery } from "@tanstack/react-query";
-import { FormControl, Input, InputLabel } from "@mui/material";
+import { FormControl, Input, InputLabel, OutlinedInput, TextField } from "@mui/material";
 import { SearchResults } from "./components/SearchResults";
 import { useDebounceInput } from "../../shared/hooks/debounce";
 import { useAppRouting } from "../../shared/hooks/navigation";
-import { InputVariant } from "../../shared/helpers/material-config";
 import SearchIcon from '@mui/icons-material/Search';
 import { useLocalStorage } from "../../shared/hooks/local-storage";
 import { lastElements } from "../../shared/helpers/array-helpers";
@@ -62,14 +61,12 @@ export function SearchResourcesInput(props: Props) {
 
   return (
     <div className="w-full relative py-2">
-      <FormControl
-        className="w-full"
-        variant={InputVariant}
-      >
+      <FormControl className="w-full">
         <InputLabel>Search</InputLabel>
-        <Input
+        <OutlinedInput
           inputRef={inputRef}
           className="w-full"
+          label="Search"
           onChange={e => setValue(e.target.value)}
           autoComplete={'off'}
           onFocus={() => setShowResults(true)}
