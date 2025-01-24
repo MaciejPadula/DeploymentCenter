@@ -38,5 +38,5 @@ internal class SearchResourcesEndpoint() : ApiGetEndpointBase(new SearchApiDefin
         ResourceType.LoadBalancer => SearchResourceType.LoadBalancer,
         ResourceType.CronJob => SearchResourceType.CronJob,
         _ => SearchResourceType.Unknown,
-    }
+    };
 }
