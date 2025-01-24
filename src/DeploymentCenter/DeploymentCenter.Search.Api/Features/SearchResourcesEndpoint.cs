@@ -18,9 +18,9 @@ internal class SearchResourcesEndpoint() : ApiGetEndpointBase(new SearchApiDefin
         CronJob = 3,
     }
 
-    internal record Resource(string Name, string? Namespace, SearchResourceType Type);
+    internal record Resource(string Name, string Namespace, SearchResourceType Type);
 
-    internal record SearchResourcesResponse(List<Resource> Resources);
+    internal record SearchResourcesResponse(Dictionary<string, List<Resource>> Resources);
 
     protected override Delegate Handler => async (
         [FromQuery] string query,
@@ -28,7 +28,12 @@ internal class SearchResourcesEndpoint() : ApiGetEndpointBase(new SearchApiDefin
         CancellationToken cancellationToken) =>
     {
         var result = await mediator.Send(new SearchResourcesQuery(query), cancellationToken);
-        var mappedResult = result.Select(x => new Resource(x.Name, x.Namespace, MapType(x.Type))).ToList();
+        var mappedResult = result
+        .ToDictionary(
+            x => x.Key,
+            x => x.Value
+                .Select(x => new Resource(x.Name, x.Namespace, MapType(x.Type)))
+                .ToList());
         return Results.Ok(new SearchResourcesResponse(mappedResult));
     };
 

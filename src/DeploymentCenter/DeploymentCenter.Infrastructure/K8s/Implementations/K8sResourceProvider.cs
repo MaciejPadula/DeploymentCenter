@@ -1,26 +1,14 @@
 ﻿using DeploymentCenter.Infrastructure.K8s.Client;
 using DeploymentCenter.Search.Core.Models;
-using DeploymentCenter.Search.Features.IndexResources;
 using DeploymentCenter.Search.Features.SearchResources;
 using k8s;
 using k8s.Models;
 
 namespace DeploymentCenter.Infrastructure.K8s.Implementations;
-internal class K8sResourceProvider(IKubernetesClientFactory kubernetesClientFactory) : ISearchQueryExecutor, IResourceProvider
+
+internal class K8sResourceProvider(IKubernetesClientFactory kubernetesClientFactory) : ISearchQueryExecutor
 {
-    public async Task<List<Resource>> ExecuteQueryAsync(string phrase)
-    {
-        var resources = await GetResourcesAsync();
-
-        return resources
-            .Where(x => x.Name.Contains(phrase, StringComparison.InvariantCultureIgnoreCase))
-            .OrderBy(x => x.Namespace)
-            .ThenBy(x => x.Type)
-            .ThenBy(x => x.Name)
-            .ToList();
-    }
-
-    public async Task<List<Resource>> GetResourcesAsync()
+    public async Task<List<Resource>> QueryAllResources()
     {
         using var client = kubernetesClientFactory.GetClient();
 

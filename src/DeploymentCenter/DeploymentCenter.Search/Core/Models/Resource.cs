@@ -11,4 +11,4 @@ public enum ResourceType
 public record Resource(
     string Name,
     ResourceType Type,
-    string? Namespace = null);
+    string Namespace);

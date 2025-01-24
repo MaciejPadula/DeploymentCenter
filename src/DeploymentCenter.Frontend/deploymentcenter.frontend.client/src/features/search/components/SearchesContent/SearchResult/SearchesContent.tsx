@@ -3,7 +3,6 @@ import { ResouceInSearchDetails, SearchResource } from "../../../models/search-r
 import { Cluster } from "../../../../../shared/models/cluster";
 import { RecentSearchesList } from "../Recent/RecentSearchesList";
 import { SearchResourcesGroup } from "./SearchResourcesGroup";
-import { groupObjects } from "../../../../../shared/helpers/object-helper";
 import { useSearchService } from "../../../service/search-service";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -18,6 +17,8 @@ type Props = {
   onRemoveSearchClicked: (search: string) => void;
   width?: number;
 }
+
+type ResourcesDictionary = { [key: string]: SearchResource[] };
 
 export function SearchesContent(props: Props) {
   const service = useSearchService(props.cluster);
@@ -40,11 +41,9 @@ export function SearchesContent(props: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.query]);
 
-  const groupedResources = queryResult ? groupObjects<string, SearchResource>(queryResult.resources, r => r.namespace ?? 'default') : {};
-  const keys = Object.keys(groupedResources);
+  const keys = Object.keys(queryResult?.resources ?? {});
+  const resources: ResourcesDictionary = (queryResult?.resources ?? {}) as ResourcesDictionary;
 
-  const resourcesCount = queryResult?.resources.length ?? 0;
-  
   return (
     <div className="w-full flex flex-col">
       {isLoading && <LinearProgress />}
@@ -56,19 +55,19 @@ export function SearchesContent(props: Props) {
         />
       }
       {
-        props.query.length > 0 && resourcesCount > 0 && keys.map(namespace => (
+        props.query.length > 0 && keys.map(namespace => (
           <SearchResourcesGroup
             key={namespace}
             cluster={props.cluster}
             namespace={namespace}
-            resources={groupedResources[namespace]}
+            resources={resources[namespace]}
             onResourceClicked={props.onResourceClicked}
           />
         ))
       }
       {
         props.query.length > 0
-        && resourcesCount == 0
+        && keys.length == 0
         && !isLoading
         && <div>No resources found</div>
       }

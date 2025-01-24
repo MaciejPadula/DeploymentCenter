@@ -3,4 +3,4 @@ using MediatR;
 
 namespace DeploymentCenter.Search.Features.SearchResources.Contract;
 
-public record SearchResourcesQuery(string QueryPhrase) : IRequest<List<Resource>>;
+public record SearchResourcesQuery(string QueryPhrase) : IRequest<Dictionary<string, List<Resource>>>;

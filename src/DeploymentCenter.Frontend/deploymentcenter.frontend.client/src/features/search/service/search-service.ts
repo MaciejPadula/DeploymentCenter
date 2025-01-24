@@ -6,7 +6,7 @@ export function useSearchService(cluster: Cluster) {
   const httpClient = new HttpClient(cluster.apiUrl, cluster.kubeconfig);
 
   interface SearchResourcesResponse {
-    resources: SearchResource[];
+    resources: {[key: string]: SearchResource[]};
   }
   
   return {
