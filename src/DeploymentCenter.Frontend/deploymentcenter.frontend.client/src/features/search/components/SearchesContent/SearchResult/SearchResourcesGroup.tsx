@@ -1,9 +1,9 @@
 import { Icon } from "@mui/material";
-import { ResouceInSearchDetails, SearchResource, SearchResourceType } from "../models/search-resource";
-import { CronJobIcon, DeployIcon, SvcIcon,  } from "../../../assets/icons";
-import { getCronJobUrl, getDeploymentUrl, getLoadBalancerUrl } from "../../../shared/services/routing-service";
-import { Cluster } from "../../../shared/models/cluster";
-import { SearchList } from "./List/SearchList";
+import { ResouceInSearchDetails, SearchResource, SearchResourceType } from "../../../models/search-resource";
+import { CronJobIcon, DeployIcon, SvcIcon, } from "../../../../../assets/icons";
+import { getCronJobUrl, getDeploymentUrl, getLoadBalancerUrl } from "../../../../../shared/services/routing-service";
+import { Cluster } from "../../../../../shared/models/cluster";
+import { SearchList } from "../../List/SearchList";
 
 type Props = {
   cluster: Cluster;

@@ -1,8 +1,8 @@
 import { IconButton } from "@mui/material";
-import { lastElements } from "../../../shared/helpers/array-helpers";
+import { lastElements } from "../../../../../shared/helpers/array-helpers";
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import CloseIcon from '@mui/icons-material/Close';
-import { SearchList } from "./List/SearchList";
+import { SearchList } from "../../List/SearchList";
 
 type Props = {
   recentSearches: string[];
