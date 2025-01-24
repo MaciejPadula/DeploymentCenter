@@ -34,6 +34,7 @@ internal class K8sPodClient(
         var pods = await client.CoreV1.ListNamespacedPodAsync(@namespace);
         return pods?.Items?
             .Where(x => x.Metadata.Name.StartsWith(namePrefix))
+            .OrderByDescending(x => x.Metadata.CreationTimestamp)
             .Select(k8SPodMapper.Map)
             .ToList() ?? [];
     }

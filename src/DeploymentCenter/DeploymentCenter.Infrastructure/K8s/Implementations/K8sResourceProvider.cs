@@ -26,10 +26,12 @@ internal class K8sResourceProvider(IKubernetesClientFactory kubernetesClientFact
 
         var deploymentsTask = client.AppsV1.ListDeploymentForAllNamespacesAsync();
         var loadBalancersTask = client.CoreV1.ListServiceForAllNamespacesAsync();
+        var cronJobsTask = client.BatchV1.ListJobForAllNamespacesAsync();
 
-        var (deployments, loadBalancers) = (
+        var (deployments, loadBalancers, cronJobs) = (
             await deploymentsTask,
-            await loadBalancersTask);
+            await loadBalancersTask,
+            await cronJobsTask);
 
         var resources = new List<Resource>();
 
@@ -44,6 +46,12 @@ internal class K8sResourceProvider(IKubernetesClientFactory kubernetesClientFact
             .Select(x => new Resource(
                 x.Name(),
                 ResourceType.LoadBalancer,
+                x.Namespace())));
+
+        resources.AddRange(cronJobs.Items
+            .Select(x => new Resource(
+                x.Name(),
+                ResourceType.CronJob,
                 x.Namespace())));
 
         return resources;

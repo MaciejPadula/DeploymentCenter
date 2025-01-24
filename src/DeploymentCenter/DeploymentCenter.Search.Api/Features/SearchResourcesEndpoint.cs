@@ -1,5 +1,6 @@
 ﻿using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Search.Api.Core;
+using DeploymentCenter.Search.Core.Models;
 using DeploymentCenter.Search.Features.SearchResources.Contract;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +10,15 @@ namespace DeploymentCenter.Search.Api.Features;
 
 internal class SearchResourcesEndpoint() : ApiGetEndpointBase(new SearchApiDefinition())
 {
-    internal record Resource(string Name, string? Namespace, int Type);
+    internal enum SearchResourceType
+    {
+        Unknown = 0,
+        Deployment = 1,
+        LoadBalancer = 2,
+        CronJob = 3,
+    }
+
+    internal record Resource(string Name, string? Namespace, SearchResourceType Type);
 
     internal record SearchResourcesResponse(List<Resource> Resources);
 
@@ -19,7 +28,15 @@ internal class SearchResourcesEndpoint() : ApiGetEndpointBase(new SearchApiDefin
         CancellationToken cancellationToken) =>
     {
         var result = await mediator.Send(new SearchResourcesQuery(query), cancellationToken);
-        var mappedResult = result.Select(x => new Resource(x.Name, x.Namespace, (int)x.Type)).ToList();
+        var mappedResult = result.Select(x => new Resource(x.Name, x.Namespace, MapType(x.Type))).ToList();
         return Results.Ok(new SearchResourcesResponse(mappedResult));
     };
+
+    private static SearchResourceType MapType(ResourceType resourceType) => resourceType switch
+    {
+        ResourceType.Deployment => SearchResourceType.Deployment,
+        ResourceType.LoadBalancer => SearchResourceType.LoadBalancer,
+        ResourceType.CronJob => SearchResourceType.CronJob,
+        _ => SearchResourceType.Unknown,
+    }
 }
