@@ -13,6 +13,7 @@ interface SearchListItemDefinition {
 
 type Props = {
   header?: string;
+  headerLine?: boolean;
   divider?: boolean;
   items: SearchListItemDefinition[];
 }
@@ -20,7 +21,7 @@ type Props = {
 export function SearchList(props: Props) {
   return (
     <List>
-      {props.header && <SearchSectionHeader header={props.header} />}
+      {props.header && <SearchSectionHeader header={props.header} divider={props.headerLine} />}
       {
         props.items.map(definition => (
           <ListItem

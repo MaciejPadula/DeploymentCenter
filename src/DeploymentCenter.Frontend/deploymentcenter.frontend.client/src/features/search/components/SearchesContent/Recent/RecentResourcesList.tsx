@@ -61,5 +61,5 @@ export function RecentResorcesList(props: Props) {
     }
   });
 
-  return <SearchIconsList header="Recent services" items={services} />;
+  return <SearchIconsList header="Recent services" headerLine={true} items={services} />;
 }

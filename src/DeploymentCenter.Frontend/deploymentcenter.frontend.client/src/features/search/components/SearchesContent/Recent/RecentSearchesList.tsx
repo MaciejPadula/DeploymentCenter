@@ -24,5 +24,5 @@ export function RecentSearchesList(props: Props) {
     }
   });
 
-  return <SearchList header="Search history" items={searches} />;
+  return <SearchList header="Search history" headerLine={true} items={searches} />;
 }

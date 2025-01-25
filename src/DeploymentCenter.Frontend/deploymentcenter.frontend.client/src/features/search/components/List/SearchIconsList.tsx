@@ -8,13 +8,14 @@ interface SearchIconListItemDefinition {
 
 type Props = {
   header?: string;
+  headerLine?: boolean;
   items: SearchIconListItemDefinition[];
 }
 
 export function SearchIconsList(props: Props) {
   return (
     <div className="flex flex-col gap-4">
-      {props.header && <SearchSectionHeader header={props.header} />}
+      {props.header && <SearchSectionHeader header={props.header} divider={props.headerLine} />}
       <div className="grid grid-cols-4 gap-4">
         {
           props.items.map(definition => (
