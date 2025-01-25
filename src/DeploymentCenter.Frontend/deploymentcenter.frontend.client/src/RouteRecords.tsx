@@ -11,6 +11,7 @@ import { deploymentRoutes } from "./features/deployment/DeploymentRoutes";
 import { templateRoutes } from "./features/template/TemplateRoutes";
 import { cronJobsRoutes } from "./features/cron-jobs/CronJobsRoutes";
 import { RouteDefinition } from "./shared/models/route-definition";
+import { Redirect } from "./shared/helpers/Redirect";
 
 export function RouteRecords() {
   function renderRoutes(routes: RouteDefinition[]) {
@@ -24,6 +25,9 @@ export function RouteRecords() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<MainPage />} />
+
+          <Route path="/:clusterName/:namespace" element={<Redirect to={"/"} />} />
+          <Route path="/:clusterName" element={<Redirect to={"/"} />} />
 
           {renderRoutes(loadBalancerRoutes)}
           {renderRoutes(deploymentRoutes)}

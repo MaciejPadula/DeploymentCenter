@@ -94,8 +94,8 @@ export function useAppRouting() {
     navigate(`/${clusterName}/templates`);
   }
 
-  function navigateToUrl(url: string) {
-    navigate(url);
+  function navigateToUrl(url: string, replace: boolean = false) {
+    navigate(url, { replace: replace });
   }
 
   function reloadPage() {
