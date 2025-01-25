@@ -9,11 +9,12 @@ export interface ConfigurationData {
   clusters: Cluster[];
 }
 
+const defaultNamespace = "default";
 const configurationKey = "configuration";
 const defaultConfiguration: ConfigurationData = {
   cluster: "",
   clusters: [],
-  namespace: "default"
+  namespace: ""
 };
 
 const configuration = signal<ConfigurationData>(getFromLocalStorage(configurationKey, defaultConfiguration));
@@ -47,6 +48,8 @@ function setSelectedNamespace(namespace: string) {
 function addCluster(cluster: Cluster) {
   updateConfiguration(c => {
     c.clusters.push(cluster);
+    c.cluster = cluster.name;
+    c.namespace = defaultNamespace;
   });
 }
 
