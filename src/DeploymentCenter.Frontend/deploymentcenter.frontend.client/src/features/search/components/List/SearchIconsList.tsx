@@ -21,7 +21,7 @@ export function SearchIconsList(props: Props) {
           props.items.map(definition => (
             <div key={definition.text} className="flex flex-col items-center cursor-pointer" onClick={() => definition.onClick?.()}>
               <img className="w-12 aspect-square" src={definition.image} />
-              <div className="text-sm mt-2">{definition.text}</div>
+              <div className="text-sm mt-2 text-center">{definition.text}</div>
             </div>
           ))
         }

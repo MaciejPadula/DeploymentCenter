@@ -15,31 +15,31 @@ import {
   setClusterAndNamespace,
 } from "../../services/configuration-service";
 import { Cluster } from "../../models/cluster";
+import { effect } from "@preact/signals-react";
 
 type Props = {
   onClose?: () => void;
 };
 
 export function SelectNamespaceDialog(props: Props) {
-  const [namespaceControl, setNamespaceControl] = useState(
-    selectedNamespace.value
-  );
-  const [clusterControl, setClusterControl] = useState(
-    selectedCluster.value?.name ?? ""
-  );
+  const [namespaceControl, setNamespaceControl] = useState(selectedNamespace.value);
+  const [clusterControl, setClusterControl] = useState(selectedCluster.value?.name ?? "");
   const [open, setOpen] = useState<boolean>(false);
   const [cluster, setCluster] = useState<Cluster | null>(null);
 
-  const validForm = cluster && !!namespaceControl && !!clusterControl;
+  const validForm = !!cluster && !!namespaceControl && !!clusterControl;
+
+  useEffect(() => {
+    effect(() => {
+      setClusterControl(selectedCluster.value?.name ?? "");
+    });
+  }, []);
 
   useEffect(() => {
     const cluster = configuration.value.clusters.find(
       (x) => x.name === clusterControl
     );
-    if (cluster === undefined) {
-      return;
-    }
-    setCluster(cluster);
+    setCluster(cluster ?? null);
   }, [clusterControl]);
 
   function handleClickOpen() {

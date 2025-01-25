@@ -15,6 +15,8 @@ internal class FuzzySearchScoreCalculator : ISearchScoreCalculator
     {
         return new(
             resource,
-            Fuzz.PartialRatio(queryPhrase, resource.Name));
+            Fuzz.PartialRatio(
+                queryPhrase.ToLowerInvariant(),
+                resource.Name.ToLowerInvariant()));
     }
 }

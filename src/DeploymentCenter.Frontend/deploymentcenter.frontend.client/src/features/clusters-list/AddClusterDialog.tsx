@@ -54,6 +54,10 @@ export function AddClusterDialog() {
     setOpen(false);
   }
 
+  function removeEndSlash(url: string) {
+    return url.endsWith("/") ? url.slice(0, -1) : url;
+  }
+
   return (
     <Fragment>
       <ListItemButton onClick={handleClickOpen}>+ Add Cluster</ListItemButton>
@@ -65,11 +69,13 @@ export function AddClusterDialog() {
               label="Cluster Name"
               variant={InputVariant}
               onBlur={(v) => setClusterName(v.currentTarget.value)}
+              autoComplete={'off'}
             />
             <TextField
               label="Cluster Api Url"
               variant={InputVariant}
-              onBlur={(v) => setClusterApiUrl(v.currentTarget.value)}
+              onBlur={(v) => setClusterApiUrl(removeEndSlash(v.currentTarget.value))}
+              autoComplete={'off'}
             />
 
             <TextField
@@ -78,6 +84,7 @@ export function AddClusterDialog() {
               onBlur={(v) => secureKubeconfig(v.currentTarget.value)}
               type={"password"}
               disabled={clusterApiUrl?.length === 0}
+              autoComplete={'off'}
               multiline
             />
           </div>
