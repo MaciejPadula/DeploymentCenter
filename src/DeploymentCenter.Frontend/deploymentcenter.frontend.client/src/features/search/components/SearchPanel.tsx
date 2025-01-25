@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@mui/material";
-import { ResouceInSearchDetails } from "../models/search-resource";
+import { ResouceInSearchDetails, SearchResourceType } from "../models/search-resource";
 import { Cluster } from "../../../shared/models/cluster";
 import { SearchesContent } from "./SearchesContent/SearchResult/SearchesContent";
 
@@ -7,7 +7,7 @@ type Props = {
   cluster: Cluster;
   query: string;
   recentSearches: string[];
-  onSearchExecuted: (query: string) => void;
+  recentResourceTypes: SearchResourceType[];
   onResourceClicked: (resource: ResouceInSearchDetails) => void;
   onRecentSearchClicked: (search: string) => void;
   onRemoveSearchClicked: (search: string) => void;
@@ -27,7 +27,7 @@ export function SearchPanel(props: Props) {
               cluster={props.cluster}
               query={props.query}
               recentSearches={props.recentSearches}
-              onSearchExecuted={props.onSearchExecuted}
+              recentResourceTypes={props.recentResourceTypes}
               onResourceClicked={props.onResourceClicked}
               onRecentSearchClicked={props.onRecentSearchClicked}
               onRemoveSearchClicked={props.onRemoveSearchClicked}

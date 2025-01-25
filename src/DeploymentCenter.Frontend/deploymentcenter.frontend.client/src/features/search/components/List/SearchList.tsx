@@ -1,7 +1,8 @@
-import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { ReactNode } from "react";
 
 import "./SearchList.scss";
+import { SearchSectionHeader } from "./SearchSectionHeader";
 
 interface SearchListItemDefinition {
   name: string;
@@ -19,7 +20,7 @@ type Props = {
 export function SearchList(props: Props) {
   return (
     <List>
-      {props.header && <Typography>{props.header}</Typography>}
+      {props.header && <SearchSectionHeader header={props.header} />}
       {
         props.items.map(definition => (
           <ListItem

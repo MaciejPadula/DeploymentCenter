@@ -24,5 +24,5 @@ export function RecentSearchesList(props: Props) {
     }
   });
 
-  return <SearchList header="Recent Searches" divider={true} items={searches} />;
+  return <SearchList header="Search history" items={searches} />;
 }

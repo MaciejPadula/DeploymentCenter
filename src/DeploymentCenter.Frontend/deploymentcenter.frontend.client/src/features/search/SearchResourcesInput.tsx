@@ -7,6 +7,7 @@ import { useAppRouting } from "../../shared/hooks/navigation";
 import SearchIcon from '@mui/icons-material/Search';
 import { useLocalStorage } from "../../shared/hooks/local-storage";
 import { lastElements } from "../../shared/helpers/array-helpers";
+import { SearchResourceType } from "./models/search-resource";
 
 type Props = {
   cluster: Cluster;
@@ -19,10 +20,16 @@ export function SearchResourcesInput(props: Props) {
   const parentRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { value: recentSearches, setValue: setRecentSearches } = useLocalStorage<string[]>('recentSearches', []);
+  const { value: recentResourceTypes, setValue: setRecentResourceTypes } = useLocalStorage<SearchResourceType[]>('recentResourceTypes', []);
 
   function setLastSearches(search: string) {
     const oldPart = recentSearches.filter(x => x !== search);
     setRecentSearches(lastElements([...oldPart, search], 10));
+  }
+
+  function setLastRecourceTypes(resourceType: SearchResourceType) {
+    const oldPart = recentResourceTypes.filter(x => x !== resourceType);
+    setRecentResourceTypes(lastElements([...oldPart, resourceType], 10));
   }
 
   function focusInput() {
@@ -55,13 +62,16 @@ export function SearchResourcesInput(props: Props) {
       </FormControl>
 
       {
-        showResults && <SearchPanel
+        showResults &&
+        <SearchPanel
           query={value}
           recentSearches={recentSearches}
+          recentResourceTypes={recentResourceTypes}
           cluster={props.cluster}
           width={parentRef.current?.clientWidth}
-          onSearchExecuted={query => setLastSearches(query)}
           onResourceClicked={(resource) => {
+            setLastSearches(value);
+            setLastRecourceTypes(resource.resource.type);
             setInput('');
             navigation.navigateToUrl(resource.url);
           }}

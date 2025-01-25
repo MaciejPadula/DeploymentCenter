@@ -1,17 +1,17 @@
 import { LinearProgress } from "@mui/material";
-import { ResouceInSearchDetails, SearchResource } from "../../../models/search-resource";
+import { ResouceInSearchDetails, SearchResource, SearchResourceType } from "../../../models/search-resource";
 import { Cluster } from "../../../../../shared/models/cluster";
-import { RecentSearchesList } from "../Recent/RecentSearchesList";
 import { SearchResourcesGroup } from "./SearchResourcesGroup";
 import { useSearchService } from "../../../service/search-service";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { RecentPanel } from "../Recent/RecentPanel";
 
 type Props = {
   cluster: Cluster;
   query: string;
   recentSearches: string[];
-  onSearchExecuted: (query: string) => void;
+  recentResourceTypes: SearchResourceType[];
   onResourceClicked: (resource: ResouceInSearchDetails) => void;
   onRecentSearchClicked: (search: string) => void;
   onRemoveSearchClicked: (search: string) => void;
@@ -31,7 +31,6 @@ export function SearchesContent(props: Props) {
       }
 
       const response = await service.search(props.query);
-      props.onSearchExecuted(props.query);
       return response;
     },
   });
@@ -48,8 +47,9 @@ export function SearchesContent(props: Props) {
     <div className="w-full flex flex-col">
       {isLoading && <LinearProgress />}
       {props.query.length == 0 && !isLoading &&
-        <RecentSearchesList
+        <RecentPanel
           recentSearches={props.recentSearches}
+          recentResourceTypes={props.recentResourceTypes}
           onSearchClicked={x => props.onRecentSearchClicked(x)}
           onRemoveSearchClicked={x => props.onRemoveSearchClicked(x)}
         />
