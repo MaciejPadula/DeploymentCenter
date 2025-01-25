@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./layout/Layout";
 import { MainPage } from "./features/main-page/MainPage";
 import { NotFound } from "./shared/components/error/not-found/NotFound";
@@ -11,7 +11,6 @@ import { deploymentRoutes } from "./features/deployment/DeploymentRoutes";
 import { templateRoutes } from "./features/template/TemplateRoutes";
 import { cronJobsRoutes } from "./features/cron-jobs/CronJobsRoutes";
 import { RouteDefinition } from "./shared/models/route-definition";
-import { Redirect } from "./shared/helpers/Redirect";
 
 export function RouteRecords() {
   function renderRoutes(routes: RouteDefinition[]) {
@@ -26,8 +25,8 @@ export function RouteRecords() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<MainPage />} />
 
-          <Route path="/:clusterName/:namespace" element={<Redirect to={"/"} />} />
-          <Route path="/:clusterName" element={<Redirect to={"/"} />} />
+          <Route path="/:clusterName/:namespace" element={<Navigate to={"/"} />} />
+          <Route path="/:clusterName" element={<Navigate to={"/"} />} />
 
           {renderRoutes(loadBalancerRoutes)}
           {renderRoutes(deploymentRoutes)}
