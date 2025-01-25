@@ -20,7 +20,7 @@ export function ClustersList() {
           divider={true}
           secondaryAction={
             <DeleteResource resourceName={cluster.name} onDelete={() => handleClusterDeleted(cluster.name)}>
-              <IconButton edge="end">
+              <IconButton>
                 <DeleteIcon className="text-red-700" /> 
               </IconButton>
             </DeleteResource>
