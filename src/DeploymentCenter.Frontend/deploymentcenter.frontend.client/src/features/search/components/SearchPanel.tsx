@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@mui/material";
 import { ResouceInSearchDetails, SearchResourceType } from "../models/search-resource";
 import { Cluster } from "../../../shared/models/cluster";
-import { SearchesContent } from "./SearchesContent/SearchResult/SearchesContent";
+import { SearchesContent } from "./SearchesContent/search-result/SearchesContent";
 
 type Props = {
   cluster: Cluster;

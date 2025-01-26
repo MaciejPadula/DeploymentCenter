@@ -5,7 +5,7 @@ import { SearchResourcesGroup } from "./SearchResourcesGroup";
 import { useSearchService } from "../../../service/search-service";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { RecentPanel } from "../Recent/RecentPanel";
+import { RecentPanel } from "../recent-searches/RecentPanel";
 
 type Props = {
   cluster: Cluster;

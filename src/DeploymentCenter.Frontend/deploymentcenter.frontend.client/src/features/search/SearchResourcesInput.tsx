@@ -57,7 +57,7 @@ export function SearchResourcesInput(props: Props) {
           autoComplete={'off'}
           onFocus={() => setShowResults(true)}
           onBlur={() => setShowResults(false)}
-          endAdornment={<div className="p-2"><SearchIcon /></div>}
+          startAdornment={<div className="p-2"><SearchIcon /></div>}
         />
       </FormControl>
 
