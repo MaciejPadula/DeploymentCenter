@@ -9,7 +9,7 @@ type Props = {
   recentResourceTypes: SearchResourceType[];
 }
 
-export function RecentResorcesList(props: Props) {
+export function RecentServicesList(props: Props) {
   const navigation = useAppRouting();
   const config = configuration.value;
 

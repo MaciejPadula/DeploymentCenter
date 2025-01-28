@@ -1,6 +1,7 @@
 import { SearchResourceType } from "../../../models/search-resource";
-import { RecentResorcesList } from "./RecentResourcesList";
+import { RecentServicesList } from "./RecentServicesList";
 import { RecentSearchesList } from "./RecentSearchesList";
+import { RecentResorcesList } from "./RecentResourcesList";
 
 type Props = {
   recentSearches: string[];
@@ -17,7 +18,8 @@ export function RecentPanel(props: Props) {
         onSearchClicked={props.onSearchClicked}
         onRemoveSearchClicked={props.onRemoveSearchClicked}
       />
-      <RecentResorcesList recentResourceTypes={props.recentResourceTypes} />
+      <RecentServicesList recentResourceTypes={props.recentResourceTypes} />
+      <RecentResorcesList />
     </div>
   );
 }
