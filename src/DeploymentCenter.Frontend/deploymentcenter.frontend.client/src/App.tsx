@@ -16,6 +16,28 @@ function App() {
     palette: {
       mode: prefersDarkMode ? "dark" : "light",
     },
+    components: {
+      MuiCssBaseline: {
+          styleOverrides: ({ palette }) => {
+             return `
+                 *::-webkit-scrollbar {
+                    height: 8px;
+                    width: 8px;
+                 }
+                 *::-webkit-scrollbar-track {
+                    border-radius: 4px;
+                    background-color: ${palette.primary.light};
+                 }
+                  *::-webkit-scrollbar-track:hover {
+                    background-color: ${palette.primary.light};
+                  }
+                  *::-webkit-scrollbar-track:active {
+                    background-color: ${palette.primary.light};
+                  }
+              `;
+          }
+      },
+    }
   });
 
   return (

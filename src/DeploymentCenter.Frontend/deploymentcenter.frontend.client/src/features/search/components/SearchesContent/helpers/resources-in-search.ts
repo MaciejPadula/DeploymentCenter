@@ -48,14 +48,4 @@ export function mapResourcesToSearchList(
     .map((resource) => getDetails(cluster, resource))
     .filter((x) => !!x);
   return { header, resourcesList };
-
-  // const resourcesList = resources.map(resource => getDetails(cluster, resource)).filter(x => !!x).map(x => {
-  //   return {
-  //     name: x.resource.name,
-  //     icon: <Icon><img src={x.icon} /></Icon>,
-  //     onClick: () => onResourceClicked(x)
-  //   }
-  // });
-
-  // return { header, resourcesList };
 }

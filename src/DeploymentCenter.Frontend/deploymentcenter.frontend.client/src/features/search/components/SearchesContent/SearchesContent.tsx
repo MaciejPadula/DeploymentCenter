@@ -1,11 +1,11 @@
 import { LinearProgress } from "@mui/material";
-import { ResouceInSearchDetails, SearchResource, SearchResourceType } from "../../../models/search-resource";
-import { Cluster } from "../../../../../shared/models/cluster";
-import { SearchResourcesGroup } from "./SearchResourcesGroup";
-import { useSearchService } from "../../../service/search-service";
+import { ResouceInSearchDetails, SearchResource, SearchResourceType } from "../../models/search-resource";
+import { Cluster } from "../../../../shared/models/cluster";
+import { SearchResourcesGroup } from "./search-result/SearchResourcesGroup";
+import { useSearchService } from "../../service/search-service";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { RecentPanel } from "../recent-searches/RecentPanel";
+import { RecentPanel } from "./recent-searches/RecentPanel";
 
 type Props = {
   cluster: Cluster;
