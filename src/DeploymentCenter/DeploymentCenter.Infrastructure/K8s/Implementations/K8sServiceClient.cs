@@ -10,7 +10,8 @@ namespace DeploymentCenter.Infrastructure.K8s.Implementations;
 
 internal class K8sServiceClient(
     IKubernetesClientFactory kubernetesClientFactory,
-    IK8sServiceMapper serviceMapper) : IServiceClient
+    IK8sServiceMapper serviceMapper,
+    TimeProvider timeProvider) : IServiceClient
 {
     private const string LoadBalancerKey = "LoadBalancer";
 
@@ -122,5 +123,28 @@ internal class K8sServiceClient(
         }
 
         return serviceMapper.MapDetails(cronJob);
+    }
+
+    public async Task<bool> RunCronJob(string @namespace, string cronJobName)
+    {
+        using var client = kubernetesClientFactory.GetClient();
+        var cronJob = await client.BatchV1.ReadNamespacedCronJobAsync(cronJobName, @namespace);
+        if (cronJob is null)
+        {
+            return false;
+        }
+
+        var job = new V1Job
+        {
+            Metadata = new()
+            {
+                Name = $"{cronJobName}-{timeProvider.GetUtcNow().ToUnixTimeSeconds()}",
+                NamespaceProperty = @namespace,
+            },
+            Spec = cronJob.Spec.JobTemplate.Spec,
+        };
+
+        await client.BatchV1.CreateNamespacedJobAsync(job, @namespace);
+        return true;
     }
 }

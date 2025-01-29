@@ -9,6 +9,7 @@ import { PodsList } from "../pods/components/PodsList";
 import useCronJobsDataService from "./services/cron-jobs-data-service";
 import { ResourceSummary } from "../../shared/components/resource-page/ResourceSummary";
 import { ResourceSummaryFactory, ResourceSummaryModel } from "../../shared/components/resource-page/resource-summary-model";
+import { CronJobToolbar } from "./cron-job-page/components/toolbar/CronJobToolbar";
 
 type Props = {
   cluster: Cluster;
@@ -57,6 +58,7 @@ export function CronJobPage(props: Props) {
 
   return (
     <div className="flex flex-col w-full p-2 gap-2">
+      <CronJobToolbar cronJobName={cronJobName} namespace={namespace} cluster={props.cluster} />
       <ResourceSummary
         resourceSummaryKey={`CronJob-${namespace}-${cronJobName}`}
         resourceSummaryFactory={factory}

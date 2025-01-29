@@ -22,16 +22,32 @@ function CronJobsDataService(httpClient: HttpClient) {
     cronExpression: string;
   }
 
-  async function getCronJobDetails(namespace: string, cronJobName: string): Promise<CronJobDetails> {
+  async function getCronJobDetails(
+    namespace: string,
+    cronJobName: string
+  ): Promise<CronJobDetails> {
     const response = await httpClient.get<CronJobDetails>(
       `/${controller}/GetCronJobDetails?namespace=${namespace}&cronJobName=${cronJobName}`
     );
     return response;
   }
 
+  interface RunJobRequest {
+    namespace: string;
+    cronJobName: string;
+  }
+
+  async function runJob(namespace: string, cronJobName: string) {
+    await httpClient.post<RunJobRequest, void>(`/${controller}/RunCronJob`, {
+      namespace,
+      cronJobName,
+    });
+  }
+
   return {
     getCronJobs,
     getCronJobDetails,
+    runJob,
   };
 }
 

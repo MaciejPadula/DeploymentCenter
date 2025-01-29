@@ -4,6 +4,7 @@ namespace DeploymentCenter.Services.Features;
 
 public interface IServiceClient
 {
+    Task<bool> RunCronJob(string @namespace, string cronJobName);
     Task CreateLoadBalancer(LoadBalancer loadBalancer);
     Task CreateCronJob(CronJob cronJob);
     Task<List<CronJobBasicInfo>> GetCronJobsBasicInfos(string @namespace);
