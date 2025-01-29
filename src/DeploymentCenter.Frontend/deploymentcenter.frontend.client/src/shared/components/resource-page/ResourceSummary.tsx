@@ -63,7 +63,7 @@ export function ResourceSummary(props: {
                 <div className="w-1/2 sm:w-1/3 p-2" key={key}>
                   <Typography fontWeight={"bold"}>{key}:</Typography>
                   <Tooltip title={value}>
-                    <Typography className="truncate w-fit">{value}</Typography>
+                    <Typography className="truncate w-fit max-w-full">{value}</Typography>
                   </Tooltip>
                 </div>
               ))}

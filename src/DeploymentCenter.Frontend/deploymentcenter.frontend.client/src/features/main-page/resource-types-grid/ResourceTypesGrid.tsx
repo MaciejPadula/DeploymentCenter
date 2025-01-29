@@ -27,16 +27,16 @@ export function ResourceTypesGrid() {
       </GridBox>
       <GridBox>
         <ResourceTypeBox
-          icon={CronJobIcon}
-          text="Cron Jobs"
-          navigate={() => navigation.cronJobsList(config.cluster, config.namespace)}
+          icon={SvcIcon}
+          text="Load Balancers"
+          navigate={() => navigation.loadBalancerList(config.cluster, config.namespace)}
         />
       </GridBox>
       <GridBox>
         <ResourceTypeBox
-          icon={SvcIcon}
-          text="Load Balancers"
-          navigate={() => navigation.loadBalancerList(config.cluster, config.namespace)}
+          icon={CronJobIcon}
+          text="Cron Jobs"
+          navigate={() => navigation.cronJobsList(config.cluster, config.namespace)}
         />
       </GridBox>
       <GridBox>
