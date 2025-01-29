@@ -19,6 +19,11 @@ internal class ResultsHandler
             return Results.BadRequest(new ApiErrorResult((int)exception.ServicesStatusCode));
         }
 
+        if (result.Error?.Exception is NotFoundException)
+        {
+            return Results.NotFound();
+        }
+
         return Results.StatusCode(StatusCodes.Status500InternalServerError);
     }
 }
