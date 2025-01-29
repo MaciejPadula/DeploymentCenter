@@ -1,7 +1,8 @@
-import { Icon } from "@mui/material";
-import { getRecentlyVisitedPages } from "../../../../../shared/services/recently-visited-service";
+import { Icon, IconButton } from "@mui/material";
+import { deleteRecentlyVisitedPage, getRecentlyVisitedPages } from "../../../../../shared/services/recently-visited-service";
 import { SearchList } from "../../List/SearchList";
 import { useAppRouting } from "../../../../../shared/hooks/navigation";
+import CloseIcon from '@mui/icons-material/Close';
 
 export function RecentResorcesList() {
   const navigation = useAppRouting();
@@ -11,7 +12,12 @@ export function RecentResorcesList() {
     return {
       name: x.title,
       icon: <Icon><img src={x.icon} /></Icon>,
-      onClick: () => navigation.navigateToUrl(x.url)
+      onClick: () => navigation.navigateToUrl(x.url),
+      action: (
+        <IconButton onClick={() => deleteRecentlyVisitedPage(x.title)}>
+          <CloseIcon />
+        </IconButton>
+      )
     }
   });
 

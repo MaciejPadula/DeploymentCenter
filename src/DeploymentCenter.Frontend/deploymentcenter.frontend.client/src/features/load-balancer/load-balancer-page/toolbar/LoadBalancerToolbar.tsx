@@ -1,10 +1,11 @@
-import { IconButton, Paper } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { Cluster } from "../../../../shared/models/cluster";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DeleteResource } from "../../../../shared/components/delete-resource/DeleteResource";
 import { useAppRouting } from "../../../../shared/hooks/navigation";
 import { AnalyzeLoadBalancerDialog } from "../../../assistant/AnalyzeLoadBalancerDialog";
 import useLoadBalancersDataService from "../../services/load-balancers-data-service";
+import { ResourceToolbar } from "../../../../shared/components/toolbar/ResourceToolbar";
 
 type Props = {
   loadBalancerName: string;
@@ -26,7 +27,7 @@ export function LoadBalancerToolbar(props: Props) {
   }
 
   return (
-    <Paper className="flex flex-wrap w-full p-4 flex-row" elevation={2}>
+    <ResourceToolbar>
       <DeleteResource
         resourceName={props.loadBalancerName}
         onDelete={deleteLoadBalancer}
@@ -40,6 +41,6 @@ export function LoadBalancerToolbar(props: Props) {
         loadBalancerName={props.loadBalancerName}
         namespace={props.namespace}
       />
-    </Paper>
+    </ResourceToolbar>
   );
 }

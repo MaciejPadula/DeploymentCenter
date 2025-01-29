@@ -1,4 +1,4 @@
-import { IconButton, Paper, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { ScaleDialog } from "./ScaleDialog";
@@ -9,6 +9,7 @@ import useDeploymentsDataService from "../../../service/deployments-data-service
 import { useAppRouting } from "../../../../../shared/hooks/navigation";
 import { DeleteResource } from "../../../../../shared/components/delete-resource/DeleteResource";
 import { AnalyzeDeploymentDialog } from "../../../../assistant/AnalyzeDeploymentDialog";
+import { ResourceToolbar } from "../../../../../shared/components/toolbar/ResourceToolbar";
 
 type Props = {
   deploymentName: string;
@@ -55,7 +56,7 @@ export function DeploymentToolbar(props: Props) {
   }
 
   return (
-    <Paper className="flex flex-wrap w-full p-4 flex-row" elevation={2}>
+    <ResourceToolbar>
       <ScaleDialog
         deploymentName={props.deploymentName}
         namespace={props.namespace}
@@ -87,6 +88,6 @@ export function DeploymentToolbar(props: Props) {
         deploymentName={props.deploymentName}
         namespace={props.namespace}
       />
-    </Paper>
+    </ResourceToolbar>
   );
 }

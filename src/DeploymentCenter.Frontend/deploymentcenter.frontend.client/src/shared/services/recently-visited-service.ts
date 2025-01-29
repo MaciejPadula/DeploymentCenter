@@ -37,6 +37,14 @@ export function addRecentlyVisitedPage(
   setInLocalStorage(RECENTLY_VISITED_PAGES_LS_KEY, recentlyVisitedPages);
 }
 
+export function removeRecentlyVisitedPage(title: string) {
+  const recentlyVisitedPages = getRecentlyVisitedPages();
+  setInLocalStorage(
+    RECENTLY_VISITED_PAGES_LS_KEY,
+    recentlyVisitedPages.filter((x) => x.title !== title)
+  );
+}
+
 export function deleteRecentlyVisitedPage(title: string) {
   const recentlyVisitedPages = getRecentlyVisitedPages();
   setInLocalStorage(

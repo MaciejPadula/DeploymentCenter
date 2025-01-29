@@ -10,6 +10,7 @@ import useCronJobsDataService from "./services/cron-jobs-data-service";
 import { ResourceSummary } from "../../shared/components/resource-page/ResourceSummary";
 import { ResourceSummaryFactory, ResourceSummaryModel } from "../../shared/components/resource-page/resource-summary-model";
 import { CronJobToolbar } from "./cron-job-page/components/toolbar/CronJobToolbar";
+import cronstrue from 'cronstrue';
 
 type Props = {
   cluster: Cluster;
@@ -48,6 +49,7 @@ export function CronJobPage(props: Props) {
     properties.set("Name", summary.name);
     properties.set("Cluster", `${props.cluster.name}:${props.cluster.apiUrl}`);
     properties.set("Namespace", summary.namespace);
+    properties.set("Cron", cronstrue.toString(summary.cronExpression));
 
     return {
       resourceTitle: "Deployment",
