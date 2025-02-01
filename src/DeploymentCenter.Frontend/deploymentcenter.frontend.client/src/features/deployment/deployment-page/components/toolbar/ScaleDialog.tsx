@@ -52,7 +52,7 @@ export function ScaleDialog(props: Props) {
             label={"Replicas"}
             defaultValue={value}
             onChange={(value) => setValue(value ?? 0)}
-            min={1}
+            min={0}
           />
         </DialogContent>
         <DialogActions>

@@ -78,7 +78,7 @@ internal class CreateDeploymentTests
             "default",
             "test-deployment",
             "test-application",
-            0,
+            -1,
             [new DeploymentCenter.Api.Models.Container(
                 "test-container",
                 "test-image",

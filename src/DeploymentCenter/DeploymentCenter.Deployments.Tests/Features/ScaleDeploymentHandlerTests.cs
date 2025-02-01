@@ -41,10 +41,13 @@ public class ScaleDeploymentHandlerTests
     }
 
     [Test]
-    public async Task Handle_WhenReplicasCountIsValid_CallsScaleDeployment()
+    [TestCase(0)]
+    [TestCase(1)]
+    [TestCase(2)]
+    public async Task Handle_WhenReplicasCountIsValid_CallsScaleDeployment(int replicasCount)
     {
         // Arrange
-        var command = new ScaleDeploymentCommand("namespace", "deploymentName", 2);
+        var command = new ScaleDeploymentCommand("namespace", "deploymentName", replicasCount);
 
         _replicasCountValidator.Validate(command.ReplicasCount).Returns(true);
 

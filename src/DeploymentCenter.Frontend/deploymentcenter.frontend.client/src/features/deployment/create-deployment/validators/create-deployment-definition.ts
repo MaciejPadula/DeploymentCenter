@@ -41,7 +41,7 @@ export function setupDeploymentValidationDefinition(
     new ValidatorBuilder<DeploymentData>()
       .withValidation((data) => requiredValidator(data.replicas))
       .withValidation((data) => numberValidator(data.replicas))
-      .withValidation((data) => greaterThanValidator(data.replicas ?? 0, 0))
+      .withValidation((data) => greaterThanValidator(data.replicas ?? 0, -1))
       .build()
   );
 

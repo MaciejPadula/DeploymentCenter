@@ -16,9 +16,10 @@ export function DoubleInput<TFirst, TSecond>(props: {
   }
 
   return (
-    <div>
+    <div className="flex flex-col sm:flex-row w-full sm:gap-2">
       <TextField
         label="Key"
+        className="flex-grow"
         variant={InputVariant}
         defaultValue={props.defaultFirstValue}
         onBlur={(e) => handleFirstChange(e.target.value as TFirst)}
@@ -26,6 +27,7 @@ export function DoubleInput<TFirst, TSecond>(props: {
 
       <TextField
         label="Value"
+        className="flex-grow"
         variant={InputVariant}
         defaultValue={props.defaultSecondValue}
         onBlur={(e) => handleSecondChange(e.target.value as TSecond)}

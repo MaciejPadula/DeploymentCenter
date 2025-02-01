@@ -9,6 +9,6 @@ internal class ReplicasCountValidator : IReplicasCountValidator
 {
     public bool Validate(int replicasCount)
     {
-        return replicasCount > 0;
+        return replicasCount >= 0;
     }
 }

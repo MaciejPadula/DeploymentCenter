@@ -45,7 +45,8 @@ export function SelectNamespace(props: Props) {
     if (data && !namespaceExists) {
       props.onNamespaceChanged("");
     }
-  }, [data, namespaceExists, props]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, namespaceExists]);
 
   if (error) {
     return <UnknownError />;
