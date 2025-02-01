@@ -16,8 +16,6 @@ internal class TemplateFactory
                 new Variable("Image", "{imageName}"),
                 new Variable("Name", "{appName}-deploy"),
                 new Variable("Replicas", "{replicas}"),
-                new Variable("Port", "{imageExposedPort}"),
-                new Variable("HostPort", "8080"),
                 new Variable("EnvVariables", "")
             ]);
 
