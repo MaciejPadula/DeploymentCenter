@@ -1,9 +1,8 @@
-import { IconButton, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { FocusEvent } from "react";
-import AddIcon from "@mui/icons-material/Add";
 import { Container } from "../../deployment-page/models/container";
 import { InputVariant } from "../../../../shared/helpers/material-config";
-import { DoubleInput } from "../../../../shared/components/double-input/DoubleInput";
+import { KeyValueListControl } from "../../../../shared/components/key-value-list-control/KeyValueListControl";
 
 type Props = {
   container: Container;
@@ -25,35 +24,6 @@ export function ContainersDialog(props: Props) {
     });
   }
 
-  function handleEnvVarKeyChange(index: number, key: string) {
-    const newEnvVariables = [...props.container.environmentVariables];
-    newEnvVariables[index].key = key;
-
-    props.onContainerChange({
-      ...props.container,
-      environmentVariables: newEnvVariables,
-    });
-  }
-
-  function handleEnvVarValueChange(index: number, value: string) {
-    const newEnvVariables = [...props.container.environmentVariables];
-    newEnvVariables[index].value = value;
-    props.onContainerChange({
-      ...props.container,
-      environmentVariables: newEnvVariables,
-    });
-  }
-
-  function addEnvVariable() {
-    const newEnvVariables = [...props.container.environmentVariables];
-    newEnvVariables.push({ key: "", value: "" });
-
-    props.onContainerChange({
-      ...props.container,
-      environmentVariables: newEnvVariables,
-    });
-  }
-
   return (
     <>
       <TextField
@@ -69,21 +39,15 @@ export function ContainersDialog(props: Props) {
         onBlur={setContainerImage}
       />
 
-      {props.container.environmentVariables.map((envVar, index) => (
-        <DoubleInput
-          key={`${index}_${envVar.key}`}
-          defaultFirstValue={envVar.key}
-          defaultSecondValue={envVar.value}
-          onFirstChange={(key) => handleEnvVarKeyChange(index, key)}
-          onSecondChange={(value) => handleEnvVarValueChange(index, value)}
-        />
-      ))}
-
-      <div>
-        <IconButton size="small" onClick={() => addEnvVariable()}>
-          <AddIcon fontSize="inherit" />
-        </IconButton>
-      </div>
+      <KeyValueListControl
+        defaultValue={props.container.environmentVariables}
+        onChange={(envVars) =>
+          props.onContainerChange({
+            ...props.container,
+            environmentVariables: envVars,
+          })
+        }
+      />
     </>
   );
 }

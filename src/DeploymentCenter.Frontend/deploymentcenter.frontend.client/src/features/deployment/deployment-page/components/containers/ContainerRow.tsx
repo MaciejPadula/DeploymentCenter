@@ -2,9 +2,9 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -12,20 +12,37 @@ import { Container } from "../../models/container";
 import { useState } from "react";
 import { ContainerVolumesList } from "./ContainerVolumesList";
 import { Cluster } from "../../../../../shared/models/cluster";
-import { InputVariant } from "../../../../../shared/helpers/material-config";
+import { KeyValueListControl } from "../../../../../shared/components/key-value-list-control/KeyValueListControl";
+import { useMutation } from "@tanstack/react-query";
+import useDeploymentsDataService from "../../../service/deployments-data-service";
 
 type Props = {
   cluster: Cluster;
   namespace: string;
   deploymentName: string;
   container: Container;
-}
+};
 
 export function ContainerRow(props: Props) {
-  const [value, setValue] = useState(1);
+  const dataService = useDeploymentsDataService(props.cluster);
+  const [selectedTab, setSelectedTab] = useState(1);
+
+  const [environmentVariables, setEnvironmentVariables] = useState(
+    props.container.environmentVariables
+  );
+
+  const { mutateAsync: updateEnvVariables } = useMutation({
+    mutationFn: async () =>
+      await dataService.updateEnvironmentVariables(
+        props.namespace,
+        props.deploymentName,
+        props.container.name,
+        environmentVariables
+      ),
+  });
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setSelectedTab(newValue);
   };
 
   return (
@@ -34,19 +51,19 @@ export function ContainerRow(props: Props) {
         <Typography>{props.container.name}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Tabs value={value} onChange={handleChange}>
-          <Tab label='Docker Image' value={1} />
-          <Tab label='Volume Mounts' value={2} />
-          <Tab label='Environment Variables' value={3} />
+        <Tabs value={selectedTab} onChange={handleChange}>
+          <Tab label="Docker Image" value={1} />
+          <Tab label="Volume Mounts" value={2} />
+          <Tab label="Environment Variables" value={3} />
         </Tabs>
 
-        {value == 1 && (
+        {selectedTab == 1 && (
           <div>
             <span>{props.container.image}</span>
           </div>
         )}
 
-        {value == 2 && (
+        {selectedTab == 2 && (
           <div>
             <ContainerVolumesList
               container={props.container}
@@ -57,29 +74,16 @@ export function ContainerRow(props: Props) {
           </div>
         )}
 
-        {value == 3 && (
+        {selectedTab == 3 && (
           <>
-            {
-              Array.from(props.container.environmentVariables).map((x) => (
-                <div key={x.key} className="flex flex-row justify-center">
-                  <TextField
-                    className="w-full sm:w-1/2"
-                    variant={InputVariant}
-                    label={"Key"}
-                    value={x.key ?? ''}
-                  />
-                  <TextField
-                    className="w-full sm:w-1/2"
-                    variant={InputVariant}
-                    label={"Value"}
-                    value={x.value ?? ''}
-                  />
-                </div>
-              ))
-            }
+            <KeyValueListControl
+              defaultValue={props.container.environmentVariables}
+              onChange={(envVars) => setEnvironmentVariables(envVars)}
+            />
+            <Button onClick={() => updateEnvVariables()}>Update</Button>
           </>
         )}
       </AccordionDetails>
-    </Accordion >
+    </Accordion>
   );
 }
