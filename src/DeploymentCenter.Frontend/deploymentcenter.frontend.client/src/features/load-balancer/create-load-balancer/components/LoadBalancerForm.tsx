@@ -61,7 +61,7 @@ export function LoadBalancerForm(props: Props) {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid size={{sm: 4, xs: 12}}>
+        <Grid size={{ sm: 4, xs: 12 }}>
           <TextField
             className="w-full"
             variant={InputVariant}
@@ -73,7 +73,7 @@ export function LoadBalancerForm(props: Props) {
           />
         </Grid>
 
-        <Grid size={{sm: 4, xs: 12}}>
+        <Grid size={{ sm: 4, xs: 12 }}>
           <SelectNamespace
             defaultNamespace={props.value.namespace}
             cluster={props.cluster}
@@ -83,11 +83,11 @@ export function LoadBalancerForm(props: Props) {
           />
         </Grid>
 
-        <Grid size={{sm: 4, xs: 12}}>
+        <Grid size={{ sm: 4, xs: 12 }}>
           <TextField
             className="w-full"
             variant={InputVariant}
-            label="Deployment Name"
+            label="Load Balancer Name"
             defaultValue={props.value.name}
             onBlur={(e) => setName(e.target.value)}
             error={loadBalancerNameTouched && isError(nameError)}

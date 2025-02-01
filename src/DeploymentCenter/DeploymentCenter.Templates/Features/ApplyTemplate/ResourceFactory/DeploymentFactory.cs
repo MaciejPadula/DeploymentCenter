@@ -21,14 +21,16 @@ internal class DeploymentFactory() : IResourceFactory
             .Select(x => new EnvironmentVariable(x[0], x[1], null))
             .ToList();
 
-        var port = int.Parse(compiledVariables["Port"]);
-        var hostPort = int.Parse(compiledVariables["HostPort"]);
+        var port = int.TryParse(compiledVariables["Port"], out var p) ? p : (int?)null;
+        var hostPort = int.TryParse(compiledVariables["HostPort"], out var hp) ? hp : (int?)null;
 
-        var containerPort = new ContainerPort(port, hostPort);
+        List<ContainerPort> containerPorts = port.HasValue
+            ? [new ContainerPort(port.Value, hostPort)]
+            : [];
 
         var containers = new List<Container>
         {
-            new(compiledVariables["ContainerName"], compiledVariables["Image"], [containerPort], [], envVariables)
+            new(compiledVariables["ContainerName"], compiledVariables["Image"], containerPorts, [], envVariables)
         };
 
         var deployment = new CreateDeploymentCommand(

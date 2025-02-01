@@ -36,7 +36,7 @@ internal class VariableReplacerTests
     }
 
     [Test]
-    public void Replace_WhenVariableIsNotMappedToSomeVar_ShouldReplaceValue()
+    public void Replace_WhenVariableIsNotMappedToSomeVar_ShouldNotReplaceValue()
     {
         // Arrange
         var template = new Variable("Greetings", "Hello, John!");
