@@ -25,7 +25,7 @@ internal class K8sMetricsClient(IKubernetesClientFactory kubernetesClientFactory
             HashSet<System.Net.HttpStatusCode> unavailableStatusCodes =
             [
                 System.Net.HttpStatusCode.NotFound,
-                System.Net.HttpStatusCode.ServiceUnavailable 
+                System.Net.HttpStatusCode.ServiceUnavailable
             ];
 
             if (unavailableStatusCodes.Contains(ex.Response.StatusCode))
@@ -85,14 +85,31 @@ internal class K8sMetricsClient(IKubernetesClientFactory kubernetesClientFactory
         }
 
         var metrics = await client.GetKubernetesPodsMetricsByNamespaceAsync(@namespace);
-        var deploymentMetrics = metrics.Items
-            .Where(x => x.Metadata.Name.StartsWith(deploymentName))
-            .SelectMany(podMetric => podMetric.Containers)
-            .ToList();
+        var deploymentMetrics = await GetPodsMetrics(@namespace, deploymentName);
 
-        var cpu = deploymentMetrics.SumOrDefault(x => (decimal)x.Usage[CPUKey], 0);
-        var memory = deploymentMetrics.SumOrDefault(x => (decimal)x.Usage[MemoryKey], 0);
+        var cpu = deploymentMetrics.Values.SumOrDefault(x => (decimal)x.CpuUsage, 0);
+        var memory = deploymentMetrics.Values.SumOrDefault(x => (decimal)x.MemoryUsage, 0);
 
         return new CurrentUsage(cpu, memory);
+    }
+
+    public async Task<Dictionary<string, CurrentUsage>> GetPodsMetrics(string @namespace, string? podPrefix)
+    {
+        using var client = kubernetesClientFactory.GetClient();
+
+        var metrics = await client.GetKubernetesPodsMetricsByNamespaceAsync(@namespace);
+        return metrics.Items
+            .Where(x => string.IsNullOrEmpty(podPrefix) || x.Metadata.Name.StartsWith(podPrefix))
+            .ToDictionary(
+                metrics => metrics.Metadata.Name,
+                metrics =>
+                {
+                    var cpu = metrics.Containers.SumOrDefault(x => (decimal)x.Usage[CPUKey], 0);
+                    var memory = metrics.Containers.SumOrDefault(x => (decimal)x.Usage[MemoryKey], 0);
+
+                    return new CurrentUsage(cpu, memory);
+                });
+
+
     }
 }
