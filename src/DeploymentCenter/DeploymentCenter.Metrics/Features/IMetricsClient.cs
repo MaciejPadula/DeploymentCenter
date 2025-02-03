@@ -8,4 +8,5 @@ public interface IMetricsClient
     Task<CurrentLimit> GetClusterLimits();
     Task<CurrentUsage> GetClusterMetrics();
     Task<CurrentUsage> GetDeploymentMetrics(string @namespace, string deploymentName);
+    Task<Dictionary<string, CurrentUsage>> GetPodsMetrics(string @namespace, string? podPrefix);
 }
