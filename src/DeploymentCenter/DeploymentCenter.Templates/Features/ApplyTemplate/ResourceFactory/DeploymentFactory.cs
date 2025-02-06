@@ -21,8 +21,11 @@ internal class DeploymentFactory() : IResourceFactory
             .Select(x => new EnvironmentVariable(x[0], x[1], null))
             .ToList();
 
-        var port = int.TryParse(compiledVariables["Port"], out var p) ? p : (int?)null;
-        var hostPort = int.TryParse(compiledVariables["HostPort"], out var hp) ? hp : (int?)null;
+        var portRaw = compiledVariables.TryGetValue("Port", out var rP) ? rP : "";
+        var hostPortRaw = compiledVariables.TryGetValue("HostPort", out var rHp) ? rHp : "";
+
+        var port = int.TryParse(portRaw, out var p) ? p : (int?)null;
+        var hostPort = int.TryParse(hostPortRaw, out var hp) ? hp : (int?)null;
 
         List<ContainerPort> containerPorts = port.HasValue
             ? [new ContainerPort(port.Value, hostPort)]

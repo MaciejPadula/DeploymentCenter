@@ -29,6 +29,23 @@ function metricsDataService(httpClient: HttpClient) {
     );
   }
 
+  type UsagesDictionary = { [key: string]: DeploymentMetrics };
+
+  interface GetPodsMetricsResponse {
+    usages: UsagesDictionary;
+  }
+
+  async function getPodsMetrics(
+    namespace: string,
+    podPrefix?: string
+  ): Promise<UsagesDictionary> {
+    const result = await httpClient.get<GetPodsMetricsResponse>(
+      `/${controller}/GetPodsMetrics?namespace=${namespace}&podPrefix=${podPrefix}`
+    );
+
+    return result.usages;
+  }
+
   interface AreMetricsAvailableResponse {
     status: MetricsAvailability;
   }
@@ -44,6 +61,7 @@ function metricsDataService(httpClient: HttpClient) {
     areMetricsAvailable,
     getClusterMetrics,
     getDeploymentMetrics,
+    getPodsMetrics,
   };
 }
 
