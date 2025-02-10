@@ -7,10 +7,12 @@ type Props<T> = {
   title?: string;
   series: ChartSerie[];
   xAxis?: XAxisData<T>;
+  onItemClicked?: (name: string) => void;
+  height?: number;
 };
 
 export function LineChartBox<T>(props: Props<T>) {
-  const height = 300;
+  const height = props.height ?? 300;
 
   const chartData = props.series
     .map((serie) => {
@@ -33,8 +35,22 @@ export function LineChartBox<T>(props: Props<T>) {
         <Typography variant="h6" align="center" gutterBottom>
           {props.title}
         </Typography>
-      )}  
-      <LineChart series={chartData} height={height} xAxis={axisData} />
+      )}
+      <LineChart
+        series={chartData}
+        height={height}
+        xAxis={axisData}
+        slotProps={{
+          legend: {
+            position: { vertical: "top", horizontal: "right" },
+            direction: "column",
+            padding: 5,
+            onItemClick: (_, index) => {
+              props.onItemClicked?.(index.label);
+            }
+          },
+        }}
+      />
     </div>
   ) : (
     <div

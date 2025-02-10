@@ -11,6 +11,7 @@ import { deploymentRoutes } from "./features/deployment/DeploymentRoutes";
 import { templateRoutes } from "./features/template/TemplateRoutes";
 import { cronJobsRoutes } from "./features/cron-jobs/CronJobsRoutes";
 import { RouteDefinition } from "./shared/models/route-definition";
+import { metricsRoutes } from "./features/metrics/MetricsRoutes";
 
 export function RouteRecords() {
   function renderRoutes(routes: RouteDefinition[]) {
@@ -32,6 +33,7 @@ export function RouteRecords() {
           {renderRoutes(deploymentRoutes)}
           {renderRoutes(templateRoutes)}
           {renderRoutes(cronJobsRoutes)}
+          {renderRoutes(metricsRoutes)}
 
           <Route path="clusters-configuration" element={<ClustersList />} />
 

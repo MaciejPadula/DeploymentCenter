@@ -94,6 +94,16 @@ export function useAppRouting() {
     navigate(`/${clusterName}/templates`);
   }
 
+  function metrics(
+    clusterName: string,
+    namespace: string
+  ) {
+    if (!clusterName || !namespace) {
+      return;
+    }
+    navigate(`/${clusterName}/${namespace}/metrics`);
+  }
+
   function navigateToUrl(url: string, replace: boolean = false) {
     navigate(url, { replace: replace });
   }
@@ -118,5 +128,6 @@ export function useAppRouting() {
     volumesList,
     templatesList,
     cronJobPage,
+    metrics,
   };
 }
