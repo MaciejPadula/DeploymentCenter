@@ -7,6 +7,12 @@ type Props = {
 };
 
 export function DeleteResource(props: Props) {
+  const showDialog = props.resourceName.length > 0;
+
+  if (!showDialog) {
+    return <div onClick={props.onDelete}>{props.children}</div>;
+  }
+
   return (
     <ConfirmationDialog
       title="Are you sure?"

@@ -20,24 +20,14 @@ export function KeyValueListControl<TKey, TValue>(props: Props<TKey, TValue>) {
     ]);
   }
 
-  function updateKey(oldKeykey: TKey, newKey: TKey) {
-    const updated = keyValuePairs.map((pair) => {
-      if (pair.key === oldKeykey) {
-        return { key: newKey, value: pair.value };
-      }
-      return pair;
-    });
-    setKeyValuePairs(updated);
+  function updateKey(index: number, newKey: TKey) {
+    keyValuePairs[index].key = newKey;
+    setKeyValuePairs([...keyValuePairs]);
   }
 
-  function updateValue(key: TKey, value: TValue) {
-    const updated = keyValuePairs.map((pair) => {
-      if (pair.key === key) {
-        return { key, value };
-      }
-      return pair;
-    });
-    setKeyValuePairs(updated);
+  function updateValue(index: number, value: TValue) {
+    keyValuePairs[index].value = value;
+    setKeyValuePairs([...keyValuePairs]);
   }
 
   function removeByKey(key: TKey) {
@@ -54,13 +44,12 @@ export function KeyValueListControl<TKey, TValue>(props: Props<TKey, TValue>) {
   return (
     <div className="w-full flex gap-4 flex-col">
       {keyValuePairs.map((pair, index) => (
-        <div className="flex items-center">
+        <div key={`${index}_${pair.key}`} className="flex items-center">
           <DoubleInput
-            key={`${index}_${pair.key}`}
             defaultFirstValue={pair.key}
             defaultSecondValue={pair.value}
-            onFirstChange={(key) => updateKey(pair.key, key)}
-            onSecondChange={(value) => updateValue(pair.key, value)}
+            onFirstChange={(key) => updateKey(index, key)}
+            onSecondChange={(value) => updateValue(index, value)}
           />
           <DeleteResource
             resourceName={pair.key as string}
