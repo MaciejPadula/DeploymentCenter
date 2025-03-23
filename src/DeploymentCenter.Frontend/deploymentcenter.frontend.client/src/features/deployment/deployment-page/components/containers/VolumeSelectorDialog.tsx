@@ -3,10 +3,10 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Cluster } from "../../../../../shared/models/cluster";
 import { useDialog } from "../../../../../shared/hooks/dialog";
-import useVolumesDataService from "../../../../volumes-list/volumes-data-service";
 import useDeploymentsDataService from "../../../service/deployments-data-service";
 import { ErrorBadge } from "../../../../../shared/components/error/error-badge/ErrorBadge";
 import { InputVariant } from "../../../../../shared/helpers/material-config";
+import useVolumesDataService from "../../../../volume/services/volumes-data-service";
 
 type Props = {
   cluster: Cluster;
