@@ -1,8 +1,8 @@
-﻿using DeploymentCenter.Deployments.Core.Exceptions;
-using DeploymentCenter.Deployments.Core.Helpers;
+﻿using DeploymentCenter.Deployments.Core.Helpers;
 using DeploymentCenter.Deployments.Features;
 using DeploymentCenter.Deployments.Features.ScaleDeployment;
 using DeploymentCenter.Deployments.Features.ScaleDeployment.Contract;
+using DeploymentCenter.SharedKernel.Exceptions;
 using FluentAssertions;
 using NSubstitute;
 
@@ -30,7 +30,7 @@ public class ScaleDeploymentHandlerTests
 
         _replicasCountValidator.Validate(command.ReplicasCount).Returns(false);
 
-        var expectedError = new BadRequestException(DeploymentsStatusCode.InvalidReplicas);
+        var expectedError = new BadRequestException(BadRequestStatusCode.InvalidReplicasCount);
 
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);

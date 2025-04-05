@@ -1,7 +1,7 @@
-﻿using DeploymentCenter.Deployments.Core.Exceptions;
-using DeploymentCenter.Deployments.Core.Helpers;
+﻿using DeploymentCenter.Deployments.Core.Helpers;
 using DeploymentCenter.Deployments.Features.CreateDeployment.Contract;
 using DeploymentCenter.SharedKernel;
+using DeploymentCenter.SharedKernel.Exceptions;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features.CreateDeployment;
@@ -14,12 +14,12 @@ internal class CreateDeploymentHandler(IDeploymentClient deploymentClient, IRepl
 
         if (!isValid)
         {
-            return Result.OnError(new BadRequestException(DeploymentsStatusCode.InvalidReplicas));
+            return Result.OnError(new BadRequestException(BadRequestStatusCode.InvalidReplicasCount));
         }
 
         if (await deploymentClient.DeploymentExists(request.Namespace, request.Name))
         {
-            return Result.OnError(new BadRequestException(DeploymentsStatusCode.Duplicate));
+            return Result.OnError(new BadRequestException(BadRequestStatusCode.DuplicateName));
         }
 
         await deploymentClient.CreateDeployment(new(

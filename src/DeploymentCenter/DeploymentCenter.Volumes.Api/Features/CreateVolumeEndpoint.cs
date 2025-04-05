@@ -1,7 +1,10 @@
-﻿using DeploymentCenter.Api.Framework.Endpoints;
+﻿using DeploymentCenter.Api.Framework;
+using DeploymentCenter.Api.Framework.Endpoints;
+using DeploymentCenter.SharedKernel;
 using DeploymentCenter.Volumes.Api.Core;
 using DeploymentCenter.Volumes.Features.CreateVolume.Contract;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeploymentCenter.Volumes.Api.Features;
@@ -15,6 +18,7 @@ internal class CreateVolumeEndpoint() : ApiPostEndpointBase(new VolumesApiDefini
         IMediator mediator,
         CancellationToken cancellationToken) =>
     {
-        await mediator.Send(new CreateVolumeCommand(request.VolumeName, request.VolumePath, request.CapacityInKibiBytes), cancellationToken);
+        var result = await mediator.Send(new CreateVolumeCommand(request.VolumeName, request.VolumePath, request.CapacityInKibiBytes), cancellationToken);
+        return ApiResultHandler.HandleResult(result, () => Results.Created());
     };
 }

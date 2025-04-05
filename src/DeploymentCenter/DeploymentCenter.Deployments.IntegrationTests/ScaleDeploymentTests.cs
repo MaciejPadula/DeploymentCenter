@@ -1,8 +1,8 @@
 ﻿using DeploymentCenter.Api.Framework;
 using DeploymentCenter.Deployments.Api.Features;
-using DeploymentCenter.Deployments.Core.Exceptions;
 using DeploymentCenter.Deployments.IntegrationTests.Extensions;
 using DeploymentCenter.IntegrationTests.Lib;
+using DeploymentCenter.SharedKernel.Exceptions;
 using FluentAssertions;
 using System.Net;
 using System.Net.Http.Json;
@@ -86,6 +86,6 @@ internal class ScaleDeploymentTests
 
         // Assert
         scaleResult.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        content?.Code.Should().Be((int)DeploymentsStatusCode.InvalidReplicas);
+        content?.Code.Should().Be((int)BadRequestStatusCode.InvalidReplicasCount);
     }
 }

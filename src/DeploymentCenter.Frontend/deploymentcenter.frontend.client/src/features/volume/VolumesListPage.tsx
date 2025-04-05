@@ -1,9 +1,9 @@
 import { Cluster } from "../../shared/models/cluster";
-import useVolumesDataService from "./volumes-data-service";
 import { ResourcesList } from "../../shared/components/resources-list/ResourcesList";
 import { VolumeIcon } from "../../assets/icons";
 import { ResourceRowModel, ResourcesFactory } from "../../shared/components/resources-list/resource-row-model";
 import { useAppRouting } from "../../shared/hooks/navigation";
+import useVolumesDataService from "./services/volumes-data-service";
 
 type Props = {
   cluster: Cluster;
@@ -33,7 +33,7 @@ export function VolumesListPage(props: Props) {
       resourcesFactory={factory}
       setupResource={{
         title: "Setup new volume",
-        clickHandler: () => navigation.setupLoadBalancer(props.cluster.name),
+        clickHandler: () => navigation.setupVolume(props.cluster.name),
       }}
     />
   );
