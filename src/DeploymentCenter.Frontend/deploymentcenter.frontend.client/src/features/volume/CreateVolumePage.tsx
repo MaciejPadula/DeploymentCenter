@@ -40,10 +40,6 @@ export function CreateVolumePage(props: Props) {
         return new Error("Duplicate volume name");
       }
   
-      if (errorCode == 2) {
-        return new Error("Replicas count must be greater than 0");
-      }
-  
       return new Error('');
     }
   
