@@ -2,6 +2,7 @@
 using DeploymentCenter.Volumes.Core.Models;
 using DeploymentCenter.Volumes.Features;
 using k8s;
+using k8s.Autorest;
 using k8s.Models;
 
 namespace DeploymentCenter.Infrastructure.K8s.Implementations;
@@ -54,5 +55,24 @@ internal class K8sVolumeClient(IKubernetesClientFactory kubernetesClientFactory)
             .ToList();
 
         return mapped;
+    }
+
+    public async Task<bool> VolumeExists(string volumeName)
+    {
+        try
+        {
+            using var client = kubernetesClientFactory.GetClient();
+            var deploy = await client.CoreV1.ReadPersistentVolumeAsync(volumeName);
+            return deploy is not null;
+        }
+        catch (HttpOperationException e)
+        {
+            if (e.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return false;
+            }
+
+            throw;
+        }
     }
 }

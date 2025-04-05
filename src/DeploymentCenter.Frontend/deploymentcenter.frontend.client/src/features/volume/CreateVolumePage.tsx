@@ -14,7 +14,7 @@ type Props = {
 };
 
 export function CreateVolumePage(props: Props) {
-    const storageKey = "deploymentData";
+    const storageKey = "volumeData";
     const formDataService = useVolumesDataService(props.cluster);
     const navigation = useAppRouting();
     const {
@@ -37,7 +37,7 @@ export function CreateVolumePage(props: Props) {
       const errorCode: number = (error.response?.data as { code: number })?.code;
   
       if (errorCode == 1) {
-        return new Error("Duplicate deployment name");
+        return new Error("Duplicate volume name");
       }
   
       if (errorCode == 2) {

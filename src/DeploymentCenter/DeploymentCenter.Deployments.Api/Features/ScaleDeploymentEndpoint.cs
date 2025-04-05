@@ -1,7 +1,7 @@
-﻿using DeploymentCenter.Api.Framework.Endpoints;
+﻿using DeploymentCenter.Api.Framework;
+using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Deployments.Api.Core;
 using DeploymentCenter.Deployments.Features.ScaleDeployment.Contract;
-using DeploymentCenter.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +24,6 @@ internal class ScaleDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsEn
                 request.ReplicasCount),
             cancellationToken);
 
-        return ResultsHandler.HandleResult(result, () => Results.Ok());
+        return ApiResultHandler.HandleResult(result, () => Results.Ok());
     };
 }

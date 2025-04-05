@@ -1,8 +1,6 @@
 ﻿using DeploymentCenter.Api.Framework;
 using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Deployments.Api.Core;
-using DeploymentCenter.Deployments.Core.Exceptions;
-using DeploymentCenter.Deployments.Core.Models;
 using DeploymentCenter.Deployments.Features.CreateDeployment.Contract;
 using DeploymentCenter.SharedKernel.Models;
 using MediatR;
@@ -52,6 +50,6 @@ internal class CreateDeploymentEndpoint() : ApiPostEndpointBase(new DeploymentsE
             createCommand,
             cancellationToken);
 
-        return ResultsHandler.HandleResult(result, () => Results.Created());
+        return ApiResultHandler.HandleResult(result, () => Results.Created());
     };
 }
