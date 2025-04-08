@@ -1,8 +1,8 @@
 using DeploymentCenter.Api.Framework;
 using DeploymentCenter.Deployments.Api.Features;
-using DeploymentCenter.Deployments.Core.Exceptions;
 using DeploymentCenter.Deployments.IntegrationTests.Extensions;
 using DeploymentCenter.IntegrationTests.Lib;
+using DeploymentCenter.SharedKernel.Exceptions;
 using FluentAssertions;
 using System.Net;
 using System.Net.Http.Json;
@@ -93,7 +93,7 @@ internal class CreateDeploymentTests
 
         // Assert
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        content?.Code.Should().Be((int)DeploymentsStatusCode.InvalidReplicas);
+        content?.Code.Should().Be((int)BadRequestStatusCode.InvalidReplicasCount);
     }
 
     [Test]
@@ -120,6 +120,6 @@ internal class CreateDeploymentTests
 
         // Assert
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        content?.Code.Should().Be((int)DeploymentsStatusCode.Duplicate);
+        content?.Code.Should().Be((int)BadRequestStatusCode.DuplicateName);
     }
 }

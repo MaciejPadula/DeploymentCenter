@@ -7,4 +7,5 @@ public interface IVolumeClient
     Task<List<Volume>> GetVolumes();
     Task CreateVolume(string volumeName, string volumePath, int capacityInKibiBytes);
     Task DeleteVolume(string volumeName);
+    Task<bool> VolumeExists(string volumeName);
 }

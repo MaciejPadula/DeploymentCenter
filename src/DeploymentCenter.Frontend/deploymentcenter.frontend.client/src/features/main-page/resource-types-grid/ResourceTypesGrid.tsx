@@ -50,7 +50,7 @@ export function ResourceTypesGrid() {
         <ResourceTypeBox
           icon={VolumeIcon}
           text="Volumes"
-          navigate={() => navigation.volumesList(config.cluster, config.namespace)}
+          navigate={() => navigation.volumesList(config.cluster)}
         />
       </GridBox>
       <GridBox>

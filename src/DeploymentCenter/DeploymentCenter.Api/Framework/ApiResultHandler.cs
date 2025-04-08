@@ -1,11 +1,10 @@
-﻿using DeploymentCenter.Api.Framework;
-using DeploymentCenter.Deployments.Core.Exceptions;
-using DeploymentCenter.SharedKernel;
+﻿using DeploymentCenter.SharedKernel;
+using DeploymentCenter.SharedKernel.Exceptions;
 using Microsoft.AspNetCore.Http;
 
-namespace DeploymentCenter.Deployments.Api.Core;
+namespace DeploymentCenter.Api.Framework;
 
-internal class ResultsHandler
+public class ApiResultHandler
 {
     public static IResult HandleResult(Result result, Func<IResult> successResultFactory)
     {
@@ -16,7 +15,7 @@ internal class ResultsHandler
 
         if (result.Error?.Exception is BadRequestException exception)
         {
-            return Results.BadRequest(new ApiErrorResult((int)exception.DeploymentsStatusCode));
+            return Results.BadRequest(new ApiErrorResult((int)exception.ApplicationErrorStatusCode));
         }
 
         return Results.StatusCode(StatusCodes.Status500InternalServerError);

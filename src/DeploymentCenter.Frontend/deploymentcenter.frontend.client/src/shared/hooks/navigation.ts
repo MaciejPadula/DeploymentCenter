@@ -80,11 +80,15 @@ export function useAppRouting() {
     navigate(`/${clusterName}/namespaces`);
   }
 
-  function volumesList(clusterName: string, namespace: string) {
-    if (!clusterName || !namespace) {
+  function volumesList(clusterName: string) {
+    if (!clusterName) {
       return;
     }
-    navigate(`/${clusterName}/${namespace}/volumes`);
+    navigate(`/${clusterName}/volumes`);
+  }
+
+  function setupVolume(clusterName: string) {
+    navigate(`/${clusterName}/volumes/setup`);
   }
 
   function templatesList(clusterName: string) {
@@ -128,6 +132,7 @@ export function useAppRouting() {
     volumesList,
     templatesList,
     cronJobPage,
+    setupVolume,
     metrics,
   };
 }

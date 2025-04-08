@@ -5,12 +5,12 @@ import { NotFound } from "./shared/components/error/not-found/NotFound";
 import { ClustersList } from "./features/clusters-list/ClustersList";
 import { NamespacesList } from "./features/namespaces-list/NamespacesList";
 import { ClusterFromUrlGuard } from "./shared/guards/ClusterFromUrlGuard";
-import { VolumesListPage } from "./features/volumes-list/VolumesListPage";
 import { loadBalancerRoutes } from "./features/load-balancer/LoadBalancerRoutes";
 import { deploymentRoutes } from "./features/deployment/DeploymentRoutes";
 import { templateRoutes } from "./features/template/TemplateRoutes";
 import { cronJobsRoutes } from "./features/cron-jobs/CronJobsRoutes";
 import { RouteDefinition } from "./shared/models/route-definition";
+import { volumeRoutes } from "./features/volume/VolumeRoutes";
 import { metricsRoutes } from "./features/metrics/MetricsRoutes";
 
 export function RouteRecords() {
@@ -19,6 +19,13 @@ export function RouteRecords() {
       <Route key={r.route} path={r.route} element={r.component} />
     ));
   }
+
+  const routes = loadBalancerRoutes
+    .concat(deploymentRoutes)
+    .concat(templateRoutes)
+    .concat(cronJobsRoutes)
+    .concat(volumeRoutes)
+    .concat(metricsRoutes);
 
   return (
     <BrowserRouter>
@@ -29,22 +36,9 @@ export function RouteRecords() {
           <Route path="/:clusterName/:namespace" element={<Navigate to={"/"} />} />
           <Route path="/:clusterName" element={<Navigate to={"/"} />} />
 
-          {renderRoutes(loadBalancerRoutes)}
-          {renderRoutes(deploymentRoutes)}
-          {renderRoutes(templateRoutes)}
-          {renderRoutes(cronJobsRoutes)}
-          {renderRoutes(metricsRoutes)}
+          {renderRoutes(routes)}
 
           <Route path="clusters-configuration" element={<ClustersList />} />
-
-          <Route
-            path="/:clusterName/:namespace/volumes"
-            element={
-              <ClusterFromUrlGuard>
-                {(c) => <VolumesListPage cluster={c} />}
-              </ClusterFromUrlGuard>
-            }
-          />
 
           <Route
             path="/:clusterName/namespaces"

@@ -1,8 +1,7 @@
-﻿using DeploymentCenter.Deployments.Core.Exceptions;
-using DeploymentCenter.Deployments.Core.Helpers;
-using DeploymentCenter.Deployments.Features.CreateDeployment.Contract;
+﻿using DeploymentCenter.Deployments.Core.Helpers;
 using DeploymentCenter.Deployments.Features.ScaleDeployment.Contract;
 using DeploymentCenter.SharedKernel;
+using DeploymentCenter.SharedKernel.Exceptions;
 using MediatR;
 
 namespace DeploymentCenter.Deployments.Features.ScaleDeployment;
@@ -16,7 +15,7 @@ internal class ScaleDeploymentHandler(
 
         if (!isValid)
         {
-            return Result.OnError(new BadRequestException(DeploymentsStatusCode.InvalidReplicas));
+            return Result.OnError(new BadRequestException(BadRequestStatusCode.InvalidReplicasCount));
         }
 
         await deploymentClient.ScaleDeployment(request.Namespace, request.DeploymentName, request.ReplicasCount);
