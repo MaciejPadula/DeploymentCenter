@@ -21,7 +21,7 @@ type Props = {
 export function SearchList(props: Props) {
   return (
     <List>
-      {props.header && <SearchSectionHeader header={props.header} divider={props.headerLine} />}
+      {props.header && props.items.length > 0 && <SearchSectionHeader header={props.header} divider={props.headerLine} />}
       {
         props.items.map(definition => (
           <ListItem

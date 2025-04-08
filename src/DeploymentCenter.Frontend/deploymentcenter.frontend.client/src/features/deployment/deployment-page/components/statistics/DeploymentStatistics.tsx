@@ -1,12 +1,12 @@
 import { CircularProgress, Paper, Typography } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 import { useQuery } from "@tanstack/react-query";
-import { UsageCharts } from "../../../../metrics/components/UsageCharts";
 import { groupPodsByHealth } from "../../../../pods/services/pod-services";
 import { PodHealthStatus } from "../../../../pods/models/pod";
 import { Cluster } from "../../../../../shared/models/cluster";
 import { MetricsAvailableGuard } from "../../../../metrics/guards/MetricsAvailableGuard";
 import usePodsDataService from "../../../../pods/services/pods-data-service";
+import { PodsCharts } from "../../../../metrics/components/PodsCharts";
 
 type Props = {
   cluster: Cluster;
@@ -72,10 +72,10 @@ export function DeploymentStatistics(props: Props) {
           {pods && <PieChart series={podsChart} height={300} />}
         </div>
         <MetricsAvailableGuard cluster={props.cluster}>
-          <UsageCharts
+          <PodsCharts
             cluster={props.cluster}
-            deploymentName={props.deploymentName}
             namespace={props.namespace}
+            prefix={props.deploymentName}
           />
         </MetricsAvailableGuard>
       </div>
