@@ -28,6 +28,9 @@ export function ResourceRow(props: { row: ResourceRowModel }) {
           </Icon>
         </ListItemIcon>
         <ListItemText primary={props.row.name} secondary={secondaryText} />
+        {
+          props.row.additionalElement
+        }
       </ListItemButton>
     </ListItem>
   );
