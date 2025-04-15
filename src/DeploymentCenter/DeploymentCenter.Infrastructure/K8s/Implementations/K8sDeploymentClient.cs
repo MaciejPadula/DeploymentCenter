@@ -44,7 +44,6 @@ internal class K8sDeploymentClient(
             deploymentPods[deployment.Metadata.Name] = podList;
         }
 
-
         return deployments
             .Items
             .Select(d => deploymentMapper.MapBasicInfo(d, deploymentPods[d.Metadata.Name]))

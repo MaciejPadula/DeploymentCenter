@@ -12,7 +12,7 @@ export function HealthBadge(props: Props) {
         return "success";
       case DeploymentStatus.Error:
         return "error";
-      case DeploymentStatus.Unknown:
+      case DeploymentStatus.Waiting:
         return "warning";
       default:
         return "default";
@@ -23,6 +23,7 @@ export function HealthBadge(props: Props) {
     <Chip
       label={DeploymentStatus[props.status]}
       color={getColor(props.status)}
+      variant="outlined"
     />
   );
 }

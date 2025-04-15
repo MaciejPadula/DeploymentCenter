@@ -1,5 +1,6 @@
 ﻿using DeploymentCenter.Deployments.Core.Models;
 using DeploymentCenter.Deployments.Features.GetDeploymentVolumes.Contract;
+using DeploymentCenter.Pods.Core.Models;
 using DeploymentCenter.SharedKernel.Models;
 using k8s.Models;
 
@@ -14,7 +15,7 @@ internal interface IK8sDeploymentMapper
     DeploymentVolume MapVolume(V1Volume v1Volume);
 }
 
-internal class K8sDeploymentMapper : IK8sDeploymentMapper
+internal class K8sDeploymentMapper(IK8sPodMapper k8SPodMapper) : IK8sDeploymentMapper
 {
     public V1Deployment Map(Deployment deployment) =>
         new()
@@ -78,17 +79,32 @@ internal class K8sDeploymentMapper : IK8sDeploymentMapper
     private DeploymentStatus MapStatus(IList<V1Pod> pods)
     {
         var status = pods
-            .Select(x => x.Status)
-            .FirstOrDefault(x => x != null);
-        if (status == null)
+            .Select(k8SPodMapper.Map)
+            .ToList();
+
+        var error = status.FirstOrDefault(x => x.Status.Health == PodHealth.Terminated);
+
+        if (error != default)
         {
-            return DeploymentStatus.Unknown;
+            return DeploymentStatus.Error;
         }
-        if (status.Phase == "Running")
+
+        var healthy = status.FirstOrDefault(x => x.Status.Health == PodHealth.Running);
+
+        if (healthy != default)
         {
             return DeploymentStatus.Healthy;
         }
-        return DeploymentStatus.Error;
+
+        var waiting = status.FirstOrDefault(x => x.Status.Health == PodHealth.Waiting);
+
+        if (waiting != default)
+        {
+            return DeploymentStatus.Waiting;
+        }
+
+        return DeploymentStatus.Unknown;
+
     }
 
     public Container MapContainer(V1Container container) =>
