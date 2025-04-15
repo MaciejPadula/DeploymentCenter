@@ -10,4 +10,5 @@ export interface ResourceRowModel {
   clickHandler?: () => void;
   action?: ReactElement;
   secondaryText?: ReactElement;
+  additionalElement?: ReactElement;
 }

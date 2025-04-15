@@ -9,6 +9,7 @@ import { useAppRouting } from "../../shared/hooks/navigation";
 import { NotFound } from "../../shared/components/error/not-found/NotFound";
 import { Cluster } from "../../shared/models/cluster";
 import useDeploymentsDataService from "./service/deployments-data-service";
+import { HealthBadge } from "./deployments-list/components/HealthBadge";
 
 type Props = {
   cluster: Cluster;
@@ -27,14 +28,15 @@ export function DeploymentsList(props: Props) {
     const response = await dataService.getDeployments(namespace);
     return response.map(
       (x) =>
-      ({
-        clusterName: props.cluster.name,
-        name: x.name,
-        namespace: namespace,
-        icon: DeployIcon,
-        clickHandler: () =>
-          navigation.deploymentPage(props.cluster.name, namespace, x.name),
-      } as ResourceRowModel)
+        ({
+          clusterName: props.cluster.name,
+          name: x.name,
+          namespace: namespace,
+          icon: DeployIcon,
+          additionalElement: (<HealthBadge status={x.status} />),
+          clickHandler: () =>
+            navigation.deploymentPage(props.cluster.name, namespace, x.name),
+        } as ResourceRowModel)
     );
   };
 

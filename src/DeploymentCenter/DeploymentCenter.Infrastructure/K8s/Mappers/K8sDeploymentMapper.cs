@@ -8,7 +8,7 @@ namespace DeploymentCenter.Infrastructure.K8s.Mappers;
 internal interface IK8sDeploymentMapper
 {
     V1Deployment Map(Deployment deployment);
-    DeploymentBasicInfo MapBasicInfo(V1Deployment deployment);
+    DeploymentBasicInfo MapBasicInfo(V1Deployment deployment, IList<V1Pod> pods);
     Container MapContainer(V1Container container);
     IEnumerable<V1EnvVar> MapEnvVars(IEnumerable<EnvironmentVariable> environmentVariables);
     DeploymentVolume MapVolume(V1Volume v1Volume);
@@ -73,7 +73,23 @@ internal class K8sDeploymentMapper : IK8sDeploymentMapper
             }
         };
 
-    public DeploymentBasicInfo MapBasicInfo(V1Deployment deployment) => new(deployment.Metadata.Name);
+    public DeploymentBasicInfo MapBasicInfo(V1Deployment deployment, IList<V1Pod> pods) => new(deployment.Metadata.Name, MapStatus(pods));
+
+    private DeploymentStatus MapStatus(IList<V1Pod> pods)
+    {
+        var status = pods
+            .Select(x => x.Status)
+            .FirstOrDefault(x => x != null);
+        if (status == null)
+        {
+            return DeploymentStatus.Unknown;
+        }
+        if (status.Phase == "Running")
+        {
+            return DeploymentStatus.Healthy;
+        }
+        return DeploymentStatus.Error;
+    }
 
     public Container MapContainer(V1Container container) =>
         new(
