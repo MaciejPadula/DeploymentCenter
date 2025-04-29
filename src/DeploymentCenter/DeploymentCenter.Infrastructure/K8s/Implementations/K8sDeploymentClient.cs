@@ -31,9 +31,22 @@ internal class K8sDeploymentClient(
     {
         using var client = kubernetesClientFactory.GetClient();
         var deployments = await client.AppsV1.ListNamespacedDeploymentAsync(@namespace);
+        var pods = await client.CoreV1.ListNamespacedPodAsync(@namespace);
+
+        var deploymentPods = new Dictionary<string, IList<V1Pod>>();
+
+        foreach (var deployment in deployments.Items)
+        {
+            var podList = pods.Items
+                .Where(x => x.Metadata.Name.StartsWith(deployment.Metadata.Name))
+                .ToList();
+
+            deploymentPods[deployment.Metadata.Name] = podList;
+        }
+
         return deployments
             .Items
-            .Select(deploymentMapper.MapBasicInfo)
+            .Select(d => deploymentMapper.MapBasicInfo(d, deploymentPods[d.Metadata.Name]))
             .ToList();
     }
 

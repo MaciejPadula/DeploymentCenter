@@ -9,7 +9,7 @@ namespace DeploymentCenter.Deployments.Api.Features;
 
 internal class GetDeploymentsListEndpoint() : ApiGetEndpointBase(new DeploymentsEndpointsInfoFactory())
 {
-    internal record Deployment(string Name);
+    internal record Deployment(string Name, int Status);
 
     internal record GetDeploymentsListResponse(List<Deployment> Deployments);
 
@@ -22,7 +22,7 @@ internal class GetDeploymentsListEndpoint() : ApiGetEndpointBase(new Deployments
             new GetDeploymentsListQuery(@namespace),
             cancellationToken);
         return Results.Ok(new GetDeploymentsListResponse(result
-            .Select(x => new Deployment(x.Name))
+            .Select(x => new Deployment(x.Name, (int)x.Status))
             .ToList()));
     };
 }
