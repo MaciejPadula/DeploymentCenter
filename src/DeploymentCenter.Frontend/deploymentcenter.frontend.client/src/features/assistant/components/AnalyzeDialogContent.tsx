@@ -1,58 +1,68 @@
 import { useState } from "react";
 import { Cluster } from "../../../shared/models/cluster";
 import { useMutation } from "@tanstack/react-query";
-import { Button, CircularProgress, TextField } from "@mui/material";
-import { InputVariant } from "../../../shared/helpers/material-config";
-import { ErrorBadge } from "../../../shared/components/error/error-badge/ErrorBadge";
-import Markdown from "react-markdown";
+import { ChatMessageData } from "../../../shared/components/chat/chat-message-data";
+import { Chat } from "../../../shared/components/chat/Chat";
 
 type Props = {
   cluster: Cluster;
   analyzeQuery: (question: string) => Promise<string | null>;
 };
 
+const startMessage = {
+  role: "assistant" as const,
+  content: "Hello! How can I assist you today?",
+};
+
 export function AnalyzeDialogContent(props: Props) {
-  const [question, setQuestion] = useState<string>("");
-  const { mutateAsync, data, error, isPending } = useMutation({
-    mutationFn: async () => await props.analyzeQuery(question),
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: async (question: string) => await props.analyzeQuery(question),
   });
 
-  const disabled = isPending;
+  const [messages, setMessages] = useState<ChatMessageData[]>([startMessage]);
+
+  async function handleNewQuestion(question: string) {
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { role: "user", content: question },
+    ]);
+
+    await scrollToBottomWithDelayAsync();
+
+    const result = await mutateAsync(question);
+
+    if (result) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { role: "assistant", content: result },
+      ]);
+
+      await scrollToBottomWithDelayAsync();
+    }
+  }
+
+  function scrollToBottomWithDelayAsync() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        scrollToBottom();
+        resolve(true);
+      }, 100);
+    });
+  }
+
+  function scrollToBottom() {
+    const chatContainer = document.querySelector(".chat-container");
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }
 
   return (
-    <>
-      <div className="flex items-center flex-col w-full">
-        <div className="flex flex-row w-full">
-          {error && <ErrorBadge>{error.message}</ErrorBadge>}
-          <TextField
-            className="w-full"
-            variant={InputVariant}
-            label="Question"
-            onChange={(e) => setQuestion(e.target.value)}
-            multiline
-            disabled={disabled}
-          />
-          <Button
-            onClick={() => mutateAsync()}
-            variant="contained"
-            disabled={disabled}
-          >
-            Ask
-          </Button>
-        </div>
-        {isPending && (
-          <div className={"flex items-center justify-center p-20"}>
-            <CircularProgress size={60} />
-          </div>
-        )}
-      </div>
-      <div className="overflow-y-auto">
-        {!isPending && (
-          <Markdown className={"w-full text-wrap markdown-container"}>
-            {data}
-          </Markdown>
-        )}
-      </div>
-    </>
+    <Chat
+      messages={messages}
+      title={`${props.cluster.name} Assistant 🤖`}
+      onNewMessage={message => handleNewQuestion(message)}
+      isTyping={isPending}
+    />
   );
 }
