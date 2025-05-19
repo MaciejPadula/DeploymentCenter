@@ -1,7 +1,7 @@
 ﻿using DeploymentCenter.SharedKernel;
 using MediatR;
 
-namespace DeploymentCenter.Deployments.Features.AnalyzeDeployment.Contract;
+namespace DeploymentCenter.Assistant.Features.AnalyzeDeployment.Contract;
 
 public record AnalyzeDeploymentQuery(
     string Namespace,

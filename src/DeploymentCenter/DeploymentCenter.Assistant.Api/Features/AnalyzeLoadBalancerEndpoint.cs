@@ -1,7 +1,7 @@
 ﻿using DeploymentCenter.AIChat.Core.Exceptions;
 using DeploymentCenter.Api.Framework.Endpoints;
 using DeploymentCenter.Assistant.Api.Core;
-using DeploymentCenter.Services.Features.AnalyzeLoadBalancer.Contract;
+using DeploymentCenter.Assistant.Features.AnalyzeLoadBalancer.Contract;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,6 @@
 ﻿using DeploymentCenter.AIChat.Features.CompleteChat.Contract;
+using DeploymentCenter.Assistant.Features.AnalyzeDeployment;
 using DeploymentCenter.Deployments.Core.Models;
-using DeploymentCenter.Deployments.Features.AnalyzeDeployment;
 using DeploymentCenter.Deployments.Features.AnalyzeDeployment.Contract;
 using DeploymentCenter.Deployments.Features.GetDeploymentContainers.Contract;
 using DeploymentCenter.Deployments.Features.GetDeploymentDetails.Contract;

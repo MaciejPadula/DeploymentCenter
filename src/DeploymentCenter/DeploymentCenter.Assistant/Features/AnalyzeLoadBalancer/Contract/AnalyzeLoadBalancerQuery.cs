@@ -1,7 +1,7 @@
 ﻿using DeploymentCenter.SharedKernel;
 using MediatR;
 
-namespace DeploymentCenter.Services.Features.AnalyzeLoadBalancer.Contract;
+namespace DeploymentCenter.Assistant.Features.AnalyzeLoadBalancer.Contract;
 
 public record AnalyzeLoadBalancerQuery(
     string Namespace,

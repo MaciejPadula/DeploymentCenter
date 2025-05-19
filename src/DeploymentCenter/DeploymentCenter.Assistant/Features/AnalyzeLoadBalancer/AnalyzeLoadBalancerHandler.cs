@@ -1,8 +1,8 @@
 ﻿using DeploymentCenter.AIChat.Core.Helpers;
 using DeploymentCenter.AIChat.Features.CompleteChat.Contract;
 using DeploymentCenter.Assistant.Core.Extensions;
-using DeploymentCenter.Deployments.Features.AnalyzeDeployment;
-using DeploymentCenter.Services.Features.AnalyzeLoadBalancer.Contract;
+using DeploymentCenter.Assistant.Features.AnalyzeDeployment;
+using DeploymentCenter.Assistant.Features.AnalyzeLoadBalancer.Contract;
 using DeploymentCenter.Services.Features.GetLoadBalancerDetails.Contract;
 using DeploymentCenter.Services.Features.GetLoadBalancerIpAddresses.Contract;
 using DeploymentCenter.Services.Features.GetLoadBalancerPorts.Contract;
@@ -10,7 +10,7 @@ using DeploymentCenter.SharedKernel;
 using MediatR;
 using System.Text.Json;
 
-namespace DeploymentCenter.Services.Features.AnalyzeLoadBalancer;
+namespace DeploymentCenter.Assistant.Features.AnalyzeLoadBalancer;
 
 internal class AnalyzeLoadBalancerHandler(IMediator mediator) : IRequestHandler<AnalyzeLoadBalancerQuery, Result<string>>
 {
