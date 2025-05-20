@@ -2,16 +2,17 @@ import { useState } from "react";
 import { Drawer, IconButton, Tooltip } from "@mui/material";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import { Cluster } from "../../../shared/models/cluster";
-import { AnalyzeDialogContent } from "./AnalyzeDialogContent";
+import { AnalyzeChat } from "./AnalyzeChat";
 
 type Props = {
   cluster: Cluster;
   title: string;
   tooltip: string;
+  chatName: string;
   analyzeQuery: (question: string) => Promise<string | null>;
 };
 
-export function AnalyzeDialog(props: Props) {
+export function AnalyzeDrawer(props: Props) {
   const [open, setOpen] = useState<boolean>(false);
 
   function handleClickOpen() {
@@ -31,7 +32,8 @@ export function AnalyzeDialog(props: Props) {
       </Tooltip>
       <Drawer open={open} onClose={handleClose} anchor="right">
         <div className="w-full sm:w-[40dvw] h-full">
-          <AnalyzeDialogContent
+          <AnalyzeChat
+            chatName={props.chatName}
             cluster={props.cluster}
             analyzeQuery={props.analyzeQuery}
           />

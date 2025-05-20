@@ -1,5 +1,5 @@
 import { Cluster } from "../../shared/models/cluster";
-import { AnalyzeDialog } from "./components/AnalyzeDialog";
+import { AnalyzeDrawer } from "./components/AnalyzeDrawer";
 import useAssistantService from "./services/assistant-service";
 
 type Props = {
@@ -20,7 +20,8 @@ export function AnalyzeLoadBalancerDialog(props: Props) {
   }
 
   return (
-    <AnalyzeDialog
+    <AnalyzeDrawer
+      chatName={`${props.cluster.name}-${props.namespace}-${props.loadBalancerName}-loadBalancer-assistant`}
       cluster={props.cluster}
       analyzeQuery={analyzeLoadBalancer}
       title={"Load Balancer Assistant"}

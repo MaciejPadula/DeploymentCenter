@@ -2,6 +2,7 @@ import { TextField, Typography } from "@mui/material";
 import { ChatMessageData } from "./chat-message-data";
 import { ChatMessage } from "./ChatMessage";
 import { useRef } from "react";
+import { ChatTyping } from "./ChatTyping";
 
 type ChatProps = {
   title: string;
@@ -33,35 +34,14 @@ export function Chat(props: ChatProps) {
       <div className="flex flex-col flex-1 overflow-y-auto p-4 chat-container">
         <div className="flex flex-col">
           {props.messages.map((message, index) => (
-            <ChatMessage key={index} message={{content: message.content, role: message.role}} />
+            <ChatMessage
+              key={index}
+              message={{ content: message.content, role: message.role }}
+            />
           ))}
         </div>
       </div>
-      {props.isTyping && (
-        <div className="px-4 pb-2 flex justify-center items-center space-x-1">
-          <div
-            className="w-2 h-2 bg-gray-500 rounded-full"
-            style={{
-              animation: "blink 1.4s infinite",
-              animationDelay: "0s",
-            }}
-          ></div>
-          <div
-            className="w-2 h-2 bg-gray-500 rounded-full"
-            style={{
-              animation: "blink 1.4s infinite",
-              animationDelay: "0.2s",
-            }}
-          ></div>
-          <div
-            className="w-2 h-2 bg-gray-500 rounded-full"
-            style={{
-              animation: "blink 1.4s infinite",
-              animationDelay: "0.4s",
-            }}
-          ></div>
-        </div>
-      )}
+      {props.isTyping && <ChatTyping />}
       <div className="p-4 flex flex-row items-center gap-2">
         <TextField
           className="w-full"
