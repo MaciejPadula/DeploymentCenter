@@ -1,7 +1,13 @@
-export function ChatTyping() {
+import { ReactNode } from "react";
+
+type ChatTypingProps = {
+  profileIcon?: ReactNode;
+};
+
+export function ChatTyping(props: ChatTypingProps) {
   return (
     <div className="px-4 flex justify-start items-center space-x-1">
-      <div>🤖</div>
+      {props.profileIcon}
       {Array.from({ length: 3 }).map((_, index) => (
         <div
           key={index}

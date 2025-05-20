@@ -53,6 +53,7 @@ export function AnalyzeChat(props: Props) {
       title={`${props.cluster.name} Assistant 🤖`}
       onNewMessage={(message) => handleNewQuestion(message)}
       isTyping={isPending}
+      typingProfileIcon={<div>🤖</div>}
     />
   );
 }

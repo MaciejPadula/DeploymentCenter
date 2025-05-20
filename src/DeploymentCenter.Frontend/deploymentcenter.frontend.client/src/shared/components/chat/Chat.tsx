@@ -1,7 +1,7 @@
 import { TextField, Typography } from "@mui/material";
 import { ChatMessageData } from "./chat-message-data";
 import { ChatMessage } from "./ChatMessage";
-import { useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { ChatTyping } from "./ChatTyping";
 
 type ChatProps = {
@@ -9,6 +9,7 @@ type ChatProps = {
   messages: ChatMessageData[];
   onNewMessage: (message: string) => void;
   isTyping: boolean;
+  typingProfileIcon? : ReactNode;
 };
 
 export function Chat(props: ChatProps) {
@@ -64,7 +65,7 @@ export function Chat(props: ChatProps) {
           ))}
         </div>
       </div>
-      {props.isTyping && <ChatTyping />}
+      {props.isTyping && <ChatTyping profileIcon={props.typingProfileIcon} />}
       <div className="p-4 flex flex-row items-center gap-2">
         <TextField
           className="w-full"
