@@ -5,6 +5,8 @@ import { MetricsAvailability } from "../models/metrics-availability";
 
 const controller = "api/Metrics";
 
+export type UsagesDictionary = { [key: string]: DeploymentMetrics };
+
 function metricsDataService(httpClient: HttpClient) {
   interface GetClusterMetricsResponse {
     cpuUsage: number;
@@ -29,6 +31,27 @@ function metricsDataService(httpClient: HttpClient) {
     );
   }
 
+  interface GetPodsMetricsResponse {
+    usages: UsagesDictionary;
+  }
+
+  async function getPodsMetrics(
+    namespace: string,
+    podPrefix?: string
+  ): Promise<UsagesDictionary> {
+    const parameters = [`namespace=${namespace}`];
+
+    if (podPrefix) {
+      parameters.push(`podPrefix=${podPrefix}`);
+    }
+
+    const result = await httpClient.get<GetPodsMetricsResponse>(
+      `/${controller}/GetPodsMetrics?${parameters.join("&")}`
+    );
+
+    return result.usages;
+  }
+
   interface AreMetricsAvailableResponse {
     status: MetricsAvailability;
   }
@@ -44,6 +67,7 @@ function metricsDataService(httpClient: HttpClient) {
     areMetricsAvailable,
     getClusterMetrics,
     getDeploymentMetrics,
+    getPodsMetrics,
   };
 }
 

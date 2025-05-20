@@ -11,6 +11,7 @@ import { templateRoutes } from "./features/template/TemplateRoutes";
 import { cronJobsRoutes } from "./features/cron-jobs/CronJobsRoutes";
 import { RouteDefinition } from "./shared/models/route-definition";
 import { volumeRoutes } from "./features/volume/VolumeRoutes";
+import { metricsRoutes } from "./features/metrics/MetricsRoutes";
 
 export function RouteRecords() {
   function renderRoutes(routes: RouteDefinition[]) {
@@ -23,7 +24,8 @@ export function RouteRecords() {
     .concat(deploymentRoutes)
     .concat(templateRoutes)
     .concat(cronJobsRoutes)
-    .concat(volumeRoutes);
+    .concat(volumeRoutes)
+    .concat(metricsRoutes);
 
   return (
     <BrowserRouter>

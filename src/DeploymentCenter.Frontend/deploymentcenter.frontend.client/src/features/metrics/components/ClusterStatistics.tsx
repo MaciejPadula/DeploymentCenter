@@ -1,8 +1,10 @@
-import { Skeleton, Typography } from "@mui/material";
+import { Button, Skeleton, Typography } from "@mui/material";
 import { GargeChartBox } from "../../../shared/components/charts/gauge/GaugeChartBox";
 import useMetricsDataService from "../services/metrics-service";
 import { useQuery } from "@tanstack/react-query";
 import { Cluster } from "../../../shared/models/cluster";
+import { useAppRouting } from "../../../shared/hooks/navigation";
+import { configuration } from "../../../shared/services/configuration-service";
 
 interface ResourceMetrics {
   value: number;
@@ -26,6 +28,7 @@ type Props = {
 
 export function ClusterStatistics(props: Props) {
   const dataService = useMetricsDataService(props.cluster);
+  const navigation = useAppRouting();
   const { data: metrics } = useQuery({
     queryKey: ["clusterMetrics", props.cluster.name],
     queryFn: async () => {
@@ -82,6 +85,18 @@ export function ClusterStatistics(props: Props) {
             <Skeleton variant="rectangular" width="100%" height={200} />
           )}
         </div>
+      </div>
+      <div className="flex justify-end">
+        <Button
+          onClick={() =>
+            navigation.metrics(
+              props.cluster.name,
+              configuration.value.namespace
+            )
+          }
+        >
+          See more
+        </Button>
       </div>
     </div>
   );
