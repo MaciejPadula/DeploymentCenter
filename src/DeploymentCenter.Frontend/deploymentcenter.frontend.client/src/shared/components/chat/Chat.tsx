@@ -1,7 +1,7 @@
 import { TextField, Typography } from "@mui/material";
 import { ChatMessageData } from "./chat-message-data";
 import { ChatMessage } from "./ChatMessage";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ChatTyping } from "./ChatTyping";
 
 type ChatProps = {
@@ -14,6 +14,13 @@ type ChatProps = {
 export function Chat(props: ChatProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (props.messages.length > 0) {
+      scrollToBottomWithDelayAsync();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.messages]);
+
   function onEnterKeyPress(event: React.KeyboardEvent) {
     if (event.key === "Enter" && !event.shiftKey && inputRef.current) {
       event.preventDefault();
@@ -23,6 +30,22 @@ export function Chat(props: ChatProps) {
         props.onNewMessage(question);
         inputRef.current.value = "";
       }
+    }
+  }
+
+  function scrollToBottomWithDelayAsync() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        scrollToBottom();
+        resolve(true);
+      }, 100);
+    });
+  }
+
+  function scrollToBottom() {
+    const chatContainer = document.querySelector(".chat-container");
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
   }
 

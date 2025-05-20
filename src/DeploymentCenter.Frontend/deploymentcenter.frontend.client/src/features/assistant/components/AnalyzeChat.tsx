@@ -32,8 +32,6 @@ export function AnalyzeChat(props: Props) {
       { role: "user", content: question },
     ]);
 
-    await scrollToBottomWithDelayAsync();
-
     const result = await mutateAsync(question);
 
     if (result) {
@@ -41,8 +39,6 @@ export function AnalyzeChat(props: Props) {
         ...prevMessages,
         { role: "assistant", content: result },
       ]);
-
-      await scrollToBottomWithDelayAsync();
     }
   }
 
@@ -50,22 +46,6 @@ export function AnalyzeChat(props: Props) {
     storeService.setChatMessages(messages);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
-
-  function scrollToBottomWithDelayAsync() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        scrollToBottom();
-        resolve(true);
-      }, 100);
-    });
-  }
-
-  function scrollToBottom() {
-    const chatContainer = document.querySelector(".chat-container");
-    if (chatContainer) {
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-  }
 
   return (
     <Chat
