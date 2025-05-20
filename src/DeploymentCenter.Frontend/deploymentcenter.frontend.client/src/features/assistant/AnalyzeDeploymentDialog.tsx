@@ -1,5 +1,5 @@
 import { Cluster } from "../../shared/models/cluster";
-import { AnalyzeDialog } from "./components/AnalyzeDialog";
+import { AnalyzeDrawer } from "./components/AnalyzeDrawer";
 import useAssistantService from "./services/assistant-service";
 
 type Props = {
@@ -20,7 +20,8 @@ export function AnalyzeDeploymentDialog(props: Props) {
   }
 
   return (
-    <AnalyzeDialog
+    <AnalyzeDrawer
+      chatName={`${props.cluster.name}-${props.namespace}-${props.deploymentName}-deployment-assistant`}
       cluster={props.cluster}
       analyzeQuery={analyzeDeployment}
       title={"Deployment Assistant"}
